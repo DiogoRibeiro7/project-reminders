@@ -7,7 +7,7 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import Mapping
 
-from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
+from project_reminders.domain.enums import CIState, HealthDimension, HealthState, Priority, ProjectStatus
 
 
 def _require_timezone(value: datetime | None, field_name: str) -> None:
@@ -64,6 +64,42 @@ class EngineeringHealth:
 
 
 @dataclass(frozen=True, slots=True)
+class PullRequestSnapshot:
+    """Minimal observed state for one open pull request."""
+
+    number: int
+    title: str
+    draft: bool
+    updated_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        if self.number <= 0:
+            raise ValueError("pull request number must be positive")
+        _require_timezone(self.updated_at, "pull_request.updated_at")
+
+
+@dataclass(frozen=True, slots=True)
+class OperationalSnapshot:
+    """Observed GitHub state, separate from declared project state."""
+
+    open_pull_requests: tuple[PullRequestSnapshot, ...] = ()
+    ci_state: CIState = CIState.UNKNOWN
+    latest_activity_at: datetime | None = None
+    latest_release: str | None = None
+    latest_release_at: datetime | None = None
+    latest_tag: str | None = None
+    observed_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        for field_name, value in (
+            ("latest_activity_at", self.latest_activity_at),
+            ("latest_release_at", self.latest_release_at),
+            ("observed_at", self.observed_at),
+        ):
+            _require_timezone(value, field_name)
+
+
+@dataclass(frozen=True, slots=True)
 class Project:
     """One code project tracked by the portfolio."""
 
@@ -77,6 +113,7 @@ class Project:
     blocker: str | None = None
     tags: tuple[str, ...] = ()
     health: EngineeringHealth = field(default_factory=EngineeringHealth)
+    operational: OperationalSnapshot = field(default_factory=OperationalSnapshot)
     current_pr: int | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, cast
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
@@ -11,6 +11,8 @@ from urllib.request import Request, urlopen
 
 from project_reminders.application.assessment import RepositoryEvidence
 from project_reminders.application.github_import import DiscoveredRepository
+from project_reminders.domain.enums import CIState
+from project_reminders.domain.models import OperationalSnapshot, PullRequestSnapshot
 
 JsonObject = dict[str, Any]
 
@@ -51,6 +53,13 @@ class _GitHubClient:
             raise RuntimeError(f"GitHub API returned HTTP {exc.code}") from exc
         except URLError as exc:
             raise RuntimeError(f"GitHub API request failed: {exc.reason}") from exc
+
+
+def _encoded_repository(repository: str) -> str:
+    owner, separator, name = repository.partition("/")
+    if not separator or not owner or not name or "/" in name:
+        raise ValueError("repository must use owner/name form")
+    return f"{quote(owner, safe='')}/{quote(name, safe='')}"
 
 
 class GitHubRepositoryDiscovery(_GitHubClient):
@@ -101,45 +110,124 @@ class GitHubRepositoryDiscovery(_GitHubClient):
 
 
 class GitHubRepositoryEvidence(_GitHubClient):
-    """Collect deterministic evidence from one GitHub repository."""
+    """Collect deterministic engineering evidence from one GitHub repository."""
 
     def evidence(self, repository: str) -> RepositoryEvidence:
         """Read the default-branch tree, primary language, releases and tags."""
 
-        owner, separator, name = repository.partition("/")
-        if not separator or not owner or not name or "/" in name:
-            raise ValueError("repository must use owner/name form")
-        encoded = f"{quote(owner, safe='')}/{quote(name, safe='')}"
+        encoded = _encoded_repository(repository)
         metadata_raw = self._get_json(f"/repos/{encoded}")
         if not isinstance(metadata_raw, dict):
             raise TypeError("GitHub repository metadata must be an object")
         metadata = cast(JsonObject, metadata_raw)
         default_branch = str(metadata.get("default_branch") or "main")
         language = metadata.get("language")
-
-        tree_raw = self._get_json(f"/repos/{encoded}/git/trees/{quote(default_branch, safe='')}", {"recursive": "1"})
+        tree_raw = self._get_json(
+            f"/repos/{encoded}/git/trees/{quote(default_branch, safe='')}",
+            {"recursive": "1"},
+        )
         if not isinstance(tree_raw, dict):
             raise TypeError("GitHub tree response must be an object")
         tree_record = cast(JsonObject, tree_raw)
         entries_raw = tree_record.get("tree", [])
         if not isinstance(entries_raw, list):
             raise TypeError("GitHub tree entries must be a list")
-        paths: set[str] = set()
-        for entry_raw in entries_raw:
-            if isinstance(entry_raw, dict):
-                path = entry_raw.get("path")
-                if isinstance(path, str):
-                    paths.add(path)
-
+        paths = frozenset(
+            str(entry["path"])
+            for entry in entries_raw
+            if isinstance(entry, dict) and isinstance(entry.get("path"), str)
+        )
         releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
         tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
         if not isinstance(releases_raw, list) or not isinstance(tags_raw, list):
             raise TypeError("GitHub releases/tags response must be a list")
-
         return RepositoryEvidence(
-            paths=frozenset(paths),
+            paths=paths,
             complete_tree=not bool(tree_record.get("truncated", False)),
             primary_language=str(language) if language is not None else None,
             has_release=bool(releases_raw),
             has_tag=bool(tags_raw),
         )
+
+
+class GitHubOperationalState(_GitHubClient):
+    """Observe current pull-request, CI, activity, release and tag state."""
+
+    def snapshot(self, repository: str) -> OperationalSnapshot:
+        """Collect a current operational snapshot for one repository."""
+
+        encoded = _encoded_repository(repository)
+        metadata_raw = self._get_json(f"/repos/{encoded}")
+        pulls_raw = self._get_json(
+            f"/repos/{encoded}/pulls",
+            {"state": "open", "sort": "updated", "direction": "desc", "per_page": "20"},
+        )
+        runs_raw = self._get_json(f"/repos/{encoded}/actions/runs", {"per_page": "1"})
+        releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
+        tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
+        if not isinstance(metadata_raw, dict):
+            raise TypeError("GitHub repository metadata must be an object")
+        if not isinstance(pulls_raw, list):
+            raise TypeError("GitHub pull request response must be a list")
+        if not isinstance(runs_raw, dict):
+            raise TypeError("GitHub Actions response must be an object")
+        if not isinstance(releases_raw, list) or not isinstance(tags_raw, list):
+            raise TypeError("GitHub releases/tags response must be a list")
+
+        pull_requests: list[PullRequestSnapshot] = []
+        for raw in pulls_raw:
+            if not isinstance(raw, dict):
+                continue
+            record = cast(JsonObject, raw)
+            pull_requests.append(
+                PullRequestSnapshot(
+                    number=int(record["number"]),
+                    title=str(record.get("title") or ""),
+                    draft=bool(record.get("draft", False)),
+                    updated_at=_parse_timestamp(record.get("updated_at")),
+                )
+            )
+
+        runs = runs_raw.get("workflow_runs", [])
+        if not isinstance(runs, list):
+            raise TypeError("workflow_runs must be a list")
+        ci_state = CIState.NONE if not runs else self._ci_state(runs[0])
+
+        release_name: str | None = None
+        release_at: datetime | None = None
+        if releases_raw and isinstance(releases_raw[0], dict):
+            release = cast(JsonObject, releases_raw[0])
+            release_name = str(release.get("tag_name") or release.get("name") or "") or None
+            release_at = _parse_timestamp(release.get("published_at") or release.get("created_at"))
+
+        latest_tag: str | None = None
+        if tags_raw and isinstance(tags_raw[0], dict):
+            latest_tag = str(cast(JsonObject, tags_raw[0]).get("name") or "") or None
+
+        metadata = cast(JsonObject, metadata_raw)
+        return OperationalSnapshot(
+            open_pull_requests=tuple(pull_requests),
+            ci_state=ci_state,
+            latest_activity_at=_parse_timestamp(metadata.get("pushed_at")),
+            latest_release=release_name,
+            latest_release_at=release_at,
+            latest_tag=latest_tag,
+            observed_at=datetime.now(timezone.utc),
+        )
+
+    @staticmethod
+    def _ci_state(raw: object) -> CIState:
+        if not isinstance(raw, dict):
+            return CIState.UNKNOWN
+        record = cast(JsonObject, raw)
+        status = str(record.get("status") or "")
+        conclusion = record.get("conclusion")
+        if status in {"queued", "in_progress", "waiting", "requested", "pending"}:
+            return CIState.PENDING
+        if conclusion == "success":
+            return CIState.PASSING
+        if conclusion in {"failure", "timed_out", "action_required", "startup_failure"}:
+            return CIState.FAILING
+        if conclusion in {"cancelled", "skipped", "stale"}:
+            return CIState.CANCELLED
+        return CIState.UNKNOWN

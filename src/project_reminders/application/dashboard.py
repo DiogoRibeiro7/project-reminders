@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from project_reminders.domain.enums import Priority, ProjectStatus
+from project_reminders.domain.enums import CIState, Priority, ProjectStatus
 from project_reminders.domain.models import Portfolio, Project
 from project_reminders.domain.rules import ACTIVE_STATUSES, requires_next_action
 
@@ -36,10 +36,12 @@ class Dashboard:
 def _attention(project: Project) -> tuple[int, tuple[str, ...]]:
     score = _PRIORITY_WEIGHT[project.priority]
     reasons: list[str] = []
-
     if project.blocker:
         score += 50
         reasons.append(f"Blocked: {project.blocker}")
+    if project.operational.ci_state is CIState.FAILING:
+        score += 45
+        reasons.append("Latest CI is failing")
     if requires_next_action(project) and project.next_action is None:
         score += 40
         reasons.append("Active project has no next action")
@@ -48,7 +50,6 @@ def _attention(project: Project) -> tuple[int, tuple[str, ...]]:
         score += min(30, 5 * len(missing))
         labels = ", ".join(dimension.value for dimension in missing)
         reasons.append(f"Known missing engineering health: {labels}")
-
     return score, tuple(reasons)
 
 
@@ -61,7 +62,6 @@ def build_dashboard(portfolio: Portfolio) -> Dashboard:
         counts[project.status] += 1
         score, reasons = _attention(project)
         cards.append(ProjectCard(project=project, attention_score=score, reasons=reasons))
-
     cards.sort(key=lambda card: (-card.attention_score, card.project.name.casefold()))
     return Dashboard(
         cards=tuple(cards),
