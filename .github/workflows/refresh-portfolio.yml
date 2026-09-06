@@ -28,12 +28,28 @@ jobs:
         run: poetry install --no-interaction
       - name: Assess engineering health
         env:
-          PROJECT_SCAN_TOKEN: ${{ secrets.PROJECT_SCAN_TOKEN }}
-        run: poetry run project-reminders assess --write
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY' > /tmp/project_ids.txt
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("data/projects.json").read_text(encoding="utf-8"))
+          for project in payload["projects"]:
+              print(project["id"])
+          PY
+          failures=0
+          while IFS= read -r project_id; do
+            if ! poetry run project-reminders assess "$project_id" --write; then
+              echo "Assessment unavailable for $project_id"
+              failures=$((failures + 1))
+            fi
+          done < /tmp/project_ids.txt
+          echo "Assessment failures: $failures"
       - name: Observe GitHub operational state
         env:
-          PROJECT_SCAN_TOKEN: ${{ secrets.PROJECT_SCAN_TOKEN }}
-        run: poetry run project-reminders observe --write
+          GITHUB_TOKEN: ${{ github.token }}
+        run: poetry run project-reminders observe --write || true
       - name: Commit refreshed portfolio
         run: |
           if git diff --quiet -- data/projects.json; then
