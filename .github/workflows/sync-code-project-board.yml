@@ -1,5 +1,6 @@
 name: Sync Code Projects board
 
+# Re-run after correcting the managed repository field.
 on:
   push:
     branches:
