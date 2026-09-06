@@ -1,0 +1,32 @@
+name: Sync Code Projects board
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - data/projects.json
+      - data/github_project.json
+      - scripts/sync_project_board.py
+      - .github/workflows/sync-code-project-board.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: code-project-board-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Synchronize Code Projects board
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: python scripts/sync_project_board.py
