@@ -9,12 +9,13 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Sequence
 
+from project_reminders.application.assessment import AssessmentService
 from project_reminders.application.dashboard import build_dashboard
 from project_reminders.application.github_import import GitHubImportService, ImportPlan
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
 from project_reminders.domain.models import Project
-from project_reminders.infrastructure.github import GitHubRepositoryDiscovery
+from project_reminders.infrastructure.github import GitHubRepositoryDiscovery, GitHubRepositoryEvidence
 
 
 def _print_project(project: Project) -> None:
@@ -29,11 +30,15 @@ def _print_project(project: Project) -> None:
     print(f"  health: {health}")
 
 
-def _github_importer(root: Path) -> GitHubImportService:
+def _github_token() -> str:
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("PROJECT_SCAN_TOKEN")
     if token is None:
-        raise ValueError("set GITHUB_TOKEN or PROJECT_SCAN_TOKEN for GitHub discovery")
-    return GitHubImportService(build_service(root), GitHubRepositoryDiscovery(token))
+        raise ValueError("set GITHUB_TOKEN or PROJECT_SCAN_TOKEN for GitHub access")
+    return token
+
+
+def _github_importer(root: Path) -> GitHubImportService:
+    return GitHubImportService(build_service(root), GitHubRepositoryDiscovery(_github_token()))
 
 
 def _print_plan(plan: ImportPlan) -> None:
@@ -88,6 +93,10 @@ def _parser() -> argparse.ArgumentParser:
     import_github.add_argument("--include-forks", action="store_true")
     import_github.add_argument("--include-archived", action="store_true")
     import_github.add_argument("--dry-run", action="store_true")
+
+    assess = subparsers.add_parser("assess")
+    assess.add_argument("identifier", nargs="?")
+    assess.add_argument("--write", action="store_true")
 
     serve = subparsers.add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
@@ -181,6 +190,20 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Imported {len(imported)} repositories")
             for project in imported:
                 print(f"  + {project.repository}")
+            return 0
+
+        if args.command == "assess":
+            assessor = AssessmentService(GitHubRepositoryEvidence(_github_token()))
+            projects = (service.find(args.identifier),) if args.identifier else service.load().projects
+            assessments = assessor.assess_many(tuple(project.repository for project in projects))
+            for project in projects:
+                health = assessments[project.repository]
+                print(project.repository)
+                for dimension in HealthDimension:
+                    print(f"  {dimension.value:16} {health.state_for(dimension).value}")
+            if args.write:
+                service.apply_health_many(assessments)
+                print(f"Updated {len(assessments)} project assessments")
             return 0
 
         if args.command == "serve":
