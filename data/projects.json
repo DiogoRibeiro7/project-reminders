@@ -1,5 +1,398 @@
 {
   "version": 1,
-  "generated_at": null,
-  "projects": []
+  "generated_at": "2026-09-06T19:10:42+00:00",
+  "projects": [
+    {
+      "id": "71d5ffe8f486",
+      "name": "article-reminders",
+      "repository": "DiogoRibeiro7/article-reminders",
+      "status": "maintenance",
+      "priority": "high",
+      "summary": "Research workflow application for tracking paper lifecycle, deadlines, activity, and next actions.",
+      "tags": ["research-tooling"],
+      "health": {}
+    },
+    {
+      "id": "d87f4abface0",
+      "name": "behavioral-sensing-research",
+      "repository": "DiogoRibeiro7/behavioral-sensing-research",
+      "status": "hardening",
+      "priority": "medium",
+      "summary": "Behavioural sensing research codebase.",
+      "tags": ["research", "sensing"],
+      "health": {}
+    },
+    {
+      "id": "5dd08cd19b9e",
+      "name": "causal-uplift-marketing-campaign",
+      "repository": "DiogoRibeiro7/causal-uplift-marketing-campaign",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Causal uplift modelling project for marketing intervention analysis.",
+      "tags": ["causal-inference", "marketing"],
+      "health": {}
+    },
+    {
+      "id": "9c5cdf4a5a74",
+      "name": "ChangePointLab",
+      "repository": "DiogoRibeiro7/ChangePointLab",
+      "status": "hardening",
+      "priority": "medium",
+      "summary": "Change-point detection research and implementation project.",
+      "tags": ["statistics", "change-point"],
+      "health": {}
+    },
+    {
+      "id": "8114c53a7095",
+      "name": "city-wage-cost-global",
+      "repository": "DiogoRibeiro7/city-wage-cost-global",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Comparative analysis of wages and living costs across US, UK, and EU cities.",
+      "tags": ["economics", "analytics"],
+      "health": {}
+    },
+    {
+      "id": "1bedc4a02d13",
+      "name": "clinic-forecasting-platform",
+      "repository": "DiogoRibeiro7/clinic-forecasting-platform",
+      "status": "hardening",
+      "priority": "high",
+      "summary": "Clinical forecasting platform with role-specific forecasting, serving, and operational controls.",
+      "tags": ["forecasting", "healthcare", "mlops"],
+      "health": {},
+      "next_action": {
+        "description": "Continue operational hardening from the serving-provenance slice",
+        "due_at": null
+      }
+    },
+    {
+      "id": "c39b262c5210",
+      "name": "crop-protection-predictive-science",
+      "repository": "DiogoRibeiro7/crop-protection-predictive-science",
+      "status": "hardening",
+      "priority": "high",
+      "summary": "Predictive-science repository focused on crop-protection research workflows.",
+      "tags": ["science", "crop-protection"],
+      "health": {},
+      "next_action": {
+        "description": "Enforce repository coverage and continue scientific hardening",
+        "due_at": null
+      }
+    },
+    {
+      "id": "4942cec76601",
+      "name": "customer-analytics",
+      "repository": "DiogoRibeiro7/customer-analytics",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Churn, segmentation, retention, and customer analytics project with focused tests.",
+      "tags": ["machine-learning", "customer-analytics"],
+      "health": {}
+    },
+    {
+      "id": "37eb459d3da7",
+      "name": "data-platform-lab",
+      "repository": "DiogoRibeiro7/data-platform-lab",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Data-platform engineering laboratory project.",
+      "tags": ["data-engineering"],
+      "health": {}
+    },
+    {
+      "id": "0ae06c5b083e",
+      "name": "diffml",
+      "repository": "DiogoRibeiro7/diffml",
+      "status": "hardening",
+      "priority": "medium",
+      "summary": "Differentiable machine-learning software project.",
+      "tags": ["machine-learning"],
+      "health": {}
+    },
+    {
+      "id": "a71dcf1b7738",
+      "name": "ds-projects-portfolio",
+      "repository": "DiogoRibeiro7/ds-projects-portfolio",
+      "status": "maintenance",
+      "priority": "high",
+      "summary": "Curated data-science portfolio with reproducible demos, notebooks, reusable modules, and project writeups.",
+      "tags": ["portfolio", "data-science"],
+      "health": {}
+    },
+    {
+      "id": "709f71be2cb2",
+      "name": "effectbridge",
+      "repository": "DiogoRibeiro7/effectbridge",
+      "status": "hardening",
+      "priority": "high",
+      "summary": "Effect-estimation package with release-readiness and testing roadmap.",
+      "tags": ["statistics", "r"],
+      "health": {},
+      "next_action": {
+        "description": "Prevent generated test artifacts from being committed",
+        "due_at": null
+      }
+    },
+    {
+      "id": "5952680450e9",
+      "name": "enterprise-ml-platform",
+      "repository": "DiogoRibeiro7/enterprise-ml-platform",
+      "status": "hardening",
+      "priority": "high",
+      "summary": "Enterprise-oriented machine-learning platform with service boundaries, packaging, testing, and deployment workflows.",
+      "tags": ["mlops", "platform"],
+      "health": {},
+      "next_action": {
+        "description": "Continue legacy service typing and behavioural coverage",
+        "due_at": null
+      }
+    },
+    {
+      "id": "0a50b227d514",
+      "name": "ewma-ad",
+      "repository": "DiogoRibeiro7/ewma-ad",
+      "status": "hardening",
+      "priority": "medium",
+      "summary": "EWMA anomaly-detection software project.",
+      "tags": ["anomaly-detection", "time-series"],
+      "health": {}
+    },
+    {
+      "id": "7f918792487d",
+      "name": "experimentation-toolkit",
+      "repository": "DiogoRibeiro7/experimentation-toolkit",
+      "status": "portfolio_ready",
+      "priority": "high",
+      "summary": "Reusable toolkit for A/B testing, sample-size planning, SRM checks, CUPED, and bandit helpers.",
+      "tags": ["experimentation", "statistics"],
+      "health": {}
+    },
+    {
+      "id": "9cb62dc31c68",
+      "name": "genai-rag-engineering",
+      "repository": "DiogoRibeiro7/genai-rag-engineering",
+      "status": "portfolio_ready",
+      "priority": "high",
+      "summary": "Offline-testable RAG engineering package with retrieval, guardrails, evaluation, and telemetry.",
+      "tags": ["rag", "ai-engineering"],
+      "health": {}
+    },
+    {
+      "id": "6ea50ba4ff82",
+      "name": "iceberg-lakehouse-portfolio",
+      "repository": "DiogoRibeiro7/iceberg-lakehouse-portfolio",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Apache Iceberg lakehouse portfolio project.",
+      "tags": ["data-engineering", "lakehouse"],
+      "health": {}
+    },
+    {
+      "id": "da1cf06bcede",
+      "name": "min_ratio_cycle",
+      "repository": "DiogoRibeiro7/min_ratio_cycle",
+      "status": "hardening",
+      "priority": "medium",
+      "summary": "Minimum-ratio-cycle implementation with release, CI, performance, and interoperability roadmap.",
+      "tags": ["algorithms", "package"],
+      "health": {},
+      "next_action": {
+        "description": "Document branch and release policy in CONTRIBUTING.md",
+        "due_at": null
+      }
+    },
+    {
+      "id": "bab6d7ee69da",
+      "name": "ml-observability-lab",
+      "repository": "DiogoRibeiro7/ml-observability-lab",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "Machine-learning observability laboratory project.",
+      "tags": ["mlops", "observability"],
+      "health": {}
+    },
+    {
+      "id": "b3dd08079509",
+      "name": "mlops-python-package",
+      "repository": "DiogoRibeiro7/mlops-python-package",
+      "status": "hardening",
+      "priority": "high",
+      "summary": "MLOps Python package with installed-wheel and container lifecycle validation.",
+      "tags": ["mlops", "package"],
+      "health": {},
+      "next_action": {
+        "description": "Validate Compose server and HTTP serving lifecycle",
+        "due_at": null
+      }
+    },
+    {
+      "id": "b2bdc57cab5c",
+      "name": "oisst-fourier-neural-operator",
+      "repository": "DiogoRibeiro7/oisst-fourier-neural-operator",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "Fourier neural operator project using OISST data.",
+      "tags": ["scientific-ml", "fno"],
+      "health": {}
+    },
+    {
+      "id": "80a6251658df",
+      "name": "perishable-inventory-decision-lab",
+      "repository": "DiogoRibeiro7/perishable-inventory-decision-lab",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Decision-science laboratory for perishable inventory.",
+      "tags": ["decision-science", "operations-research"],
+      "health": {}
+    },
+    {
+      "id": "02421d403b72",
+      "name": "pinn",
+      "repository": "DiogoRibeiro7/pinn",
+      "status": "maintenance",
+      "priority": "medium",
+      "summary": "Physics-informed neural-network research and implementation repository.",
+      "tags": ["pinn", "scientific-ml"],
+      "health": {}
+    },
+    {
+      "id": "162e6ce9ef50",
+      "name": "pinn-rk",
+      "repository": "DiogoRibeiro7/pinn-rk",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "Runge-Kutta physics-informed neural-network research repository.",
+      "tags": ["pinn", "scientific-ml"],
+      "health": {}
+    },
+    {
+      "id": "36ceeaf2c8d4",
+      "name": "porto-lisbon-uhi-exposure",
+      "repository": "DiogoRibeiro7/porto-lisbon-uhi-exposure",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Urban heat-island exposure analysis for Porto and Lisbon population groups.",
+      "tags": ["geospatial", "climate"],
+      "health": {}
+    },
+    {
+      "id": "12540b87233a",
+      "name": "portugal-gdp-bayesian-revision",
+      "repository": "DiogoRibeiro7/portugal-gdp-bayesian-revision",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Bayesian reconciliation of Portugal GDP and population revision scenarios.",
+      "tags": ["bayesian", "economics"],
+      "health": {}
+    },
+    {
+      "id": "ed0bc6500383",
+      "name": "project-reminders",
+      "repository": "DiogoRibeiro7/project-reminders",
+      "status": "active_development",
+      "priority": "high",
+      "summary": "Local-first lifecycle, engineering-health, and GitHub operational-state tracker for code projects.",
+      "tags": ["portfolio", "tooling"],
+      "health": {},
+      "next_action": {
+        "description": "Run the initial health and operational refresh over the seeded portfolio",
+        "due_at": null
+      }
+    },
+    {
+      "id": "81ef08d22ea4",
+      "name": "PSOD",
+      "repository": "DiogoRibeiro7/PSOD",
+      "status": "active_development",
+      "priority": "high",
+      "summary": "Algorithmic project under clean-room reimplementation and provenance hardening.",
+      "tags": ["algorithms"],
+      "health": {},
+      "next_action": {
+        "description": "Continue clean-room core implementation and provenance validation",
+        "due_at": null
+      }
+    },
+    {
+      "id": "9a18e7304da2",
+      "name": "pt-salary-gamma-distribution",
+      "repository": "DiogoRibeiro7/pt-salary-gamma-distribution",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Portugal salary-distribution modelling with gamma-family fitting and reproducible tests.",
+      "tags": ["statistics", "economics"],
+      "health": {}
+    },
+    {
+      "id": "c3bac0336764",
+      "name": "ragops-lab",
+      "repository": "DiogoRibeiro7/ragops-lab",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "RAG operations and evaluation laboratory project.",
+      "tags": ["rag", "ai-engineering"],
+      "health": {}
+    },
+    {
+      "id": "d633d1d25902",
+      "name": "repo-task-tracker",
+      "repository": "DiogoRibeiro7/repo-task-tracker",
+      "status": "maintenance",
+      "priority": "medium",
+      "summary": "GitHub Action for synchronising repository task manifests with issues and a central project board.",
+      "tags": ["tooling", "github-actions"],
+      "health": {}
+    },
+    {
+      "id": "cf519f4fd08b",
+      "name": "research-to-product-ml-template",
+      "repository": "DiogoRibeiro7/research-to-product-ml-template",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Template for moving machine-learning work from research into a product-quality repository.",
+      "tags": ["mlops", "template"],
+      "health": {}
+    },
+    {
+      "id": "9b2b6bace5dc",
+      "name": "setqca-python",
+      "repository": "DiogoRibeiro7/setqca-python",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "Python implementation project for set-theoretic QCA workflows.",
+      "tags": ["statistics", "qca"],
+      "health": {}
+    },
+    {
+      "id": "a4b1f9157cf0",
+      "name": "shiftguard",
+      "repository": "DiogoRibeiro7/shiftguard",
+      "status": "active_development",
+      "priority": "medium",
+      "summary": "Distribution-shift monitoring and guardrail project.",
+      "tags": ["mlops", "monitoring"],
+      "health": {}
+    },
+    {
+      "id": "da7e97a4af80",
+      "name": "sparseconformal",
+      "repository": "DiogoRibeiro7/sparseconformal",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Sparse conformal prediction software project.",
+      "tags": ["statistics", "conformal"],
+      "health": {}
+    },
+    {
+      "id": "c8a7c57df992",
+      "name": "transaction-risk-lakehouse",
+      "repository": "DiogoRibeiro7/transaction-risk-lakehouse",
+      "status": "portfolio_ready",
+      "priority": "medium",
+      "summary": "Transaction-risk data and analytics lakehouse project.",
+      "tags": ["data-engineering", "risk"],
+      "health": {}
+    }
+  ]
 }
