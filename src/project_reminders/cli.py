@@ -121,7 +121,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                     card.project.next_action.description if card.project.next_action else "—"
                 )
                 print(
-                    f"{card.project.name:36} {card.project.status.value:20} {card.project.priority.value:8} CI={card.project.operational.ci_state.value:9} PRs={len(card.project.operational.open_pull_requests):2} next: {next_text}"
+                    f"{card.project.name:36} {card.project.status.value:20} "
+                    f"{card.project.priority.value:8} "
+                    f"CI={card.project.operational.ci_state.value:9} "
+                    f"PRs={len(card.project.operational.open_pull_requests):2} "
+                    f"next: {next_text}"
                 )
                 for reason in card.reasons:
                     print(f"  ! {reason}")
@@ -204,7 +208,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = refresher.refresh(args.identifier, write=args.write)
             for repository, snapshot in result.snapshots:
                 print(
-                    f"{repository}: CI={snapshot.ci_state.value}, PRs={len(snapshot.open_pull_requests)}, release={snapshot.latest_release or '—'}, tag={snapshot.latest_tag or '—'}"
+                    f"{repository}: CI={snapshot.ci_state.value}, "
+                    f"PRs={len(snapshot.open_pull_requests)}, "
+                    f"release={snapshot.latest_release or '—'}, "
+                    f"tag={snapshot.latest_tag or '—'}"
                 )
             for repository, error in result.failed:
                 print(f"{repository}: ERROR {error}")
