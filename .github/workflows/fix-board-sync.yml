@@ -1,0 +1,37 @@
+name: Patch board sync field
+
+on:
+  push:
+    branches:
+      - feat/sync-code-project-board
+    paths:
+      - .github/workflows/fix-board-sync.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/sync-code-project-board
+      - name: Rename managed repository field
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/sync_project_board.py")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace('FieldSpec("Repository", "TEXT")', 'FieldSpec("Repository URL", "TEXT")')
+          text = text.replace('fields["Repository"]', 'fields["Repository URL"]')
+          path.write_text(text, encoding="utf-8")
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "Diogo Ribeiro"
+          git config user.email "diogo_dj@hotmail.com"
+          git add scripts/sync_project_board.py
+          git commit -m "fix: avoid built-in Project repository field"
+          git push origin HEAD:feat/sync-code-project-board
