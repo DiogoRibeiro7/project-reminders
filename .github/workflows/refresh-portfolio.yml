@@ -1,0 +1,41 @@
+name: Refresh portfolio state
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ops/refresh-portfolio-state
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install project
+        run: poetry install --no-interaction
+      - name: Assess engineering health
+        env:
+          PROJECT_SCAN_TOKEN: ${{ secrets.PROJECT_SCAN_TOKEN }}
+        run: poetry run project-reminders assess --write
+      - name: Observe GitHub operational state
+        env:
+          PROJECT_SCAN_TOKEN: ${{ secrets.PROJECT_SCAN_TOKEN }}
+        run: poetry run project-reminders observe --write
+      - name: Commit refreshed portfolio
+        run: |
+          if git diff --quiet -- data/projects.json; then
+            echo "No portfolio changes"
+            exit 0
+          fi
+          git config user.name "Diogo Ribeiro"
+          git config user.email "diogo_dj@hotmail.com"
+          git add data/projects.json
+          git commit -m "data: refresh portfolio health and operational state"
+          git push origin HEAD:ops/refresh-portfolio-state
