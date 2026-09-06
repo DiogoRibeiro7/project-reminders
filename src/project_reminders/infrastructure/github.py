@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import base64
 import json
+import tomllib
 from datetime import UTC, datetime
 from typing import Any, cast
 from urllib.error import HTTPError, URLError
@@ -113,7 +115,7 @@ class GitHubRepositoryEvidence(_GitHubClient):
     """Collect deterministic engineering evidence from one GitHub repository."""
 
     def evidence(self, repository: str) -> RepositoryEvidence:
-        """Read the default-branch tree, primary language, releases and tags."""
+        """Read the default-branch tree, primary language, releases, tags and config."""
 
         encoded = _encoded_repository(repository)
         metadata_raw = self._get_json(f"/repos/{encoded}")
@@ -137,6 +139,7 @@ class GitHubRepositoryEvidence(_GitHubClient):
             for entry in entries_raw
             if isinstance(entry, dict) and isinstance(entry.get("path"), str)
         )
+        pyproject_tools, pyproject_inspected = self._pyproject_tools(encoded, paths)
         releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
         tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
         if not isinstance(releases_raw, list) or not isinstance(tags_raw, list):
@@ -147,7 +150,31 @@ class GitHubRepositoryEvidence(_GitHubClient):
             primary_language=str(language) if language is not None else None,
             has_release=bool(releases_raw),
             has_tag=bool(tags_raw),
+            pyproject_tools=pyproject_tools,
+            pyproject_inspected=pyproject_inspected,
         )
+
+    def _pyproject_tools(
+        self, encoded_repository: str, paths: frozenset[str]
+    ) -> tuple[frozenset[str], bool]:
+        if "pyproject.toml" not in paths:
+            return frozenset(), True
+        try:
+            raw = self._get_json(f"/repos/{encoded_repository}/contents/pyproject.toml")
+            if not isinstance(raw, dict):
+                return frozenset(), False
+            record = cast(JsonObject, raw)
+            content = record.get("content")
+            encoding = record.get("encoding")
+            if not isinstance(content, str) or encoding != "base64":
+                return frozenset(), False
+            parsed = tomllib.loads(base64.b64decode(content).decode("utf-8"))
+        except (RuntimeError, ValueError, UnicodeDecodeError, tomllib.TOMLDecodeError):
+            return frozenset(), False
+        tool = parsed.get("tool", {})
+        if not isinstance(tool, dict):
+            return frozenset(), True
+        return frozenset(str(name).casefold() for name in tool), True
 
 
 class GitHubOperationalState(_GitHubClient):
