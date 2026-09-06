@@ -4,7 +4,7 @@ import json
 import os
 import urllib.request
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 PROJECTS_PATH = Path("data/projects.json")
 BINDING_PATH = Path("data/github_project.json")
@@ -27,7 +27,7 @@ def graphql(token: str, query: str, variables: dict[str, Any]) -> dict[str, Any]
         data = json.loads(response.read().decode("utf-8"))
     if data.get("errors"):
         raise RuntimeError(json.dumps(data["errors"], indent=2))
-    return data["data"]
+    return cast(dict[str, Any], data["data"])
 
 
 def next_action_text(project: dict[str, Any]) -> str:
