@@ -1,0 +1,26 @@
+name: Sync Code Projects board
+
+on:
+  push:
+    branches:
+      - feat/sync-code-project-board
+      - main
+    paths:
+      - data/projects.json
+      - data/github_project.json
+      - scripts/sync_code_project.py
+      - .github/workflows/project-sync.yml
+  workflow_dispatch:
+
+jobs:
+  sync-project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Sync tracked projects to GitHub Project
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: python scripts/sync_code_project.py
