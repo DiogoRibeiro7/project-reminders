@@ -23,6 +23,7 @@ def test_complete_python_repository_detects_core_engineering_signals() -> None:
         primary_language="Python",
         has_release=True,
         has_tag=True,
+        pyproject_tools=frozenset({"ruff", "mypy"}),
     )
 
     health = assess_repository(evidence)
@@ -30,8 +31,52 @@ def test_complete_python_repository_detects_core_engineering_signals() -> None:
     assert health.state_for(HealthDimension.TESTS) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.CI) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.DOCUMENTATION) is HealthState.COMPLETE
+    assert health.state_for(HealthDimension.LINT) is HealthState.COMPLETE
+    assert health.state_for(HealthDimension.TYPING) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.REPRODUCIBILITY) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.RELEASE) is HealthState.COMPLETE
+
+
+def test_packaging_only_pyproject_does_not_prove_lint_or_typing() -> None:
+    health = assess_repository(
+        RepositoryEvidence(
+            paths=frozenset({"pyproject.toml"}),
+            complete_tree=True,
+            primary_language="Python",
+            pyproject_tools=frozenset({"poetry"}),
+        )
+    )
+
+    assert health.state_for(HealthDimension.PACKAGING) is HealthState.COMPLETE
+    assert health.state_for(HealthDimension.LINT) is HealthState.MISSING
+    assert health.state_for(HealthDimension.TYPING) is HealthState.MISSING
+
+
+def test_unreadable_pyproject_keeps_config_health_unknown() -> None:
+    health = assess_repository(
+        RepositoryEvidence(
+            paths=frozenset({"pyproject.toml"}),
+            complete_tree=True,
+            primary_language="Python",
+            pyproject_inspected=False,
+        )
+    )
+
+    assert health.state_for(HealthDimension.LINT) is HealthState.UNKNOWN
+    assert health.state_for(HealthDimension.TYPING) is HealthState.UNKNOWN
+
+
+def test_explicit_config_files_still_prove_lint_and_typing() -> None:
+    health = assess_repository(
+        RepositoryEvidence(
+            paths=frozenset({"ruff.toml", "mypy.ini"}),
+            complete_tree=True,
+            primary_language="Python",
+        )
+    )
+
+    assert health.state_for(HealthDimension.LINT) is HealthState.COMPLETE
+    assert health.state_for(HealthDimension.TYPING) is HealthState.COMPLETE
 
 
 def test_truncated_tree_never_turns_absence_into_missing() -> None:

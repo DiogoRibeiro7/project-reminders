@@ -19,6 +19,8 @@ class RepositoryEvidence:
     primary_language: str | None = None
     has_release: bool = False
     has_tag: bool = False
+    pyproject_tools: frozenset[str] = frozenset()
+    pyproject_inspected: bool = True
 
 
 class RepositoryEvidenceGateway(Protocol):
@@ -40,6 +42,12 @@ def _has_any(paths: frozenset[str], candidates: set[str]) -> bool:
 
 def _missing_or_unknown(evidence: RepositoryEvidence) -> HealthState:
     return HealthState.MISSING if evidence.complete_tree else HealthState.UNKNOWN
+
+
+def _config_absence_state(evidence: RepositoryEvidence) -> HealthState:
+    if "pyproject.toml" in evidence.paths and not evidence.pyproject_inspected:
+        return HealthState.UNKNOWN
+    return _missing_or_unknown(evidence)
 
 
 def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
@@ -90,20 +98,21 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
 
     # Linting
     lint_files = {"ruff.toml", ".ruff.toml", ".flake8", ".eslintrc", ".eslintrc.json", "biome.json"}
-    has_pyproject = "pyproject.toml" in paths
+    has_lint_tool = bool(evidence.pyproject_tools & {"ruff", "flake8", "pylint"})
     states[HealthDimension.LINT] = (
         HealthState.COMPLETE
-        if _has_any(paths, lint_files) or has_pyproject
-        else _missing_or_unknown(evidence)
+        if _has_any(paths, lint_files) or has_lint_tool
+        else _config_absence_state(evidence)
     )
 
     # Typing: only make a negative claim for languages where a recognizable typing gate exists.
     language = (evidence.primary_language or "").casefold()
     typing_files = {"mypy.ini", "pyrightconfig.json"}
-    if _has_any(paths, typing_files) or has_pyproject:
+    has_typing_tool = bool(evidence.pyproject_tools & {"mypy", "pyright"})
+    if _has_any(paths, typing_files) or has_typing_tool:
         states[HealthDimension.TYPING] = HealthState.COMPLETE
     elif language == "python":
-        states[HealthDimension.TYPING] = _missing_or_unknown(evidence)
+        states[HealthDimension.TYPING] = _config_absence_state(evidence)
     else:
         states[HealthDimension.TYPING] = HealthState.UNKNOWN
 
