@@ -1,43 +1,7 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project portfolio</title>
-  <style>
-    :root { font-family: ui-sans-serif, system-ui, sans-serif; color: #151515; background: #f5f5f3; }
-    body { max-width: 1500px; margin: 0 auto; padding: 2rem; }
-    header { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 2rem; }
-    h1 { margin: 0; font-size: 2rem; } .muted { color: #666; }
-    .summary { display: flex; gap: 1rem; } .metric { background: white; padding: .8rem 1rem; border-radius: 10px; }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
-    th, td { text-align: left; padding: .8rem; border-bottom: 1px solid #ecece8; vertical-align: top; }
-    th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #666; }
-    a { color: inherit; font-weight: 650; } .reason { font-size: .85rem; margin-top: .25rem; color: #8a3b12; }
-    .health { white-space: nowrap; font-size: .82rem; } .unknown { color: #999; } .complete { color: #27643b; }
-    .partial { color: #8a6412; } .missing { color: #9f2d20; } .not_applicable { color: #999; }
-  </style>
-</head>
-<body>
-<header>
-  <div><h1>Project portfolio</h1><div class="muted">Lifecycle and engineering health</div></div>
-  <div class="summary"><div class="metric"><strong>{{ dashboard.active_count }}</strong> active</div><div class="metric"><strong>{{ dashboard.attention_count }}</strong> need attention</div></div>
-</header>
-<table>
-  <thead><tr><th>Project</th><th>State</th><th>Priority</th><th>Next action</th><th>Engineering health</th></tr></thead>
-  <tbody>
-  {% for card in dashboard.cards %}
-    <tr>
-      <td><a href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><div class="muted">{{ card.project.repository }}</div>{% for reason in card.reasons %}<div class="reason">{{ reason }}</div>{% endfor %}</td>
-      <td>{{ card.project.status.value }}</td>
-      <td>{{ card.project.priority.value }}</td>
-      <td>{{ card.project.next_action.description if card.project.next_action else "—" }}</td>
-      <td class="health">{% for dimension in dimensions %}<span class="{{ card.project.health.state_for(dimension).value }}" title="{{ dimension.value }}">{{ dimension.value[0]|upper }}:{{ card.project.health.state_for(dimension).value[0]|upper }}</span>{% if not loop.last %} · {% endif %}{% endfor %}</td>
-    </tr>
-  {% else %}
-    <tr><td colspan="5" class="muted">No projects yet. Add the first one from the CLI.</td></tr>
-  {% endfor %}
-  </tbody>
-</table>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Project portfolio</title>
+<style>:root{font-family:ui-sans-serif,system-ui,sans-serif;color:#151515;background:#f5f5f3}body{max-width:1600px;margin:0 auto;padding:2rem}header{display:flex;justify-content:space-between;gap:2rem;align-items:end;margin-bottom:2rem}h1{margin:0;font-size:2rem}.muted{color:#666}.summary{display:flex;gap:1rem}.metric{background:white;padding:.8rem 1rem;border-radius:10px}table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:.8rem;border-bottom:1px solid #ecece8;vertical-align:top}th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:#666}a{color:inherit;font-weight:650}.reason{font-size:.85rem;margin-top:.25rem;color:#8a3b12}.health{white-space:nowrap;font-size:.82rem}.unknown{color:#999}.complete,.passing{color:#27643b}.partial,.pending{color:#8a6412}.missing,.failing{color:#9f2d20}.not_applicable,.none,.cancelled{color:#999}</style></head>
+<body><header><div><h1>Project portfolio</h1><div class="muted">Declared lifecycle · engineering health · observed GitHub state</div></div><div class="summary"><div class="metric"><strong>{{ dashboard.active_count }}</strong> active</div><div class="metric"><strong>{{ dashboard.attention_count }}</strong> need attention</div></div></header>
+<table><thead><tr><th>Project</th><th>State</th><th>Priority</th><th>Next action</th><th>Live</th><th>Engineering health</th></tr></thead><tbody>
+{% for card in dashboard.cards %}<tr><td><a href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><div class="muted">{{ card.project.repository }}</div>{% for reason in card.reasons %}<div class="reason">{{ reason }}</div>{% endfor %}</td><td>{{ card.project.status.value }}</td><td>{{ card.project.priority.value }}</td><td>{{ card.project.next_action.description if card.project.next_action else "—" }}</td><td><span class="{{ card.project.operational.ci_state.value }}">CI {{ card.project.operational.ci_state.value }}</span><div class="muted">{{ card.project.operational.open_pull_requests|length }} open PR{% if card.project.operational.open_pull_requests|length != 1 %}s{% endif %}</div><div class="muted">{{ card.project.operational.latest_release or card.project.operational.latest_tag or "no release/tag observed" }}</div></td><td class="health">{% for dimension in dimensions %}<span class="{{ card.project.health.state_for(dimension).value }}" title="{{ dimension.value }}">{{ dimension.value[0]|upper }}:{{ card.project.health.state_for(dimension).value[0]|upper }}</span>{% if not loop.last %} · {% endif %}{% endfor %}</td></tr>{% else %}<tr><td colspan="6" class="muted">No projects yet.</td></tr>{% endfor %}
+</tbody></table></body></html>

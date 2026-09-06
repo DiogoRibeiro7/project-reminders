@@ -49,3 +49,14 @@ class HealthDimension(StrEnum):
     REPRODUCIBILITY = "reproducibility"
     RELEASE = "release"
     DEMO = "demo"
+
+
+class CIState(StrEnum):
+    """Observed state of the latest relevant GitHub Actions run."""
+
+    UNKNOWN = "unknown"
+    NONE = "none"
+    PENDING = "pending"
+    PASSING = "passing"
+    FAILING = "failing"
+    CANCELLED = "cancelled"

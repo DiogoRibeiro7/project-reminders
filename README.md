@@ -1,14 +1,14 @@
 # project-reminders
 
-A local-first control panel for the lifecycle and engineering health of code projects.
+A local-first control panel for the lifecycle, engineering health, and live operational state of code projects.
 
-The repository answers three questions:
+The repository keeps three layers separate:
 
-1. **Where is each project?** Lifecycle state from idea to maintenance or archive.
-2. **How healthy is it?** Tests, typing, lint, CI, documentation, packaging, security, reproducibility, release and demo readiness.
-3. **What should happen next?** Every active project can carry one concrete next action and an optional blocker.
+1. **Declared lifecycle** — where you say the project is: idea, active development, hardening, maintenance, and so on.
+2. **Engineering health** — deterministic assessment of tests, typing, lint, CI configuration, documentation, packaging, security, reproducibility, releases, and demos.
+3. **Observed GitHub state** — current open PRs, latest CI result, latest repository activity, release/tag, and observation time.
 
-GitHub is evidence, not the source of truth. The portfolio stays in a plain JSON file committed to this repository.
+GitHub is evidence, not the source of truth. The portfolio stays in `data/projects.json`.
 
 ## Lifecycle
 
@@ -18,26 +18,7 @@ idea → prototype → active_development → hardening → portfolio_ready → 
 paused | archived | abandoned
 ```
 
-Lifecycle and engineering health are intentionally separate.
-
-## Engineering health
-
-Each dimension is one of `unknown`, `missing`, `partial`, `complete`, or `not_applicable`: tests, typing, lint, CI, documentation, packaging, security, reproducibility, release and demo.
-
-`unknown` is important: an uninspected repository is not automatically unhealthy. The deterministic rules are documented in [`docs/assessment-rules.md`](docs/assessment-rules.md).
-
-## Installation
-
-Python 3.13 or newer is required.
-
-```bash
-poetry install
-poetry run project-reminders --help
-```
-
-## GitHub discovery and import
-
-Repository discovery uses a read token from `PROJECT_SCAN_TOKEN` or `GITHUB_TOKEN`.
+## GitHub discovery
 
 ```bash
 export PROJECT_SCAN_TOKEN=...
@@ -46,38 +27,31 @@ poetry run project-reminders import-github --dry-run
 poetry run project-reminders import-github
 ```
 
-Imports are conservative: new repositories start at `idea`, `medium`, with every health dimension `unknown`. Existing tracked repositories are never overwritten.
+Imported projects start at `idea`, `medium`, with unknown health. Discovery does not infer maturity.
 
-## Deterministic assessment
-
-Preview one project without writing anything:
+## Engineering-health assessment
 
 ```bash
 poetry run project-reminders assess project-reminders
-```
-
-Assess every tracked repository:
-
-```bash
 poetry run project-reminders assess
-```
-
-Persist those observed health states only when you choose to:
-
-```bash
 poetry run project-reminders assess --write
 ```
 
-Assessment can change only engineering health. It never changes status, priority, next action, or blocker. A truncated GitHub tree cannot create a negative health claim: absent evidence remains `unknown`.
+Assessment is deterministic and conservative. If a recursive GitHub tree is truncated, absence cannot become a negative claim.
 
-## Manual project management
+## Operational state
+
+The next layer observes live GitHub state while leaving lifecycle and health untouched:
 
 ```bash
-poetry run project-reminders dashboard
-poetry run project-reminders status project-reminders hardening
-poetry run project-reminders health project-reminders tests complete
-poetry run project-reminders next-action project-reminders "Import the first portfolio repositories"
+poetry run project-reminders observe project-reminders
+poetry run project-reminders observe
+poetry run project-reminders observe --write
 ```
+
+A refresh records open pull requests, the latest Actions state, latest repository activity, latest release and tag. One inaccessible repository does not abort a portfolio-wide refresh; its previous snapshot is retained and the failure is reported.
+
+A failing CI snapshot is an attention signal on the dashboard. An open PR by itself is informational.
 
 ## Web dashboard
 
@@ -85,9 +59,11 @@ poetry run project-reminders next-action project-reminders "Import the first por
 poetry run project-reminders serve
 ```
 
-Open `http://127.0.0.1:8000`.
+Open `http://127.0.0.1:8000`. The server is local-only by default.
 
 ## Development
+
+Python 3.13+.
 
 ```bash
 poetry install
@@ -96,10 +72,8 @@ poetry run mypy .
 poetry run pytest
 ```
 
-CI runs all three gates on Python 3.13.
-
 ## Next slices
 
-1. Open PR / failed CI / current release observation.
-2. Scheduled refresh and attention reminders.
-3. Bulk classification of imported repositories.
+1. Scheduled GitHub refresh and reminders.
+2. Bulk classification of imported repositories.
+3. Portfolio analytics and staleness views.
