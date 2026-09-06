@@ -1,0 +1,29 @@
+name: Sync Code Projects board
+
+on:
+  push:
+    branches:
+      - feat/sync-code-project-board
+    paths:
+      - scripts/sync_project_board.py
+      - .github/workflows/sync-code-project-board.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/sync-code-project-board
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Synchronize Project #16
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: python scripts/sync_project_board.py
