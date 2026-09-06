@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-06T19:10:42+00:00",
+  "generated_at": "2026-09-06T19:33:29.687991+00:00",
   "projects": [
     {
       "id": "71d5ffe8f486",
@@ -9,8 +9,36 @@
       "status": "maintenance",
       "priority": "high",
       "summary": "Research workflow application for tracking paper lifecycle, deadlines, activity, and next actions.",
-      "tags": ["research-tooling"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "research-tooling"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-06T17:49:03+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:48.765577+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "d87f4abface0",
@@ -19,8 +47,37 @@
       "status": "hardening",
       "priority": "medium",
       "summary": "Behavioural sensing research codebase.",
-      "tags": ["research", "sensing"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "research",
+        "sensing"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "complete",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-04T14:13:12+00:00",
+        "latest_release": "v0.2.0",
+        "latest_release_at": "2026-08-30T08:26:24+00:00",
+        "latest_tag": "v0.2.0",
+        "observed_at": "2026-09-06T19:32:49.961462+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "5dd08cd19b9e",
@@ -29,8 +86,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Causal uplift modelling project for marketing intervention analysis.",
-      "tags": ["causal-inference", "marketing"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "causal-inference",
+        "marketing"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-05-01T23:21:50+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:51.057652+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "9c5cdf4a5a74",
@@ -39,8 +125,44 @@
       "status": "hardening",
       "priority": "medium",
       "summary": "Change-point detection research and implementation project.",
-      "tags": ["statistics", "change-point"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "statistics",
+        "change-point"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 27,
+            "title": "build(deps-dev): bump pip from 26.1.2 to 26.2 in the pip group across 1 directory",
+            "draft": false,
+            "updated_at": "2026-09-01T22:30:52+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T22:29:05+00:00",
+        "latest_release": "v0.1.16",
+        "latest_release_at": "2026-08-21T09:05:00+00:00",
+        "latest_tag": "v0.1.16",
+        "observed_at": "2026-09-06T19:32:52.448317+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "8114c53a7095",
@@ -49,8 +171,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Comparative analysis of wages and living costs across US, UK, and EU cities.",
-      "tags": ["economics", "analytics"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "economics",
+        "analytics"
+      ],
+      "health": {
+        "tests": "missing",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "missing",
+        "lint": "missing",
+        "typing": "unknown",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T07:57:21+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:53.695953+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "1bedc4a02d13",
@@ -59,12 +210,48 @@
       "status": "hardening",
       "priority": "high",
       "summary": "Clinical forecasting platform with role-specific forecasting, serving, and operational controls.",
-      "tags": ["forecasting", "healthcare", "mlops"],
-      "health": {},
       "next_action": {
         "description": "Continue operational hardening from the serving-provenance slice",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "forecasting",
+        "healthcare",
+        "mlops"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "complete",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 37,
+            "title": "build(deps-dev): bump the pip group across 1 directory with 2 updates",
+            "draft": false,
+            "updated_at": "2026-09-03T21:01:13+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-06T19:27:39+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:54.977355+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "c39b262c5210",
@@ -73,12 +260,47 @@
       "status": "hardening",
       "priority": "high",
       "summary": "Predictive-science repository focused on crop-protection research workflows.",
-      "tags": ["science", "crop-protection"],
-      "health": {},
       "next_action": {
         "description": "Enforce repository coverage and continue scientific hardening",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "science",
+        "crop-protection"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "complete",
+        "release": "partial",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 12,
+            "title": "Test planting-window signal for Bipolaris transport",
+            "draft": false,
+            "updated_at": "2026-09-06T19:32:07+00:00"
+          }
+        ],
+        "ci_state": "pending",
+        "latest_activity_at": "2026-09-06T19:31:55+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": "v1.0.1",
+        "observed_at": "2026-09-06T19:32:56.279516+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "4942cec76601",
@@ -87,8 +309,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Churn, segmentation, retention, and customer analytics project with focused tests.",
-      "tags": ["machine-learning", "customer-analytics"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "machine-learning",
+        "customer-analytics"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T08:30:32+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:57.481060+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "37eb459d3da7",
@@ -97,8 +348,43 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Data-platform engineering laboratory project.",
-      "tags": ["data-engineering"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "data-engineering"
+      ],
+      "health": {
+        "tests": "partial",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "missing",
+        "lint": "missing",
+        "typing": "missing",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 33,
+            "title": "chore(deps): bump js-yaml from 4.1.1 to 4.3.0 in /javascript in the npm_and_yarn group across 1 directory",
+            "draft": false,
+            "updated_at": "2026-09-01T08:47:22+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-03T22:02:06+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:58.752637+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "0ae06c5b083e",
@@ -107,8 +393,43 @@
       "status": "hardening",
       "priority": "medium",
       "summary": "Differentiable machine-learning software project.",
-      "tags": ["machine-learning"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "machine-learning"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "complete",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 7,
+            "title": "build(deps-dev): bump pytest from 7.4.4 to 9.0.3 in the pip group across 1 directory",
+            "draft": false,
+            "updated_at": "2026-04-13T22:19:13+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-04-13T22:15:45+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:32:59.995157+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "a71dcf1b7738",
@@ -117,8 +438,116 @@
       "status": "maintenance",
       "priority": "high",
       "summary": "Curated data-science portfolio with reproducible demos, notebooks, reusable modules, and project writeups.",
-      "tags": ["portfolio", "data-science"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "portfolio",
+        "data-science"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "partial",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 628,
+            "title": "Bump actions/upload-artifact from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-03T21:03:35+00:00"
+          },
+          {
+            "number": 629,
+            "title": "Bump actions/download-artifact from 4 to 8",
+            "draft": false,
+            "updated_at": "2026-09-01T19:20:10+00:00"
+          },
+          {
+            "number": 480,
+            "title": "Bump the pip group across 4 directories with 4 updates",
+            "draft": false,
+            "updated_at": "2026-08-29T20:18:48+00:00"
+          },
+          {
+            "number": 515,
+            "title": "chore(deps-dev): update lightgbm requirement from >=4.6.0 to >=4.7.0",
+            "draft": false,
+            "updated_at": "2026-08-26T19:16:13+00:00"
+          },
+          {
+            "number": 506,
+            "title": "chore(deps): update fastparquet requirement from >=0.8.0 to >=2026.5.0",
+            "draft": false,
+            "updated_at": "2026-08-26T19:16:04+00:00"
+          },
+          {
+            "number": 507,
+            "title": "chore(deps): bump junitparser from 3.1.0 to 5.0.1",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:48+00:00"
+          },
+          {
+            "number": 509,
+            "title": "chore(deps): bump pytest-playwright from 0.4.3 to 0.9.0",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:39+00:00"
+          },
+          {
+            "number": 508,
+            "title": "chore(deps): update networkx requirement from >=2.6.0 to >=3.6.1",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:36+00:00"
+          },
+          {
+            "number": 510,
+            "title": "chore(deps): bump pytest-xdist from 3.5.0 to 3.8.0",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:32+00:00"
+          },
+          {
+            "number": 514,
+            "title": "chore(deps-dev): update opentelemetry-api requirement from >=1.23.0 to >=1.44.0",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:25+00:00"
+          },
+          {
+            "number": 512,
+            "title": "chore(deps): bump rst2pdf from 0.101 to 0.105",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:23+00:00"
+          },
+          {
+            "number": 511,
+            "title": "chore(deps): bump py-spy from 0.4.1 to 0.4.2",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:20+00:00"
+          },
+          {
+            "number": 513,
+            "title": "chore(deps): update feather-format requirement from >=0.4.0 to >=0.4.1",
+            "draft": false,
+            "updated_at": "2026-08-26T19:15:11+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-06T19:32:44+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": "monolith-final-2026-08",
+        "observed_at": "2026-09-06T19:33:01.479064+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "709f71be2cb2",
@@ -127,12 +556,65 @@
       "status": "hardening",
       "priority": "high",
       "summary": "Effect-estimation package with release-readiness and testing roadmap.",
-      "tags": ["statistics", "r"],
-      "health": {},
       "next_action": {
         "description": "Prevent generated test artifacts from being committed",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "statistics",
+        "r"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "missing",
+        "typing": "unknown",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 58,
+            "title": "\ud83d\udd27 Bump actions/checkout from 6 to 7",
+            "draft": false,
+            "updated_at": "2026-06-22T04:21:15+00:00"
+          },
+          {
+            "number": 57,
+            "title": "\ud83d\udd27 Bump codecov/codecov-action from 6 to 7",
+            "draft": false,
+            "updated_at": "2026-06-08T04:18:59+00:00"
+          },
+          {
+            "number": 56,
+            "title": "\ud83d\udd27 Bump actions/github-script from 8 to 9",
+            "draft": false,
+            "updated_at": "2026-04-13T04:36:08+00:00"
+          },
+          {
+            "number": 55,
+            "title": "\ud83d\udd27 Bump softprops/action-gh-release from 2 to 3",
+            "draft": false,
+            "updated_at": "2026-04-13T04:36:03+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-06-22T04:11:51+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:02.994944+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "5952680450e9",
@@ -141,12 +623,40 @@
       "status": "hardening",
       "priority": "high",
       "summary": "Enterprise-oriented machine-learning platform with service boundaries, packaging, testing, and deployment workflows.",
-      "tags": ["mlops", "platform"],
-      "health": {},
       "next_action": {
         "description": "Continue legacy service typing and behavioural coverage",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "mlops",
+        "platform"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "pending",
+        "latest_activity_at": "2026-09-06T19:31:07+00:00",
+        "latest_release": "v0.2.0",
+        "latest_release_at": "2026-08-22T09:09:59+00:00",
+        "latest_tag": "v0.2.0",
+        "observed_at": "2026-09-06T19:33:04.273172+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "0a50b227d514",
@@ -155,8 +665,26 @@
       "status": "hardening",
       "priority": "medium",
       "summary": "EWMA anomaly-detection software project.",
-      "tags": ["anomaly-detection", "time-series"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "anomaly-detection",
+        "time-series"
+      ],
+      "health": {},
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "unknown",
+        "latest_activity_at": null,
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": null
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "7f918792487d",
@@ -165,8 +693,37 @@
       "status": "portfolio_ready",
       "priority": "high",
       "summary": "Reusable toolkit for A/B testing, sample-size planning, SRM checks, CUPED, and bandit helpers.",
-      "tags": ["experimentation", "statistics"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "experimentation",
+        "statistics"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T08:24:39+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:05.695122+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "9cb62dc31c68",
@@ -175,8 +732,37 @@
       "status": "portfolio_ready",
       "priority": "high",
       "summary": "Offline-testable RAG engineering package with retrieval, guardrails, evaluation, and telemetry.",
-      "tags": ["rag", "ai-engineering"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "rag",
+        "ai-engineering"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T08:23:09+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:06.941360+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "6ea50ba4ff82",
@@ -185,8 +771,50 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Apache Iceberg lakehouse portfolio project.",
-      "tags": ["data-engineering", "lakehouse"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "data-engineering",
+        "lakehouse"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 11,
+            "title": "chore(deps): bump actions/checkout from 6 to 7",
+            "draft": false,
+            "updated_at": "2026-06-23T13:24:15+00:00"
+          },
+          {
+            "number": 10,
+            "title": "chore(deps): bump softprops/action-gh-release from 2 to 3",
+            "draft": false,
+            "updated_at": "2026-04-14T13:31:51+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-06-23T13:23:37+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:08.240534+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "da1cf06bcede",
@@ -195,12 +823,83 @@
       "status": "hardening",
       "priority": "medium",
       "summary": "Minimum-ratio-cycle implementation with release, CI, performance, and interoperability roadmap.",
-      "tags": ["algorithms", "package"],
-      "health": {},
       "next_action": {
         "description": "Document branch and release policy in CONTRIBUTING.md",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "algorithms",
+        "package"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "missing",
+        "release": "complete",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 89,
+            "title": "chore(deps-dev): update setuptools requirement from ^82.0.1 to >=82.0.1,<84.0.0",
+            "draft": false,
+            "updated_at": "2026-07-07T14:47:18+00:00"
+          },
+          {
+            "number": 88,
+            "title": "chore(deps): bump actions/cache from 5 to 6",
+            "draft": false,
+            "updated_at": "2026-06-30T14:44:19+00:00"
+          },
+          {
+            "number": 87,
+            "title": "chore(deps): bump actions/checkout from 6 to 7",
+            "draft": false,
+            "updated_at": "2026-06-23T14:44:21+00:00"
+          },
+          {
+            "number": 86,
+            "title": "chore(deps-dev): update cryptography requirement from ^46.0.5 to >=46.0.5,<50.0.0",
+            "draft": false,
+            "updated_at": "2026-06-16T14:47:43+00:00"
+          },
+          {
+            "number": 85,
+            "title": "chore(deps-dev): update twisted requirement from ^25.5.0 to >=25.5,<27.0",
+            "draft": false,
+            "updated_at": "2026-05-12T20:40:15+00:00"
+          },
+          {
+            "number": 84,
+            "title": "chore(deps-dev): update mypy requirement from ^1.5 to >=1.5,<3.0",
+            "draft": false,
+            "updated_at": "2026-05-12T20:37:53+00:00"
+          },
+          {
+            "number": 82,
+            "title": "chore(deps): bump softprops/action-gh-release from 2 to 3",
+            "draft": false,
+            "updated_at": "2026-04-14T14:49:39+00:00"
+          }
+        ],
+        "ci_state": "failing",
+        "latest_activity_at": "2026-07-07T14:45:49+00:00",
+        "latest_release": "v0.1.5",
+        "latest_release_at": "2026-03-13T09:39:08+00:00",
+        "latest_tag": "v0.1.5",
+        "observed_at": "2026-09-06T19:33:09.678512+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "bab6d7ee69da",
@@ -209,8 +908,26 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "Machine-learning observability laboratory project.",
-      "tags": ["mlops", "observability"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "mlops",
+        "observability"
+      ],
+      "health": {},
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "unknown",
+        "latest_activity_at": null,
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": null
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "b3dd08079509",
@@ -219,12 +936,47 @@
       "status": "hardening",
       "priority": "high",
       "summary": "MLOps Python package with installed-wheel and container lifecycle validation.",
-      "tags": ["mlops", "package"],
-      "health": {},
       "next_action": {
         "description": "Validate Compose server and HTTP serving lifecycle",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "mlops",
+        "package"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "complete",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 5,
+            "title": "build(deps): bump the uv group across 1 directory with 13 updates",
+            "draft": false,
+            "updated_at": "2026-09-04T23:20:05+00:00"
+          }
+        ],
+        "ci_state": "pending",
+        "latest_activity_at": "2026-09-06T19:30:48+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:11.277148+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "b2bdc57cab5c",
@@ -233,8 +985,44 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "Fourier neural operator project using OISST data.",
-      "tags": ["scientific-ml", "fno"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "scientific-ml",
+        "fno"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 7,
+            "title": "deps: bump ruff from 0.16.3 to 0.16.5 in the python-dependencies group",
+            "draft": false,
+            "updated_at": "2026-09-01T20:32:57+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T20:32:06+00:00",
+        "latest_release": "v0.1.0",
+        "latest_release_at": "2026-08-18T12:48:36+00:00",
+        "latest_tag": "v0.1.0",
+        "observed_at": "2026-09-06T19:33:12.683931+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "80a6251658df",
@@ -243,8 +1031,74 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Decision-science laboratory for perishable inventory.",
-      "tags": ["decision-science", "operations-research"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "decision-science",
+        "operations-research"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "complete",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 25,
+            "title": "chore(deps): bump https://github.com/astral-sh/ruff-pre-commit from v0.16.0 to 0.16.5",
+            "draft": false,
+            "updated_at": "2026-08-31T08:37:59+00:00"
+          },
+          {
+            "number": 23,
+            "title": "chore(deps): bump ruff from 0.16.0 to 0.16.4",
+            "draft": false,
+            "updated_at": "2026-08-24T07:14:17+00:00"
+          },
+          {
+            "number": 22,
+            "title": "chore(deps): bump mypy from 2.3.0 to 2.3.1",
+            "draft": false,
+            "updated_at": "2026-08-24T07:14:12+00:00"
+          },
+          {
+            "number": 19,
+            "title": "chore(deps): bump pre-commit from 4.6.1 to 4.6.2",
+            "draft": false,
+            "updated_at": "2026-08-17T07:14:42+00:00"
+          },
+          {
+            "number": 18,
+            "title": "chore(deps): bump typer from 0.27.0 to 0.27.1",
+            "draft": false,
+            "updated_at": "2026-08-10T07:15:28+00:00"
+          },
+          {
+            "number": 15,
+            "title": "chore(deps): bump pandas-stubs from 3.0.3.260530 to 3.0.5.260730",
+            "draft": false,
+            "updated_at": "2026-08-03T07:13:48+00:00"
+          }
+        ],
+        "ci_state": "failing",
+        "latest_activity_at": "2026-08-31T08:37:29+00:00",
+        "latest_release": "v0.2.0",
+        "latest_release_at": "2026-07-22T15:12:06+00:00",
+        "latest_tag": "v0.2.0",
+        "observed_at": "2026-09-06T19:33:14.136379+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "02421d403b72",
@@ -253,8 +1107,62 @@
       "status": "maintenance",
       "priority": "medium",
       "summary": "Physics-informed neural-network research and implementation repository.",
-      "tags": ["pinn", "scientific-ml"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "pinn",
+        "scientific-ml"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 31,
+            "title": "chore(deps): bump actions/checkout from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T02:09:29+00:00"
+          },
+          {
+            "number": 30,
+            "title": "chore(deps): bump actions/download-artifact from 4 to 8",
+            "draft": false,
+            "updated_at": "2026-09-01T02:09:20+00:00"
+          },
+          {
+            "number": 29,
+            "title": "chore(deps): bump actions/upload-artifact from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T02:09:15+00:00"
+          },
+          {
+            "number": 32,
+            "title": "chore(deps): bump actions/setup-python from 5 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T02:09:14+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T02:08:55+00:00",
+        "latest_release": "v0.6.1",
+        "latest_release_at": "2026-08-14T18:51:59+00:00",
+        "latest_tag": "v0.6.1",
+        "observed_at": "2026-09-06T19:33:15.615089+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "162e6ce9ef50",
@@ -263,8 +1171,104 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "Runge-Kutta physics-informed neural-network research repository.",
-      "tags": ["pinn", "scientific-ml"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "pinn",
+        "scientific-ml"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 29,
+            "title": "build(deps): bump actions/checkout from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T04:32:46+00:00"
+          },
+          {
+            "number": 26,
+            "title": "build(deps): bump codecov/codecov-action from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T04:31:57+00:00"
+          },
+          {
+            "number": 25,
+            "title": "build(deps): bump actions/upload-artifact from 4 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T04:31:32+00:00"
+          },
+          {
+            "number": 27,
+            "title": "build(deps): bump abatilo/actions-poetry from 2 to 4",
+            "draft": false,
+            "updated_at": "2026-09-01T04:31:31+00:00"
+          },
+          {
+            "number": 28,
+            "title": "build(deps): bump actions/download-artifact from 4 to 8",
+            "draft": false,
+            "updated_at": "2026-09-01T04:30:00+00:00"
+          },
+          {
+            "number": 23,
+            "title": "build(deps-dev): bump mkdocs-git-revision-date-localized-plugin from 1.5.3 to 1.5.4",
+            "draft": false,
+            "updated_at": "2026-08-31T04:38:53+00:00"
+          },
+          {
+            "number": 22,
+            "title": "build(deps-dev): bump pymdown-extensions from 11.0.1 to 11.0.2",
+            "draft": false,
+            "updated_at": "2026-08-31T04:37:59+00:00"
+          },
+          {
+            "number": 24,
+            "title": "build(deps-dev): bump ruff from 0.16.1 to 0.16.5",
+            "draft": false,
+            "updated_at": "2026-08-31T04:39:26+00:00"
+          },
+          {
+            "number": 21,
+            "title": "build(deps-dev): bump plotly from 6.9.0 to 7.0.0",
+            "draft": false,
+            "updated_at": "2026-08-31T04:36:49+00:00"
+          },
+          {
+            "number": 19,
+            "title": "build(deps-dev): bump mypy from 2.3.0 to 2.3.1",
+            "draft": false,
+            "updated_at": "2026-08-24T04:35:46+00:00"
+          },
+          {
+            "number": 17,
+            "title": "build(deps-dev): bump pre-commit from 4.6.1 to 4.6.2",
+            "draft": false,
+            "updated_at": "2026-08-17T04:32:10+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T04:29:16+00:00",
+        "latest_release": "v0.6.0",
+        "latest_release_at": "2026-08-10T15:51:58+00:00",
+        "latest_tag": "v0.6.0",
+        "observed_at": "2026-09-06T19:33:17.184094+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "36ceeaf2c8d4",
@@ -273,8 +1277,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Urban heat-island exposure analysis for Porto and Lisbon population groups.",
-      "tags": ["geospatial", "climate"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "geospatial",
+        "climate"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T07:57:15+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:18.401276+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "12540b87233a",
@@ -283,8 +1316,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Bayesian reconciliation of Portugal GDP and population revision scenarios.",
-      "tags": ["bayesian", "economics"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "bayesian",
+        "economics"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T07:57:08+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:19.705380+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "ed0bc6500383",
@@ -293,12 +1355,40 @@
       "status": "active_development",
       "priority": "high",
       "summary": "Local-first lifecycle, engineering-health, and GitHub operational-state tracker for code projects.",
-      "tags": ["portfolio", "tooling"],
-      "health": {},
       "next_action": {
         "description": "Run the initial health and operational refresh over the seeded portfolio",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "portfolio",
+        "tooling"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "partial",
+        "release": "missing",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "pending",
+        "latest_activity_at": "2026-09-06T19:31:37+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:20.792797+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "81ef08d22ea4",
@@ -307,12 +1397,76 @@
       "status": "active_development",
       "priority": "high",
       "summary": "Algorithmic project under clean-room reimplementation and provenance hardening.",
-      "tags": ["algorithms"],
-      "health": {},
       "next_action": {
         "description": "Continue clean-room core implementation and provenance validation",
         "due_at": null
-      }
+      },
+      "blocker": null,
+      "tags": [
+        "algorithms"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 243,
+            "title": "chore(deps-dev): update mypy requirement from >=1.4.0 to >=1.19.1",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:39+00:00"
+          },
+          {
+            "number": 240,
+            "title": "chore(deps): update joblib requirement from >=1.1.0 to >=1.5.3",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:37+00:00"
+          },
+          {
+            "number": 239,
+            "title": "chore(deps-dev): update build requirement from >=0.10.0 to >=1.4.3",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:36+00:00"
+          },
+          {
+            "number": 238,
+            "title": "chore(deps): update matplotlib requirement from >=3.3.0 to >=3.9.4",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:35+00:00"
+          },
+          {
+            "number": 237,
+            "title": "chore(deps-dev): update pytest-cov requirement from >=4.0.0 to >=7.1.0",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:34+00:00"
+          },
+          {
+            "number": 235,
+            "title": "chore(deps-dev): update pytest-xdist requirement from >=3.0.0 to >=3.8.0",
+            "draft": false,
+            "updated_at": "2026-09-06T04:24:33+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-06T19:25:40+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:22.187286+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "9a18e7304da2",
@@ -321,8 +1475,37 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Portugal salary-distribution modelling with gamma-family fitting and reproducible tests.",
-      "tags": ["statistics", "economics"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "statistics",
+        "economics"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "missing",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-23T07:57:29+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:23.350287+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "c3bac0336764",
@@ -331,8 +1514,56 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "RAG operations and evaluation laboratory project.",
-      "tags": ["rag", "ai-engineering"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "rag",
+        "ai-engineering"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "complete",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 14,
+            "title": "Bump pillow from 12.2.0 to 12.3.0 in the pip group across 1 directory",
+            "draft": false,
+            "updated_at": "2026-09-01T21:28:25+00:00"
+          },
+          {
+            "number": 13,
+            "title": "deps(deps-dev): bump the python-dev group across 1 directory with 4 updates",
+            "draft": false,
+            "updated_at": "2026-08-31T08:16:02+00:00"
+          },
+          {
+            "number": 12,
+            "title": "deps(deps): bump streamlit from 1.61.1 to 1.62.0 in the python-runtime group",
+            "draft": false,
+            "updated_at": "2026-08-31T08:15:47+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T21:27:42+00:00",
+        "latest_release": "v0.2.0",
+        "latest_release_at": "2026-08-06T13:34:43+00:00",
+        "latest_tag": "v0.2.0",
+        "observed_at": "2026-09-06T19:33:24.843505+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "d633d1d25902",
@@ -341,8 +1572,44 @@
       "status": "maintenance",
       "priority": "medium",
       "summary": "GitHub Action for synchronising repository task manifests with issues and a central project board.",
-      "tags": ["tooling", "github-actions"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "tooling",
+        "github-actions"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "partial",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "missing"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 28,
+            "title": "chore(deps): bump actions/setup-python from 6 to 7",
+            "draft": false,
+            "updated_at": "2026-08-10T08:13:20+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-08-10T08:10:19+00:00",
+        "latest_release": "v1.2.1",
+        "latest_release_at": "2026-08-06T22:15:35+00:00",
+        "latest_tag": "v1.2.1",
+        "observed_at": "2026-09-06T19:33:26.140740+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "cf519f4fd08b",
@@ -351,8 +1618,26 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Template for moving machine-learning work from research into a product-quality repository.",
-      "tags": ["mlops", "template"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "mlops",
+        "template"
+      ],
+      "health": {},
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "unknown",
+        "latest_activity_at": null,
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": null
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "9b2b6bace5dc",
@@ -361,8 +1646,62 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "Python implementation project for set-theoretic QCA workflows.",
-      "tags": ["statistics", "qca"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "statistics",
+        "qca"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "complete",
+        "reproducibility": "partial",
+        "release": "complete",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 25,
+            "title": "Build(deps): bump github/codeql-action from 3 to 4",
+            "draft": false,
+            "updated_at": "2026-09-01T17:14:08+00:00"
+          },
+          {
+            "number": 24,
+            "title": "Build(deps): bump softprops/action-gh-release from 2 to 3",
+            "draft": false,
+            "updated_at": "2026-09-01T17:13:10+00:00"
+          },
+          {
+            "number": 23,
+            "title": "Build(deps): bump codecov/codecov-action from 5 to 7",
+            "draft": false,
+            "updated_at": "2026-09-01T17:12:51+00:00"
+          },
+          {
+            "number": 22,
+            "title": "Build(deps-dev): bump the dev-tooling group across 1 directory with 4 updates",
+            "draft": false,
+            "updated_at": "2026-08-31T17:08:27+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-09-01T17:12:37+00:00",
+        "latest_release": "v0.2.0",
+        "latest_release_at": "2026-08-11T10:23:26+00:00",
+        "latest_tag": "v0.2.0",
+        "observed_at": "2026-09-06T19:33:27.914305+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "a4b1f9157cf0",
@@ -371,8 +1710,26 @@
       "status": "active_development",
       "priority": "medium",
       "summary": "Distribution-shift monitoring and guardrail project.",
-      "tags": ["mlops", "monitoring"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "mlops",
+        "monitoring"
+      ],
+      "health": {},
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "unknown",
+        "latest_activity_at": null,
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": null
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "da7e97a4af80",
@@ -381,8 +1738,26 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Sparse conformal prediction software project.",
-      "tags": ["statistics", "conformal"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "statistics",
+        "conformal"
+      ],
+      "health": {},
+      "operational": {
+        "open_pull_requests": [],
+        "ci_state": "unknown",
+        "latest_activity_at": null,
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": null
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     },
     {
       "id": "c8a7c57df992",
@@ -391,8 +1766,44 @@
       "status": "portfolio_ready",
       "priority": "medium",
       "summary": "Transaction-risk data and analytics lakehouse project.",
-      "tags": ["data-engineering", "risk"],
-      "health": {}
+      "next_action": null,
+      "blocker": null,
+      "tags": [
+        "data-engineering",
+        "risk"
+      ],
+      "health": {
+        "tests": "complete",
+        "ci": "complete",
+        "documentation": "complete",
+        "packaging": "complete",
+        "lint": "complete",
+        "typing": "complete",
+        "security": "missing",
+        "reproducibility": "complete",
+        "release": "missing",
+        "demo": "complete"
+      },
+      "operational": {
+        "open_pull_requests": [
+          {
+            "number": 7,
+            "title": "Bump the pip group across 1 directory with 2 updates",
+            "draft": false,
+            "updated_at": "2026-07-21T12:41:25+00:00"
+          }
+        ],
+        "ci_state": "passing",
+        "latest_activity_at": "2026-07-21T12:40:31+00:00",
+        "latest_release": null,
+        "latest_release_at": null,
+        "latest_tag": null,
+        "observed_at": "2026-09-06T19:33:29.686866+00:00"
+      },
+      "current_pr": null,
+      "created_at": null,
+      "updated_at": null,
+      "last_repository_activity_at": null
     }
   ]
 }
