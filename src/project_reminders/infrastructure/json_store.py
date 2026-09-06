@@ -7,7 +7,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, cast
 
-from project_reminders.domain.enums import CIState, HealthDimension, HealthState, Priority, ProjectStatus
+from project_reminders.domain.enums import (
+    CIState,
+    HealthDimension,
+    HealthState,
+    Priority,
+    ProjectStatus,
+)
 from project_reminders.domain.models import (
     EngineeringHealth,
     NextAction,
@@ -57,7 +63,9 @@ def _operational_from_record(raw: object) -> OperationalSnapshot:
         open_pull_requests=tuple(pull_requests),
         ci_state=CIState(str(record.get("ci_state", CIState.UNKNOWN.value))),
         latest_activity_at=_parse_datetime(record.get("latest_activity_at"), "latest_activity_at"),
-        latest_release=str(record["latest_release"]) if record.get("latest_release") is not None else None,
+        latest_release=str(record["latest_release"])
+        if record.get("latest_release") is not None
+        else None,
         latest_release_at=_parse_datetime(record.get("latest_release_at"), "latest_release_at"),
         latest_tag=str(record["latest_tag"]) if record.get("latest_tag") is not None else None,
         observed_at=_parse_datetime(record.get("observed_at"), "observed_at"),
@@ -106,7 +114,9 @@ def _project_from_record(raw: object) -> Project:
         current_pr=current_pr_raw,
         created_at=_parse_datetime(record.get("created_at"), "created_at"),
         updated_at=_parse_datetime(record.get("updated_at"), "updated_at"),
-        last_repository_activity_at=_parse_datetime(record.get("last_repository_activity_at"), "last_repository_activity_at"),
+        last_repository_activity_at=_parse_datetime(
+            record.get("last_repository_activity_at"), "last_repository_activity_at"
+        ),
     )
 
 
@@ -122,9 +132,13 @@ def _operational_to_record(snapshot: OperationalSnapshot) -> JsonObject:
             for pr in snapshot.open_pull_requests
         ],
         "ci_state": snapshot.ci_state.value,
-        "latest_activity_at": snapshot.latest_activity_at.isoformat() if snapshot.latest_activity_at else None,
+        "latest_activity_at": snapshot.latest_activity_at.isoformat()
+        if snapshot.latest_activity_at
+        else None,
         "latest_release": snapshot.latest_release,
-        "latest_release_at": snapshot.latest_release_at.isoformat() if snapshot.latest_release_at else None,
+        "latest_release_at": snapshot.latest_release_at.isoformat()
+        if snapshot.latest_release_at
+        else None,
         "latest_tag": snapshot.latest_tag,
         "observed_at": snapshot.observed_at.isoformat() if snapshot.observed_at else None,
     }
@@ -135,7 +149,9 @@ def _project_to_record(project: Project) -> JsonObject:
     if project.next_action is not None:
         action = {
             "description": project.next_action.description,
-            "due_at": project.next_action.due_at.isoformat() if project.next_action.due_at else None,
+            "due_at": project.next_action.due_at.isoformat()
+            if project.next_action.due_at
+            else None,
         }
     return {
         "id": project.id,
@@ -147,12 +163,16 @@ def _project_to_record(project: Project) -> JsonObject:
         "next_action": action,
         "blocker": project.blocker,
         "tags": list(project.tags),
-        "health": {dimension.value: state.value for dimension, state in project.health.states.items()},
+        "health": {
+            dimension.value: state.value for dimension, state in project.health.states.items()
+        },
         "operational": _operational_to_record(project.operational),
         "current_pr": project.current_pr,
         "created_at": project.created_at.isoformat() if project.created_at else None,
         "updated_at": project.updated_at.isoformat() if project.updated_at else None,
-        "last_repository_activity_at": project.last_repository_activity_at.isoformat() if project.last_repository_activity_at else None,
+        "last_repository_activity_at": project.last_repository_activity_at.isoformat()
+        if project.last_repository_activity_at
+        else None,
     }
 
 
@@ -183,7 +203,10 @@ class JsonPortfolioRepository:
         payload: JsonObject = {
             "version": portfolio.version,
             "generated_at": portfolio.generated_at.isoformat() if portfolio.generated_at else None,
-            "projects": [_project_to_record(project) for project in sorted(portfolio.projects, key=lambda item: item.name.casefold())],
+            "projects": [
+                _project_to_record(project)
+                for project in sorted(portfolio.projects, key=lambda item: item.name.casefold())
+            ],
         }
         temporary = self.path.with_suffix(self.path.suffix + ".tmp")
         temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

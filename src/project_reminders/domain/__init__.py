@@ -1,6 +1,12 @@
 """Domain model for project-reminders."""
 
-from project_reminders.domain.enums import CIState, HealthDimension, HealthState, Priority, ProjectStatus
+from project_reminders.domain.enums import (
+    CIState,
+    HealthDimension,
+    HealthState,
+    Priority,
+    ProjectStatus,
+)
 from project_reminders.domain.models import (
     EngineeringHealth,
     NextAction,

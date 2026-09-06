@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping, Protocol
+from typing import Protocol
 
 from project_reminders.domain.enums import HealthDimension, HealthState
 from project_reminders.domain.models import EngineeringHealth
@@ -56,7 +57,9 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         states[HealthDimension.TESTS] = _missing_or_unknown(evidence)
 
     # CI
-    if _has_prefix(paths, ".github/workflows") or _has_any(paths, {".gitlab-ci.yml", "azure-pipelines.yml"}):
+    if _has_prefix(paths, ".github/workflows") or _has_any(
+        paths, {".gitlab-ci.yml", "azure-pipelines.yml"}
+    ):
         states[HealthDimension.CI] = HealthState.COMPLETE
     else:
         states[HealthDimension.CI] = _missing_or_unknown(evidence)
@@ -115,9 +118,7 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         ".github/workflows/security.yaml",
     }
     states[HealthDimension.SECURITY] = (
-        HealthState.COMPLETE
-        if _has_any(paths, security_signals)
-        else _missing_or_unknown(evidence)
+        HealthState.COMPLETE if _has_any(paths, security_signals) else _missing_or_unknown(evidence)
     )
 
     # Reproducibility
@@ -182,4 +183,7 @@ class AssessmentService:
     def assess_many(self, repositories: tuple[str, ...]) -> Mapping[str, EngineeringHealth]:
         """Assess repositories in stable order."""
 
-        return {repository: self.assess(repository).health for repository in sorted(repositories, key=str.casefold)}
+        return {
+            repository: self.assess(repository).health
+            for repository in sorted(repositories, key=str.casefold)
+        }

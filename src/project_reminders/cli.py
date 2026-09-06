@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from collections.abc import Sequence
 from dataclasses import asdict
 from pathlib import Path
-from typing import Sequence
 
 from project_reminders.application.assessment import AssessmentService
 from project_reminders.application.dashboard import build_dashboard
@@ -16,7 +16,11 @@ from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
 from project_reminders.domain.models import Project
-from project_reminders.infrastructure.github import GitHubOperationalState, GitHubRepositoryDiscovery, GitHubRepositoryEvidence
+from project_reminders.infrastructure.github import (
+    GitHubOperationalState,
+    GitHubRepositoryDiscovery,
+    GitHubRepositoryEvidence,
+)
 
 
 def _print_project(project: Project) -> None:
@@ -26,7 +30,10 @@ def _print_project(project: Project) -> None:
     print(f"  blocker: {project.blocker or '—'}")
     print(f"  ci: {project.operational.ci_state.value}")
     print(f"  open PRs: {len(project.operational.open_pull_requests)}")
-    health = " ".join(f"{dimension.value}={project.health.state_for(dimension).value}" for dimension in HealthDimension)
+    health = " ".join(
+        f"{dimension.value}={project.health.state_for(dimension).value}"
+        for dimension in HealthDimension
+    )
     print(f"  health: {health}")
 
 
@@ -106,10 +113,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "dashboard":
             dashboard = build_dashboard(service.load())
-            print(f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count}")
+            print(
+                f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count}"
+            )
             for card in dashboard.cards:
-                next_text = card.project.next_action.description if card.project.next_action else "—"
-                print(f"{card.project.name:36} {card.project.status.value:20} {card.project.priority.value:8} CI={card.project.operational.ci_state.value:9} PRs={len(card.project.operational.open_pull_requests):2} next: {next_text}")
+                next_text = (
+                    card.project.next_action.description if card.project.next_action else "—"
+                )
+                print(
+                    f"{card.project.name:36} {card.project.status.value:20} {card.project.priority.value:8} CI={card.project.operational.ci_state.value:9} PRs={len(card.project.operational.open_pull_requests):2} next: {next_text}"
+                )
                 for reason in card.reasons:
                     print(f"  ! {reason}")
             return 0
@@ -121,7 +134,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print_project(service.find(args.identifier))
             return 0
         if args.command == "add":
-            project = service.add_project(name=args.name, repository=args.repo, status=ProjectStatus(args.status), priority=Priority(args.priority), next_action=args.next_action, summary=args.summary)
+            project = service.add_project(
+                name=args.name,
+                repository=args.repo,
+                status=ProjectStatus(args.status),
+                priority=Priority(args.priority),
+                next_action=args.next_action,
+                summary=args.summary,
+            )
             _print_project(project)
             return 0
         if args.command == "status":
@@ -132,14 +152,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 raise ValueError("provide a description or --clear, not both")
             if not args.clear and args.description is None:
                 raise ValueError("next-action requires a description or --clear")
-            _print_project(service.set_next_action(args.identifier, None if args.clear else args.description))
+            _print_project(
+                service.set_next_action(args.identifier, None if args.clear else args.description)
+            )
             return 0
         if args.command == "health":
-            _print_project(service.set_health(args.identifier, HealthDimension(args.dimension), HealthState(args.state)))
+            _print_project(
+                service.set_health(
+                    args.identifier, HealthDimension(args.dimension), HealthState(args.state)
+                )
+            )
             return 0
         if args.command in {"discover", "import-github"}:
             importer = _github_importer(root)
-            plan = importer.plan(include_forks=args.include_forks, include_archived=args.include_archived)
+            plan = importer.plan(
+                include_forks=args.include_forks, include_archived=args.include_archived
+            )
             if args.command == "discover":
                 if args.json:
                     print(json.dumps(asdict(plan), default=str, indent=2))
@@ -149,14 +177,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.dry_run:
                 _print_plan(plan)
                 return 0
-            imported = importer.import_repositories(include_forks=args.include_forks, include_archived=args.include_archived)
+            imported = importer.import_repositories(
+                include_forks=args.include_forks, include_archived=args.include_archived
+            )
             print(f"Imported {len(imported)} repositories")
             for project in imported:
                 print(f"  + {project.repository}")
             return 0
         if args.command == "assess":
             assessor = AssessmentService(GitHubRepositoryEvidence(_github_token()))
-            projects = (service.find(args.identifier),) if args.identifier else service.load().projects
+            projects = (
+                (service.find(args.identifier),) if args.identifier else service.load().projects
+            )
             assessments = assessor.assess_many(tuple(project.repository for project in projects))
             for project in projects:
                 health_value = assessments[project.repository]
@@ -171,7 +203,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             refresher = OperationalRefreshService(service, GitHubOperationalState(_github_token()))
             result = refresher.refresh(args.identifier, write=args.write)
             for repository, snapshot in result.snapshots:
-                print(f"{repository}: CI={snapshot.ci_state.value}, PRs={len(snapshot.open_pull_requests)}, release={snapshot.latest_release or '—'}, tag={snapshot.latest_tag or '—'}")
+                print(
+                    f"{repository}: CI={snapshot.ci_state.value}, PRs={len(snapshot.open_pull_requests)}, release={snapshot.latest_release or '—'}, tag={snapshot.latest_tag or '—'}"
+                )
             for repository, error in result.failed:
                 print(f"{repository}: ERROR {error}")
             if args.write:
@@ -179,7 +213,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 2 if result.failed and not result.updated else 0
         if args.command == "serve":
             import uvicorn
+
             from project_reminders.web import create_app
+
             uvicorn.run(create_app(root), host=args.host, port=args.port)
             return 0
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:

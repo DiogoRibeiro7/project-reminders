@@ -38,10 +38,14 @@ class OperationalRefreshService:
         self._portfolio = portfolio
         self._gateway = gateway
 
-    def refresh(self, identifier: str | None = None, *, write: bool = False) -> OperationalRefreshResult:
+    def refresh(
+        self, identifier: str | None = None, *, write: bool = False
+    ) -> OperationalRefreshResult:
         """Observe one or all projects; failures are isolated per repository."""
 
-        projects = (self._portfolio.find(identifier),) if identifier else self._portfolio.load().projects
+        projects = (
+            (self._portfolio.find(identifier),) if identifier else self._portfolio.load().projects
+        )
         snapshots: dict[str, OperationalSnapshot] = {}
         failed: list[tuple[str, str]] = []
         for project in projects:

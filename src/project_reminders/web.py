@@ -28,9 +28,7 @@ def create_app(root: Path | None = None) -> FastAPI:
         service = build_service(project_root)
         dashboard = build_dashboard(service.load())
         template = environment.get_template("dashboard.html")
-        return HTMLResponse(
-            template.render(dashboard=dashboard, dimensions=tuple(HealthDimension))
-        )
+        return HTMLResponse(template.render(dashboard=dashboard, dimensions=tuple(HealthDimension)))
 
     @app.get("/projects/{identifier}", response_class=HTMLResponse)
     def project_page(identifier: str) -> HTMLResponse:

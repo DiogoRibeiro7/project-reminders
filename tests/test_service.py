@@ -1,6 +1,6 @@
 """Application-service tests."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -12,7 +12,7 @@ from project_reminders.infrastructure.json_store import JsonPortfolioRepository
 
 
 def _service(path: Path, now: datetime | None = None) -> PortfolioService:
-    timestamp = now or datetime(2026, 9, 6, 14, 0, tzinfo=timezone.utc)
+    timestamp = now or datetime(2026, 9, 6, 14, 0, tzinfo=UTC)
     return PortfolioService(JsonPortfolioRepository(path), clock=lambda: timestamp)
 
 
