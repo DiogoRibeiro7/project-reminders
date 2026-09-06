@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ project.name }}</title>
+  <style>
+    :root { font-family: ui-sans-serif, system-ui, sans-serif; color: #151515; background: #f5f5f3; }
+    body { max-width: 900px; margin: 0 auto; padding: 2rem; } a { color: inherit; }
+    .card { background: white; padding: 1.2rem; border-radius: 12px; margin: 1rem 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem 2rem; }
+    dt { color: #666; font-size: .8rem; } dd { margin: .15rem 0 .8rem; }
+    table { width: 100%; border-collapse: collapse; } td { padding: .5rem; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+<a href="/">← Portfolio</a>
+<h1>{{ project.name }}</h1>
+<div class="card grid"><dl><dt>Repository</dt><dd>{{ project.repository }}</dd><dt>Lifecycle</dt><dd>{{ project.status.value }}</dd><dt>Priority</dt><dd>{{ project.priority.value }}</dd></dl><dl><dt>Next action</dt><dd>{{ project.next_action.description if project.next_action else "—" }}</dd><dt>Blocker</dt><dd>{{ project.blocker or "—" }}</dd><dt>Current PR</dt><dd>{{ project.current_pr or "—" }}</dd></dl></div>
+{% if project.summary %}<div class="card"><strong>Summary</strong><p>{{ project.summary }}</p></div>{% endif %}
+<div class="card"><h2>Engineering health</h2><table>{% for dimension in dimensions %}<tr><td>{{ dimension.value }}</td><td>{{ project.health.state_for(dimension).value }}</td></tr>{% endfor %}</table></div>
+</body>
+</html>

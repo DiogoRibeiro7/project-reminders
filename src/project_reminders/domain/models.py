@@ -1,0 +1,117 @@
+"""Core immutable value objects for project-reminders."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from datetime import datetime
+from types import MappingProxyType
+from typing import Mapping
+
+from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
+
+
+def _require_timezone(value: datetime | None, field_name: str) -> None:
+    """Reject naive datetimes so persisted timestamps remain unambiguous."""
+
+    if value is not None and (value.tzinfo is None or value.utcoffset() is None):
+        raise ValueError(f"{field_name} must be timezone-aware")
+
+
+@dataclass(frozen=True, slots=True)
+class NextAction:
+    """Exactly one concrete action that can advance a project."""
+
+    description: str
+    due_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        if not self.description.strip():
+            raise ValueError("next action description must not be empty")
+        _require_timezone(self.due_at, "due_at")
+
+
+@dataclass(frozen=True, slots=True)
+class EngineeringHealth:
+    """Known engineering-health observations for a project."""
+
+    states: Mapping[HealthDimension, HealthState] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        normalized = {HealthDimension(key): HealthState(value) for key, value in self.states.items()}
+        object.__setattr__(self, "states", MappingProxyType(normalized))
+
+    def state_for(self, dimension: HealthDimension) -> HealthState:
+        """Return the observed state or UNKNOWN when no assessment exists."""
+
+        return self.states.get(dimension, HealthState.UNKNOWN)
+
+    def with_state(self, dimension: HealthDimension, state: HealthState) -> EngineeringHealth:
+        """Return a new health value with one dimension changed."""
+
+        updated = dict(self.states)
+        updated[dimension] = state
+        return EngineeringHealth(updated)
+
+    @property
+    def missing_dimensions(self) -> tuple[HealthDimension, ...]:
+        """Dimensions explicitly assessed as missing."""
+
+        return tuple(
+            dimension
+            for dimension in HealthDimension
+            if self.state_for(dimension) is HealthState.MISSING
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class Project:
+    """One code project tracked by the portfolio."""
+
+    id: str
+    name: str
+    repository: str
+    status: ProjectStatus = ProjectStatus.IDEA
+    priority: Priority = Priority.MEDIUM
+    summary: str = ""
+    next_action: NextAction | None = None
+    blocker: str | None = None
+    tags: tuple[str, ...] = ()
+    health: EngineeringHealth = field(default_factory=EngineeringHealth)
+    current_pr: int | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+    last_repository_activity_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        if not self.id.strip():
+            raise ValueError("project id must not be empty")
+        if not self.name.strip():
+            raise ValueError("project name must not be empty")
+        owner, separator, repo = self.repository.partition("/")
+        if not separator or not owner or not repo or "/" in repo:
+            raise ValueError("repository must use owner/name form")
+        if self.current_pr is not None and self.current_pr <= 0:
+            raise ValueError("current_pr must be positive")
+        for field_name, value in (
+            ("created_at", self.created_at),
+            ("updated_at", self.updated_at),
+            ("last_repository_activity_at", self.last_repository_activity_at),
+        ):
+            _require_timezone(value, field_name)
+
+
+@dataclass(frozen=True, slots=True)
+class Portfolio:
+    """The complete persisted portfolio."""
+
+    projects: tuple[Project, ...] = ()
+    version: int = 1
+    generated_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        if self.version != 1:
+            raise ValueError(f"unsupported portfolio version: {self.version}")
+        _require_timezone(self.generated_at, "generated_at")
+        ids = [project.id for project in self.projects]
+        if len(ids) != len(set(ids)):
+            raise ValueError("project ids must be unique")
