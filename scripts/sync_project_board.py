@@ -336,9 +336,12 @@ def _create_field(
 
     data = client.execute(query, variables)
     result = data.get("createProjectV2Field")
-    if not isinstance(result, dict) or not isinstance(result.get("projectV2Field"), dict):
+    if not isinstance(result, dict):
         raise RuntimeError(f"GitHub did not return created field {spec.name!r}")
-    return result["projectV2Field"]
+    created_field = result.get("projectV2Field")
+    if not isinstance(created_field, dict):
+        raise RuntimeError(f"GitHub did not return created field {spec.name!r}")
+    return created_field
 
 
 def _ensure_select_options(
@@ -390,9 +393,12 @@ def _ensure_select_options(
     """
     data = client.execute(query, {"field": field["id"], "options": combined})
     result = data.get("updateProjectV2Field")
-    if not isinstance(result, dict) or not isinstance(result.get("projectV2Field"), dict):
+    if not isinstance(result, dict):
         raise RuntimeError(f"GitHub did not return updated field {spec.name!r}")
-    return result["projectV2Field"]
+    updated_field = result.get("projectV2Field")
+    if not isinstance(updated_field, dict):
+        raise RuntimeError(f"GitHub did not return updated field {spec.name!r}")
+    return updated_field
 
 
 def _ensure_fields(
@@ -401,7 +407,8 @@ def _ensure_fields(
 ) -> dict[str, JsonObject]:
     project_id = str(board["id"])
     fields_connection = board.get("fields")
-    raw_fields = fields_connection.get("nodes") if isinstance(fields_connection, dict) else []
+    raw_fields_value = fields_connection.get("nodes") if isinstance(fields_connection, dict) else None
+    raw_fields = raw_fields_value if isinstance(raw_fields_value, list) else []
     fields = [field for field in raw_fields if isinstance(field, dict)]
     by_name = {str(field.get("name")): field for field in fields if field.get("name")}
 
@@ -422,7 +429,8 @@ def _ensure_fields(
 
 def _existing_items(board: JsonObject) -> dict[str, JsonObject]:
     items_connection = board.get("items")
-    raw_items = items_connection.get("nodes") if isinstance(items_connection, dict) else []
+    raw_items_value = items_connection.get("nodes") if isinstance(items_connection, dict) else None
+    raw_items = raw_items_value if isinstance(raw_items_value, list) else []
     managed: dict[str, JsonObject] = {}
     for item in raw_items:
         if not isinstance(item, dict):
@@ -462,9 +470,12 @@ def _create_item(
     if not isinstance(result, dict):
         raise RuntimeError(f"Could not add board item for {project['name']}")
     item = result.get("projectItem")
-    if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+    if not isinstance(item, dict):
         raise RuntimeError(f"Could not read board item ID for {project['name']}")
-    return item["id"]
+    item_id = item.get("id")
+    if not isinstance(item_id, str):
+        raise RuntimeError(f"Could not read board item ID for {project['name']}")
+    return item_id
 
 
 def _update_draft_if_needed(
