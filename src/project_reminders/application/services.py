@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 from datetime import datetime, timezone
-from typing import Callable
+from typing import Callable, Mapping
 from uuid import uuid4
 
 from project_reminders.application.ports import PortfolioRepository
@@ -107,6 +107,33 @@ class PortfolioService:
                 health=project.health.with_state(dimension, state),
                 updated_at=now,
             ),
+        )
+
+    def apply_health(self, identifier: str, health: EngineeringHealth) -> Project:
+        """Replace engineering health while preserving declared lifecycle fields."""
+
+        return self._replace(
+            identifier,
+            lambda project, now: replace(project, health=health, updated_at=now),
+        )
+
+    def apply_health_many(self, assessments: Mapping[str, EngineeringHealth]) -> tuple[Project, ...]:
+        """Persist multiple repository assessments in one portfolio write."""
+
+        portfolio = self.load()
+        by_repository = {key.casefold(): value for key, value in assessments.items()}
+        now = self._clock()
+        updated_projects = tuple(
+            replace(project, health=by_repository[project.repository.casefold()], updated_at=now)
+            if project.repository.casefold() in by_repository
+            else project
+            for project in portfolio.projects
+        )
+        self._save_projects(updated_projects, now)
+        return tuple(
+            project
+            for project in updated_projects
+            if project.repository.casefold() in by_repository
         )
 
     def _replace(self, identifier: str, transform: Callable[[Project, datetime], Project]) -> Project:
