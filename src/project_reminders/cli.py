@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import argparse
+import json
+import os
+from dataclasses import asdict
 from pathlib import Path
 from typing import Sequence
 
 from project_reminders.application.dashboard import build_dashboard
+from project_reminders.application.github_import import GitHubImportService, ImportPlan
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
 from project_reminders.domain.models import Project
+from project_reminders.infrastructure.github import GitHubRepositoryDiscovery
 
 
 def _print_project(project: Project) -> None:
@@ -22,6 +27,23 @@ def _print_project(project: Project) -> None:
         for dimension in HealthDimension
     )
     print(f"  health: {health}")
+
+
+def _github_importer(root: Path) -> GitHubImportService:
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("PROJECT_SCAN_TOKEN")
+    if token is None:
+        raise ValueError("set GITHUB_TOKEN or PROJECT_SCAN_TOKEN for GitHub discovery")
+    return GitHubImportService(build_service(root), GitHubRepositoryDiscovery(token))
+
+
+def _print_plan(plan: ImportPlan) -> None:
+    print(f"Candidates: {len(plan.candidates)}")
+    for repository in plan.candidates:
+        visibility = "private" if repository.private else "public"
+        print(f"  + {repository.full_name} [{visibility}]")
+    print(f"Already tracked: {len(plan.skipped_existing)}")
+    print(f"Forks skipped: {len(plan.skipped_forks)}")
+    print(f"Archived skipped: {len(plan.skipped_archived)}")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -56,6 +78,16 @@ def _parser() -> argparse.ArgumentParser:
     health.add_argument("identifier")
     health.add_argument("dimension", choices=[item.value for item in HealthDimension])
     health.add_argument("state", choices=[item.value for item in HealthState])
+
+    discover = subparsers.add_parser("discover")
+    discover.add_argument("--include-forks", action="store_true")
+    discover.add_argument("--include-archived", action="store_true")
+    discover.add_argument("--json", action="store_true")
+
+    import_github = subparsers.add_parser("import-github")
+    import_github.add_argument("--include-forks", action="store_true")
+    import_github.add_argument("--include-archived", action="store_true")
+    import_github.add_argument("--dry-run", action="store_true")
 
     serve = subparsers.add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
@@ -127,6 +159,30 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             return 0
 
+        if args.command in {"discover", "import-github"}:
+            importer = _github_importer(root)
+            plan = importer.plan(
+                include_forks=args.include_forks,
+                include_archived=args.include_archived,
+            )
+            if args.command == "discover":
+                if args.json:
+                    print(json.dumps(asdict(plan), default=str, indent=2))
+                else:
+                    _print_plan(plan)
+                return 0
+            if args.dry_run:
+                _print_plan(plan)
+                return 0
+            imported = importer.import_repositories(
+                include_forks=args.include_forks,
+                include_archived=args.include_archived,
+            )
+            print(f"Imported {len(imported)} repositories")
+            for project in imported:
+                print(f"  + {project.repository}")
+            return 0
+
         if args.command == "serve":
             import uvicorn
 
@@ -134,7 +190,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
             uvicorn.run(create_app(root), host=args.host, port=args.port)
             return 0
-    except (KeyError, TypeError, ValueError) as exc:
+    except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}")
         return 2
 

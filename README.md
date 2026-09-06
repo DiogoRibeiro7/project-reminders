@@ -8,7 +8,7 @@ The repository answers three questions:
 2. **How healthy is it?** Tests, typing, linting, CI, documentation, packaging, security, reproducibility, release and demo readiness.
 3. **What should happen next?** Every active project can carry one concrete next action and an optional blocker.
 
-GitHub will be used as evidence, not as the source of truth. The portfolio stays in a plain JSON file committed to this repository.
+GitHub is evidence, not the source of truth. The portfolio stays in a plain JSON file committed to this repository.
 
 ## Lifecycle
 
@@ -22,18 +22,7 @@ Lifecycle and engineering health are intentionally separate. A repository can be
 
 ## Engineering health
 
-Each dimension is one of `unknown`, `missing`, `partial`, `complete`, or `not_applicable`:
-
-- tests
-- typing
-- lint
-- ci
-- documentation
-- packaging
-- security
-- reproducibility
-- release
-- demo
+Each dimension is one of `unknown`, `missing`, `partial`, `complete`, or `not_applicable`: tests, typing, lint, CI, documentation, packaging, security, reproducibility, release and demo.
 
 `unknown` is important: an uninspected repository is not automatically unhealthy.
 
@@ -42,21 +31,11 @@ Each dimension is one of `unknown`, `missing`, `partial`, `complete`, or `not_ap
 ```text
 src/project_reminders/
 ├── domain/          model and rules; no infrastructure imports
-├── application/     portfolio mutations and dashboard read models
-├── infrastructure/  JSON persistence
+├── application/     portfolio mutations, discovery/import, dashboard read models
+├── infrastructure/  JSON persistence and GitHub adapters
 ├── cli.py            command-line interface
 └── web.py            FastAPI + Jinja2 local dashboard
 ```
-
-Dependencies point inward. The JSON file is authoritative; future GitHub scanning will populate observed evidence without silently changing declared lifecycle state.
-
-## Data
-
-```text
-data/projects.json
-```
-
-The file is deliberately readable without this application. Writes are atomic and projects are stored in stable name order.
 
 ## Installation
 
@@ -67,27 +46,50 @@ poetry install
 poetry run project-reminders --help
 ```
 
-## First project
+## GitHub discovery and import
+
+Repository discovery uses a read token from `PROJECT_SCAN_TOKEN` or `GITHUB_TOKEN`. For a portfolio containing private repositories, the token must be able to read those repositories.
+
+Start with a dry run:
+
+```bash
+export PROJECT_SCAN_TOKEN=...
+poetry run project-reminders discover
+poetry run project-reminders import-github --dry-run
+```
+
+By default forks and archived repositories are skipped. They can be included explicitly:
+
+```bash
+poetry run project-reminders discover --include-forks --include-archived
+```
+
+A real import is intentionally conservative:
+
+```bash
+poetry run project-reminders import-github
+```
+
+Every imported repository starts as:
+
+```text
+status   = idea
+priority = medium
+health   = unknown for every dimension
+```
+
+That is not a claim that the repository is immature. It means the tracker has observed that the repository exists but has not yet classified it. Repository descriptions are copied as summaries; existing tracked repositories are never overwritten.
+
+## Manual project management
 
 ```bash
 poetry run project-reminders add "project-reminders" \
   --repo DiogoRibeiro7/project-reminders \
   --status active_development \
   --priority high \
-  --next-action "Add GitHub repository assessment"
-```
+  --next-action "Add deterministic repository assessment"
 
-Then inspect the portfolio:
-
-```bash
 poetry run project-reminders dashboard
-poetry run project-reminders list
-poetry run project-reminders show project-reminders
-```
-
-Update state and health explicitly:
-
-```bash
 poetry run project-reminders status project-reminders hardening
 poetry run project-reminders health project-reminders tests complete
 poetry run project-reminders next-action project-reminders "Import the first portfolio repositories"
@@ -114,10 +116,7 @@ CI runs all three gates on Python 3.13.
 
 ## Next slices
 
-The baseline intentionally does not guess repository health. The next implementation slices are:
-
-1. GitHub repository discovery and observed activity.
-2. Deterministic engineering-health assessment from repository evidence.
-3. Open PR / failed CI / release state integration.
-4. Scheduled refresh and attention reminders.
-5. Portfolio import for existing repositories.
+1. Deterministic engineering-health assessment from repository evidence.
+2. Open PR / failed CI / release observation.
+3. Scheduled refresh and attention reminders.
+4. Bulk classification of imported repositories.
