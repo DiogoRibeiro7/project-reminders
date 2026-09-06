@@ -16,11 +16,7 @@ from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
 from project_reminders.domain.models import Project
-from project_reminders.infrastructure.github import (
-    GitHubOperationalState,
-    GitHubRepositoryDiscovery,
-    GitHubRepositoryEvidence,
-)
+from project_reminders.infrastructure.github import GitHubOperationalState, GitHubRepositoryDiscovery, GitHubRepositoryEvidence
 
 
 def _print_project(project: Project) -> None:
@@ -30,10 +26,7 @@ def _print_project(project: Project) -> None:
     print(f"  blocker: {project.blocker or '—'}")
     print(f"  ci: {project.operational.ci_state.value}")
     print(f"  open PRs: {len(project.operational.open_pull_requests)}")
-    health = " ".join(
-        f"{dimension.value}={project.health.state_for(dimension).value}"
-        for dimension in HealthDimension
-    )
+    health = " ".join(f"{dimension.value}={project.health.state_for(dimension).value}" for dimension in HealthDimension)
     print(f"  health: {health}")
 
 
@@ -116,11 +109,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count}")
             for card in dashboard.cards:
                 next_text = card.project.next_action.description if card.project.next_action else "—"
-                print(
-                    f"{card.project.name:36} {card.project.status.value:20} "
-                    f"{card.project.priority.value:8} CI={card.project.operational.ci_state.value:9} "
-                    f"PRs={len(card.project.operational.open_pull_requests):2} next: {next_text}"
-                )
+                print(f"{card.project.name:36} {card.project.status.value:20} {card.project.priority.value:8} CI={card.project.operational.ci_state.value:9} PRs={len(card.project.operational.open_pull_requests):2} next: {next_text}")
                 for reason in card.reasons:
                     print(f"  ! {reason}")
             return 0
@@ -132,7 +121,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print_project(service.find(args.identifier))
             return 0
         if args.command == "add":
-            _print_project(service.add_project(name=args.name, repository=args.repo, status=ProjectStatus(args.status), priority=Priority(args.priority), next_action=args.next_action, summary=args.summary))
+            project = service.add_project(name=args.name, repository=args.repo, status=ProjectStatus(args.status), priority=Priority(args.priority), next_action=args.next_action, summary=args.summary)
+            _print_project(project)
             return 0
         if args.command == "status":
             _print_project(service.set_status(args.identifier, ProjectStatus(args.status)))
@@ -151,7 +141,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             importer = _github_importer(root)
             plan = importer.plan(include_forks=args.include_forks, include_archived=args.include_archived)
             if args.command == "discover":
-                print(json.dumps(asdict(plan), default=str, indent=2) if args.json else "") if args.json else _print_plan(plan)
+                if args.json:
+                    print(json.dumps(asdict(plan), default=str, indent=2))
+                else:
+                    _print_plan(plan)
                 return 0
             if args.dry_run:
                 _print_plan(plan)
@@ -177,8 +170,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command == "observe":
             refresher = OperationalRefreshService(service, GitHubOperationalState(_github_token()))
             result = refresher.refresh(args.identifier, write=args.write)
-            for repository in result.updated:
-                snapshot = GitHubOperationalState(_github_token()).snapshot(repository) if not args.write else service.find(repository).operational
+            for repository, snapshot in result.snapshots:
                 print(f"{repository}: CI={snapshot.ci_state.value}, PRs={len(snapshot.open_pull_requests)}, release={snapshot.latest_release or '—'}, tag={snapshot.latest_tag or '—'}")
             for repository, error in result.failed:
                 print(f"{repository}: ERROR {error}")

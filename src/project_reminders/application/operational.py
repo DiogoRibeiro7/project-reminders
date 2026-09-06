@@ -21,8 +21,14 @@ class OperationalGateway(Protocol):
 class OperationalRefreshResult:
     """Result of a resilient multi-repository refresh."""
 
-    updated: tuple[str, ...]
+    snapshots: tuple[tuple[str, OperationalSnapshot], ...]
     failed: tuple[tuple[str, str], ...]
+
+    @property
+    def updated(self) -> tuple[str, ...]:
+        """Repository names successfully observed."""
+
+        return tuple(repository for repository, _ in self.snapshots)
 
 
 class OperationalRefreshService:
@@ -43,10 +49,7 @@ class OperationalRefreshService:
                 snapshots[project.repository] = self._gateway.snapshot(project.repository)
             except (RuntimeError, TypeError, ValueError) as exc:
                 failed.append((project.repository, str(exc)))
-
         if write and snapshots:
             self._portfolio.apply_operational_many(snapshots)
-        return OperationalRefreshResult(
-            updated=tuple(sorted(snapshots, key=str.casefold)),
-            failed=tuple(failed),
-        )
+        ordered = tuple(sorted(snapshots.items(), key=lambda item: item[0].casefold()))
+        return OperationalRefreshResult(snapshots=ordered, failed=tuple(failed))

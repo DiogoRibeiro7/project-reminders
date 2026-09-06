@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 from datetime import datetime, timezone
-from typing import Callable, Mapping
+from typing import Callable, Mapping, TypeVar
 from uuid import uuid4
 
 from project_reminders.application.ports import PortfolioRepository
@@ -12,6 +12,7 @@ from project_reminders.domain.enums import HealthDimension, HealthState, Priorit
 from project_reminders.domain.models import EngineeringHealth, NextAction, OperationalSnapshot, Portfolio, Project
 
 Clock = Callable[[], datetime]
+T = TypeVar("T")
 
 
 def utc_now() -> datetime:
@@ -61,7 +62,6 @@ class PortfolioService:
         repository_key = repository.casefold()
         if any(project.repository.casefold() == repository_key for project in portfolio.projects):
             raise ValueError(f"repository is already tracked: {repository}")
-
         now = self._clock()
         project = Project(
             id=uuid4().hex[:12],
@@ -116,7 +116,7 @@ class PortfolioService:
 
         return self._apply_many(snapshots, lambda project, value: replace(project, operational=value))
 
-    def _apply_many(self, values: Mapping[str, object], transform: Callable[[Project, object], Project]) -> tuple[Project, ...]:
+    def _apply_many(self, values: Mapping[str, T], transform: Callable[[Project, T], Project]) -> tuple[Project, ...]:
         portfolio = self.load()
         by_repository = {key.casefold(): value for key, value in values.items()}
         now = self._clock()
