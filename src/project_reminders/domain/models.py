@@ -2,12 +2,18 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
 from types import MappingProxyType
-from typing import Mapping
 
-from project_reminders.domain.enums import CIState, HealthDimension, HealthState, Priority, ProjectStatus
+from project_reminders.domain.enums import (
+    CIState,
+    HealthDimension,
+    HealthState,
+    Priority,
+    ProjectStatus,
+)
 
 
 def _require_timezone(value: datetime | None, field_name: str) -> None:
@@ -37,7 +43,9 @@ class EngineeringHealth:
     states: Mapping[HealthDimension, HealthState] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        normalized = {HealthDimension(key): HealthState(value) for key, value in self.states.items()}
+        normalized = {
+            HealthDimension(key): HealthState(value) for key, value in self.states.items()
+        }
         object.__setattr__(self, "states", MappingProxyType(normalized))
 
     def state_for(self, dimension: HealthDimension) -> HealthState:

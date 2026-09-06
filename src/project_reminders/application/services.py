@@ -2,14 +2,21 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import replace
-from datetime import datetime, timezone
-from typing import Callable, Mapping, TypeVar
+from datetime import UTC, datetime
+from typing import TypeVar
 from uuid import uuid4
 
 from project_reminders.application.ports import PortfolioRepository
 from project_reminders.domain.enums import HealthDimension, HealthState, Priority, ProjectStatus
-from project_reminders.domain.models import EngineeringHealth, NextAction, OperationalSnapshot, Portfolio, Project
+from project_reminders.domain.models import (
+    EngineeringHealth,
+    NextAction,
+    OperationalSnapshot,
+    Portfolio,
+    Project,
+)
 
 Clock = Callable[[], datetime]
 T = TypeVar("T")
@@ -18,7 +25,7 @@ T = TypeVar("T")
 def utc_now() -> datetime:
     """Return an aware UTC timestamp."""
 
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class PortfolioService:
@@ -81,15 +88,21 @@ class PortfolioService:
     def set_status(self, identifier: str, status: ProjectStatus) -> Project:
         """Change lifecycle state without changing engineering health."""
 
-        return self._replace(identifier, lambda project, now: replace(project, status=status, updated_at=now))
+        return self._replace(
+            identifier, lambda project, now: replace(project, status=status, updated_at=now)
+        )
 
     def set_next_action(self, identifier: str, description: str | None) -> Project:
         """Set or clear the project's single next action."""
 
         action = NextAction(description) if description else None
-        return self._replace(identifier, lambda project, now: replace(project, next_action=action, updated_at=now))
+        return self._replace(
+            identifier, lambda project, now: replace(project, next_action=action, updated_at=now)
+        )
 
-    def set_health(self, identifier: str, dimension: HealthDimension, state: HealthState) -> Project:
+    def set_health(
+        self, identifier: str, dimension: HealthDimension, state: HealthState
+    ) -> Project:
         """Record one explicit engineering-health observation."""
 
         return self._replace(
@@ -104,19 +117,29 @@ class PortfolioService:
     def apply_health(self, identifier: str, health: EngineeringHealth) -> Project:
         """Replace engineering health while preserving declared lifecycle fields."""
 
-        return self._replace(identifier, lambda project, now: replace(project, health=health, updated_at=now))
+        return self._replace(
+            identifier, lambda project, now: replace(project, health=health, updated_at=now)
+        )
 
-    def apply_health_many(self, assessments: Mapping[str, EngineeringHealth]) -> tuple[Project, ...]:
+    def apply_health_many(
+        self, assessments: Mapping[str, EngineeringHealth]
+    ) -> tuple[Project, ...]:
         """Persist multiple repository assessments in one portfolio write."""
 
         return self._apply_many(assessments, lambda project, value: replace(project, health=value))
 
-    def apply_operational_many(self, snapshots: Mapping[str, OperationalSnapshot]) -> tuple[Project, ...]:
+    def apply_operational_many(
+        self, snapshots: Mapping[str, OperationalSnapshot]
+    ) -> tuple[Project, ...]:
         """Persist observed GitHub state without changing declared project metadata."""
 
-        return self._apply_many(snapshots, lambda project, value: replace(project, operational=value))
+        return self._apply_many(
+            snapshots, lambda project, value: replace(project, operational=value)
+        )
 
-    def _apply_many(self, values: Mapping[str, T], transform: Callable[[Project, T], Project]) -> tuple[Project, ...]:
+    def _apply_many(
+        self, values: Mapping[str, T], transform: Callable[[Project, T], Project]
+    ) -> tuple[Project, ...]:
         portfolio = self.load()
         by_repository = {key.casefold(): value for key, value in values.items()}
         now = self._clock()
@@ -127,14 +150,22 @@ class PortfolioService:
             for project in portfolio.projects
         )
         self._save_projects(updated_projects, now)
-        return tuple(project for project in updated_projects if project.repository.casefold() in by_repository)
+        return tuple(
+            project
+            for project in updated_projects
+            if project.repository.casefold() in by_repository
+        )
 
-    def _replace(self, identifier: str, transform: Callable[[Project, datetime], Project]) -> Project:
+    def _replace(
+        self, identifier: str, transform: Callable[[Project, datetime], Project]
+    ) -> Project:
         portfolio = self.load()
         current = self.find(identifier)
         now = self._clock()
         updated = transform(current, now)
-        projects = tuple(updated if project.id == current.id else project for project in portfolio.projects)
+        projects = tuple(
+            updated if project.id == current.id else project for project in portfolio.projects
+        )
         self._save_projects(projects, now)
         return updated
 

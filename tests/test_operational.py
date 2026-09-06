@@ -1,12 +1,17 @@
 """Operational-state regression tests."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from project_reminders.application.dashboard import build_dashboard
 from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.application.services import PortfolioService
 from project_reminders.domain.enums import CIState, Priority, ProjectStatus
-from project_reminders.domain.models import OperationalSnapshot, Portfolio, Project, PullRequestSnapshot
+from project_reminders.domain.models import (
+    OperationalSnapshot,
+    Portfolio,
+    Project,
+    PullRequestSnapshot,
+)
 from project_reminders.infrastructure.json_store import JsonPortfolioRepository
 
 
@@ -14,7 +19,7 @@ class _Gateway:
     def snapshot(self, repository: str) -> OperationalSnapshot:
         if repository.endswith("broken"):
             raise RuntimeError("rate limited")
-        now = datetime(2026, 9, 6, 18, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 9, 6, 18, 0, tzinfo=UTC)
         return OperationalSnapshot(
             open_pull_requests=(PullRequestSnapshot(7, "Ship feature", False, now),),
             ci_state=CIState.FAILING,

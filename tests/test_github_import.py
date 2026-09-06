@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from project_reminders.application.github_import import DiscoveredRepository, GitHubImportService
 from project_reminders.application.services import PortfolioService
@@ -29,7 +29,7 @@ def _repository(name: str, *, fork: bool = False, archived: bool = False) -> Dis
         fork=fork,
         archived=archived,
         default_branch="main",
-        pushed_at=datetime(2026, 9, 1, tzinfo=timezone.utc),
+        pushed_at=datetime(2026, 9, 1, tzinfo=UTC),
     )
 
 
@@ -43,7 +43,14 @@ def test_plan_skips_existing_forks_and_archived_by_default(tmp_path) -> None:  #
     )
     importer = GitHubImportService(
         portfolio,
-        StubDiscovery((_repository("new"), _repository("existing"), _repository("fork", fork=True), _repository("old", archived=True))),
+        StubDiscovery(
+            (
+                _repository("new"),
+                _repository("existing"),
+                _repository("fork", fork=True),
+                _repository("old", archived=True),
+            )
+        ),
     )
 
     plan = importer.plan()

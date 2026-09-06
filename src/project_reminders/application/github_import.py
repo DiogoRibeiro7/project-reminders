@@ -59,7 +59,9 @@ class GitHubImportService:
         skipped_forks: list[DiscoveredRepository] = []
         skipped_archived: list[DiscoveredRepository] = []
 
-        for repository in sorted(self._discovery.repositories(), key=lambda item: item.full_name.casefold()):
+        for repository in sorted(
+            self._discovery.repositories(), key=lambda item: item.full_name.casefold()
+        ):
             if repository.full_name.casefold() in existing:
                 skipped_existing.append(repository)
             elif repository.fork and not include_forks:

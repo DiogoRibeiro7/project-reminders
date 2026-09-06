@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, cast
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
@@ -47,7 +47,7 @@ class _GitHubClient:
             },
         )
         try:
-            with urlopen(request, timeout=30) as response:  # noqa: S310 - fixed HTTPS API by default
+            with urlopen(request, timeout=30) as response:
                 return json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
             raise RuntimeError(f"GitHub API returned HTTP {exc.code}") from exc
@@ -212,7 +212,7 @@ class GitHubOperationalState(_GitHubClient):
             latest_release=release_name,
             latest_release_at=release_at,
             latest_tag=latest_tag,
-            observed_at=datetime.now(timezone.utc),
+            observed_at=datetime.now(UTC),
         )
 
     @staticmethod
