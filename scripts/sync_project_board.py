@@ -407,7 +407,9 @@ def _ensure_fields(
 ) -> dict[str, JsonObject]:
     project_id = str(board["id"])
     fields_connection = board.get("fields")
-    raw_fields_value = fields_connection.get("nodes") if isinstance(fields_connection, dict) else None
+    raw_fields_value = (
+        fields_connection.get("nodes") if isinstance(fields_connection, dict) else None
+    )
     raw_fields = raw_fields_value if isinstance(raw_fields_value, list) else []
     fields = [field for field in raw_fields if isinstance(field, dict)]
     by_name = {str(field.get("name")): field for field in fields if field.get("name")}
