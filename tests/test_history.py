@@ -4,7 +4,12 @@ from datetime import UTC, datetime
 
 from project_reminders.application.history import ChangeDirection, compare_portfolios
 from project_reminders.domain.enums import CIState, HealthDimension, HealthState
-from project_reminders.domain.models import EngineeringHealth, OperationalSnapshot, Portfolio, Project
+from project_reminders.domain.models import (
+    EngineeringHealth,
+    OperationalSnapshot,
+    Portfolio,
+    Project,
+)
 
 
 def test_history_classifies_clear_improvement_and_degradation() -> None:
