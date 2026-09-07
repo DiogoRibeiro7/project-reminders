@@ -53,5 +53,9 @@ def test_portfolio_round_trip_preserves_project_state(tmp_path) -> None:  # type
 
     assert loaded == Portfolio(projects=(project,), generated_at=now)
     assert loaded.projects[0].health.state_for(HealthDimension.CI) is HealthState.COMPLETE
-    assert loaded.projects[0].operational.ci_url.endswith("/actions/runs/123")
-    assert loaded.projects[0].operational.open_pull_requests[0].url.endswith("/pull/7")
+    assert loaded.projects[0].operational.ci_url == (
+        "https://github.com/owner/example/actions/runs/123"
+    )
+    assert loaded.projects[0].operational.open_pull_requests[0].url == (
+        "https://github.com/owner/example/pull/7"
+    )
