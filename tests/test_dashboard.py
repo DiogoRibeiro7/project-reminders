@@ -1,7 +1,13 @@
 """Attention-ranking and portfolio KPI tests."""
 
 from project_reminders.application.dashboard import build_dashboard
-from project_reminders.domain.enums import CIState, HealthDimension, HealthState, Priority, ProjectStatus
+from project_reminders.domain.enums import (
+    CIState,
+    HealthDimension,
+    HealthState,
+    Priority,
+    ProjectStatus,
+)
 from project_reminders.domain.models import (
     EngineeringHealth,
     NextAction,
