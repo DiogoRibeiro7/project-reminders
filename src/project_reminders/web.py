@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from project_reminders.application.dashboard import build_dashboard
+from project_reminders.application.dashboard import build_dashboard, build_project_card
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension
 
@@ -38,7 +38,13 @@ def create_app(root: Path | None = None) -> FastAPI:
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         template = environment.get_template("project.html")
-        return HTMLResponse(template.render(project=project, dimensions=tuple(HealthDimension)))
+        return HTMLResponse(
+            template.render(
+                card=build_project_card(project),
+                project=project,
+                dimensions=tuple(HealthDimension),
+            )
+        )
 
     @app.get("/api/health")
     def health() -> dict[str, str]:

@@ -67,6 +67,13 @@ def _attention(project: Project) -> tuple[int, tuple[str, ...]]:
     return score, tuple(reasons)
 
 
+def build_project_card(project: Project) -> ProjectCard:
+    """Build the shared attention read model for one project."""
+
+    score, reasons = _attention(project)
+    return ProjectCard(project=project, attention_score=score, reasons=reasons)
+
+
 def build_dashboard(portfolio: Portfolio) -> Dashboard:
     """Build a deterministic portfolio dashboard."""
 
@@ -74,8 +81,7 @@ def build_dashboard(portfolio: Portfolio) -> Dashboard:
     counts = {status: 0 for status in ProjectStatus}
     for project in portfolio.projects:
         counts[project.status] += 1
-        score, reasons = _attention(project)
-        cards.append(ProjectCard(project=project, attention_score=score, reasons=reasons))
+        cards.append(build_project_card(project))
     cards.sort(key=lambda card: (-card.attention_score, card.project.name.casefold()))
 
     projects = portfolio.projects
