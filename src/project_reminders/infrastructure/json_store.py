@@ -37,6 +37,11 @@ def _parse_datetime(value: object, field_name: str) -> datetime | None:
     return parsed
 
 
+def _optional_string(record: JsonObject, key: str) -> str | None:
+    value = record.get(key)
+    return str(value) if value is not None else None
+
+
 def _operational_from_record(raw: object) -> OperationalSnapshot:
     if raw is None:
         return OperationalSnapshot()
@@ -57,17 +62,20 @@ def _operational_from_record(raw: object) -> OperationalSnapshot:
                 title=str(pr.get("title", "")),
                 draft=bool(pr.get("draft", False)),
                 updated_at=_parse_datetime(pr.get("updated_at"), "pull_request.updated_at"),
+                url=_optional_string(pr, "url"),
             )
         )
     return OperationalSnapshot(
         open_pull_requests=tuple(pull_requests),
         ci_state=CIState(str(record.get("ci_state", CIState.UNKNOWN.value))),
+        ci_url=_optional_string(record, "ci_url"),
+        ci_updated_at=_parse_datetime(record.get("ci_updated_at"), "ci_updated_at"),
         latest_activity_at=_parse_datetime(record.get("latest_activity_at"), "latest_activity_at"),
-        latest_release=str(record["latest_release"])
-        if record.get("latest_release") is not None
-        else None,
+        latest_release=_optional_string(record, "latest_release"),
         latest_release_at=_parse_datetime(record.get("latest_release_at"), "latest_release_at"),
-        latest_tag=str(record["latest_tag"]) if record.get("latest_tag") is not None else None,
+        latest_release_url=_optional_string(record, "latest_release_url"),
+        latest_tag=_optional_string(record, "latest_tag"),
+        latest_tag_url=_optional_string(record, "latest_tag_url"),
         observed_at=_parse_datetime(record.get("observed_at"), "observed_at"),
     )
 
@@ -128,10 +136,13 @@ def _operational_to_record(snapshot: OperationalSnapshot) -> JsonObject:
                 "title": pr.title,
                 "draft": pr.draft,
                 "updated_at": pr.updated_at.isoformat() if pr.updated_at else None,
+                "url": pr.url,
             }
             for pr in snapshot.open_pull_requests
         ],
         "ci_state": snapshot.ci_state.value,
+        "ci_url": snapshot.ci_url,
+        "ci_updated_at": snapshot.ci_updated_at.isoformat() if snapshot.ci_updated_at else None,
         "latest_activity_at": snapshot.latest_activity_at.isoformat()
         if snapshot.latest_activity_at
         else None,
@@ -139,7 +150,9 @@ def _operational_to_record(snapshot: OperationalSnapshot) -> JsonObject:
         "latest_release_at": snapshot.latest_release_at.isoformat()
         if snapshot.latest_release_at
         else None,
+        "latest_release_url": snapshot.latest_release_url,
         "latest_tag": snapshot.latest_tag,
+        "latest_tag_url": snapshot.latest_tag_url,
         "observed_at": snapshot.observed_at.isoformat() if snapshot.observed_at else None,
     }
 
