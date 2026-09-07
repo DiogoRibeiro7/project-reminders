@@ -30,6 +30,11 @@ def _parse_timestamp(value: object) -> datetime | None:
     return parsed
 
 
+def _optional_url(record: JsonObject, key: str) -> str | None:
+    value = record.get(key)
+    return str(value) if isinstance(value, str) and value else None
+
+
 class _GitHubClient:
     def __init__(self, token: str, *, api_url: str = "https://api.github.com") -> None:
         if not token.strip():
@@ -185,15 +190,21 @@ class GitHubOperationalState(_GitHubClient):
 
         encoded = _encoded_repository(repository)
         metadata_raw = self._get_json(f"/repos/{encoded}")
+        if not isinstance(metadata_raw, dict):
+            raise TypeError("GitHub repository metadata must be an object")
+        metadata = cast(JsonObject, metadata_raw)
+        default_branch = str(metadata.get("default_branch") or "main")
+
         pulls_raw = self._get_json(
             f"/repos/{encoded}/pulls",
             {"state": "open", "sort": "updated", "direction": "desc", "per_page": "20"},
         )
-        runs_raw = self._get_json(f"/repos/{encoded}/actions/runs", {"per_page": "1"})
+        runs_raw = self._get_json(
+            f"/repos/{encoded}/actions/runs",
+            {"branch": default_branch, "per_page": "1"},
+        )
         releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
         tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
-        if not isinstance(metadata_raw, dict):
-            raise TypeError("GitHub repository metadata must be an object")
         if not isinstance(pulls_raw, list):
             raise TypeError("GitHub pull request response must be a list")
         if not isinstance(runs_raw, dict):
@@ -212,33 +223,50 @@ class GitHubOperationalState(_GitHubClient):
                     title=str(record.get("title") or ""),
                     draft=bool(record.get("draft", False)),
                     updated_at=_parse_timestamp(record.get("updated_at")),
+                    url=_optional_url(record, "html_url"),
                 )
             )
 
         runs = runs_raw.get("workflow_runs", [])
         if not isinstance(runs, list):
             raise TypeError("workflow_runs must be a list")
-        ci_state = CIState.NONE if not runs else self._ci_state(runs[0])
+        ci_state = CIState.NONE
+        ci_url: str | None = None
+        ci_updated_at: datetime | None = None
+        if runs:
+            ci_state = self._ci_state(runs[0])
+            if isinstance(runs[0], dict):
+                run = cast(JsonObject, runs[0])
+                ci_url = _optional_url(run, "html_url")
+                ci_updated_at = _parse_timestamp(run.get("updated_at"))
 
         release_name: str | None = None
         release_at: datetime | None = None
+        release_url: str | None = None
         if releases_raw and isinstance(releases_raw[0], dict):
             release = cast(JsonObject, releases_raw[0])
             release_name = str(release.get("tag_name") or release.get("name") or "") or None
             release_at = _parse_timestamp(release.get("published_at") or release.get("created_at"))
+            release_url = _optional_url(release, "html_url")
 
         latest_tag: str | None = None
+        latest_tag_url: str | None = None
         if tags_raw and isinstance(tags_raw[0], dict):
             latest_tag = str(cast(JsonObject, tags_raw[0]).get("name") or "") or None
+            if latest_tag is not None:
+                latest_tag_url = f"https://github.com/{repository}/tree/{quote(latest_tag, safe='')}"
 
-        metadata = cast(JsonObject, metadata_raw)
         return OperationalSnapshot(
             open_pull_requests=tuple(pull_requests),
             ci_state=ci_state,
+            ci_url=ci_url,
+            ci_updated_at=ci_updated_at,
             latest_activity_at=_parse_timestamp(metadata.get("pushed_at")),
             latest_release=release_name,
             latest_release_at=release_at,
+            latest_release_url=release_url,
             latest_tag=latest_tag,
+            latest_tag_url=latest_tag_url,
             observed_at=datetime.now(UTC),
         )
 
