@@ -6,128 +6,16 @@
 <title>Code portfolio</title>
 <style>
 :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17211b;background:#f3f5f1;line-height:1.45}
-*{box-sizing:border-box}body{max-width:1760px;margin:0 auto;padding:28px}a{color:inherit}.muted{color:#6b746e}.eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#707a73;font-weight:700}h1,h2{margin:0}h1{font-size:2.2rem;letter-spacing:-.04em}h2{font-size:1rem}.topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:22px}.topbar-meta{text-align:right;font-size:.82rem}.kpis{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:12px;margin-bottom:18px}.kpi,.panel{background:#fff;border:1px solid #e3e7e1;border-radius:14px;box-shadow:0 1px 2px rgba(20,32,24,.04)}.kpi{padding:16px}.kpi strong{display:block;font-size:1.75rem;line-height:1.1;margin-bottom:5px}.kpi span{font-size:.78rem;color:#68726b}.grid-two{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.7fr);gap:16px;margin-bottom:16px}.panel{padding:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}.queue{display:grid;gap:8px}.queue-item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid #edf0ec}.queue-item:first-child{border-top:0}.rank{font-weight:800;color:#89918c}.score{font-variant-numeric:tabular-nums;font-weight:800}.queue-name{font-weight:750;text-decoration:none}.reasons{font-size:.78rem;color:#7a4c2a;margin-top:2px}.lifecycle{display:grid;gap:9px}.lifecycle-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(80px,2fr) 28px;gap:10px;align-items:center;font-size:.8rem}.bar{height:8px;background:#eef1ed;border-radius:999px;overflow:hidden}.bar>span{display:block;height:100%;background:#78847c;border-radius:inherit}.ops{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.ops .panel{text-align:center}.ops strong{font-size:1.55rem;display:block}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(5,minmax(125px,1fr));gap:9px;margin-bottom:12px}.filters input,.filters select{width:100%;border:1px solid #dce2dc;background:white;border-radius:9px;padding:9px 10px;font:inherit;font-size:.82rem}.matrix-wrap{overflow:auto;border:1px solid #e3e7e1;border-radius:14px;background:#fff}.matrix{width:100%;border-collapse:collapse;min-width:1180px}.matrix th,.matrix td{padding:9px 8px;border-bottom:1px solid #edf0ec;text-align:center;font-size:.77rem}.matrix th{position:sticky;top:0;background:#fafbf9;z-index:2;color:#626c65;font-size:.67rem;text-transform:uppercase;letter-spacing:.05em}.matrix th:first-child,.matrix td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:245px}.matrix th:first-child{z-index:3;background:#fafbf9}.project-cell a{font-weight:750;text-decoration:none}.project-cell small{display:block;color:#7b847e;font-size:.7rem;margin-top:2px}.state-dot{display:inline-flex;width:24px;height:24px;border-radius:7px;align-items:center;justify-content:center;font-weight:800}.complete,.passing{color:#24623a;background:#edf7f0}.partial,.pending{color:#7b5b12;background:#fbf4df}.missing,.failing{color:#9b3027;background:#fbecea}.unknown{color:#737b76;background:#f0f2f0}.not_applicable,.none,.cancelled{color:#777;background:#f1f1f1}.badge{display:inline-block;padding:3px 7px;border-radius:999px;background:#f0f2ef;font-size:.68rem}.table-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.75rem;color:#727b75}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid-two{grid-template-columns:1fr}.ops{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(2,1fr)}.topbar{align-items:flex-start;flex-direction:column}.topbar-meta{text-align:left}}@media(max-width:640px){body{padding:16px}.kpis{grid-template-columns:repeat(2,1fr)}.filters,.ops{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{max-width:1760px;margin:0 auto;padding:28px}a{color:inherit}.muted{color:#6b746e}.eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#707a73;font-weight:700}h1,h2{margin:0}h1{font-size:2.2rem;letter-spacing:-.04em}h2{font-size:1rem}.topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:22px}.topbar-meta{text-align:right;font-size:.82rem}.kpis{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:12px;margin-bottom:18px}.kpi,.panel{background:#fff;border:1px solid #e3e7e1;border-radius:14px;box-shadow:0 1px 2px rgba(20,32,24,.04)}.kpi{padding:16px}.kpi strong{display:block;font-size:1.75rem;line-height:1.1;margin-bottom:5px}.kpi span{font-size:.78rem;color:#68726b}.grid-two{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.7fr);gap:16px;margin-bottom:16px}.panel{padding:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}.queue{display:grid;gap:8px}.queue-item{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid #edf0ec}.queue-item:first-child{border-top:0}.rank{font-weight:800;color:#89918c}.score{font-variant-numeric:tabular-nums;font-weight:800}.queue-name{font-weight:750;text-decoration:none}.reasons{font-size:.78rem;color:#7a4c2a;margin-top:2px}.lifecycle{display:grid;gap:9px}.lifecycle-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(80px,2fr) 28px;gap:10px;align-items:center;font-size:.8rem}.bar{height:8px;background:#eef1ed;border-radius:999px;overflow:hidden}.bar>span{display:block;height:100%;background:#78847c;border-radius:inherit}.ops{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}.ops .panel{text-align:center}.ops strong{font-size:1.55rem;display:block}.filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(5,minmax(125px,1fr));gap:9px;margin-bottom:12px}.filters input,.filters select{width:100%;border:1px solid #dce2dc;background:white;border-radius:9px;padding:9px 10px;font:inherit;font-size:.82rem}.matrix-wrap{overflow:auto;border:1px solid #e3e7e1;border-radius:14px;background:#fff}.matrix{width:100%;border-collapse:collapse;min-width:1180px}.matrix th,.matrix td{padding:9px 8px;border-bottom:1px solid #edf0ec;text-align:center;font-size:.77rem}.matrix th{position:sticky;top:0;background:#fafbf9;z-index:2;color:#626c65;font-size:.67rem;text-transform:uppercase;letter-spacing:.05em}.matrix th:first-child,.matrix td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:245px}.matrix th:first-child{z-index:3;background:#fafbf9}.project-cell a{font-weight:750;text-decoration:none}.project-cell small{display:block;color:#7b847e;font-size:.7rem;margin-top:2px}.state-dot{display:inline-flex;width:24px;height:24px;border-radius:7px;align-items:center;justify-content:center;font-weight:800}.complete,.passing{color:#24623a;background:#edf7f0}.partial,.pending{color:#7b5b12;background:#fbf4df}.missing,.failing{color:#9b3027;background:#fbecea}.unknown{color:#737b76;background:#f0f2f0}.not_applicable,.none,.cancelled{color:#777;background:#f1f1f1}.badge{display:inline-block;padding:3px 7px;border-radius:999px;background:#f0f2ef;font-size:.68rem}.fresh{color:#24623a}.stale{color:#7b5b12}.unobserved{color:#737b76}.table-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.75rem;color:#727b75}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid-two{grid-template-columns:1fr}.ops{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:repeat(2,1fr)}.topbar{align-items:flex-start;flex-direction:column}.topbar-meta{text-align:left}}@media(max-width:640px){body{padding:16px}.kpis{grid-template-columns:repeat(2,1fr)}.filters,.ops{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div>
-    <div class="eyebrow">Portfolio control plane</div>
-    <h1>Code portfolio</h1>
-    <div class="muted">Declared lifecycle · engineering health · observed GitHub operations</div>
-  </div>
-  <div class="topbar-meta">
-    <div><strong>{{ dashboard.total_count }}</strong> tracked repositories</div>
-    <div class="muted">Last portfolio refresh: {{ dashboard.generated_at or "not recorded" }}</div>
-  </div>
-</header>
-
-<section class="kpis" aria-label="Portfolio metrics">
-  <div class="kpi"><strong>{{ dashboard.total_count }}</strong><span>Total projects</span></div>
-  <div class="kpi"><strong>{{ dashboard.attention_count }}</strong><span>Need attention</span></div>
-  <div class="kpi"><strong>{{ dashboard.failing_ci_count }}</strong><span>Failing CI</span></div>
-  <div class="kpi"><strong>{{ dashboard.open_pr_count }}</strong><span>Open pull requests</span></div>
-  <div class="kpi"><strong>{{ dashboard.blocked_count }}</strong><span>Blocked</span></div>
-  <div class="kpi"><strong>{{ dashboard.missing_next_action_count }}</strong><span>Missing next action</span></div>
-</section>
-
-<section class="grid-two">
-  <div class="panel">
-    <div class="panel-head"><div><div class="eyebrow">Triage</div><h2>Attention queue</h2></div><span class="badge">highest score first</span></div>
-    <div class="queue">
-      {% for card in dashboard.attention_queue %}
-      <div class="queue-item">
-        <div class="rank">{{ loop.index }}</div>
-        <div><a class="queue-name" href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><div class="reasons">{{ card.reasons|join(" · ") }}</div></div>
-        <div class="score">{{ card.attention_score }}</div>
-      </div>
-      {% else %}<div class="muted">Nothing currently requires attention.</div>{% endfor %}
-    </div>
-  </div>
-  <div class="panel">
-    <div class="panel-head"><div><div class="eyebrow">Declared state</div><h2>Lifecycle distribution</h2></div><span class="badge">{{ dashboard.active_count }} active</span></div>
-    <div class="lifecycle">
-      {% for status, count in dashboard.status_counts.items() %}
-      {% if count %}<div class="lifecycle-row"><span>{{ status.value|replace("_", " ") }}</span><div class="bar"><span style="width:{{ (count * 100 / dashboard.total_count) if dashboard.total_count else 0 }}%"></span></div><strong>{{ count }}</strong></div>{% endif %}
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="ops" aria-label="Live operations">
-  <div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.failing_ci_count }}</strong><span class="muted">failing CI</span></div>
-  <div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.pending_ci_count }}</strong><span class="muted">pending CI</span></div>
-  <div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.open_pr_count }}</strong><span class="muted">open PRs</span></div>
-  <div class="panel"><div class="eyebrow">Workflow</div><strong>{{ dashboard.missing_next_action_count }}</strong><span class="muted">without next action</span></div>
-</section>
-
-<section class="panel" style="margin-bottom:16px">
-  <div class="panel-head"><div><div class="eyebrow">Trend</div><h2>Changes since previous refresh</h2></div><span class="badge">{{ history.improved_count }} improved · {{ history.degraded_count }} degraded</span></div>
-  <div class="muted" style="margin-bottom:8px">Previous snapshot: {{ history.previous_generated_at or "not available" }}</div>
-  <div class="queue">
-    {% for change in history.changes[:12] %}
-    <div class="queue-item"><div class="rank">{{ loop.index }}</div><div><a class="queue-name" href="/projects/{{ change.project_id }}">{{ change.project_name }}</a><div class="reasons">{{ change.message }}</div></div><div class="score">{{ change.direction.value }}</div></div>
-    {% else %}<div class="muted">No tracked changes since the previous portfolio snapshot.</div>{% endfor %}
-  </div>
-</section>
-
-<section class="panel" style="padding-bottom:14px">
-  <div class="panel-head"><div><div class="eyebrow">Portfolio maturity</div><h2>Engineering health matrix</h2></div><span class="badge" id="visible-count">{{ dashboard.total_count }} visible</span></div>
-  <div class="filters">
-    <input id="search" type="search" placeholder="Search project or repository" aria-label="Search projects">
-    <select id="lifecycle"><option value="">All lifecycle</option>{% for status in dashboard.status_counts %}<option value="{{ status.value }}">{{ status.value|replace("_", " ") }}</option>{% endfor %}</select>
-    <select id="priority"><option value="">All priority</option><option value="critical">critical</option><option value="high">high</option><option value="medium">medium</option><option value="low">low</option></select>
-    <select id="ci"><option value="">All CI</option><option value="failing">failing</option><option value="pending">pending</option><option value="passing">passing</option><option value="none">none</option><option value="unknown">unknown</option><option value="cancelled">cancelled</option></select>
-    <select id="health"><option value="">All health</option><option value="missing">has missing</option><option value="unknown">has unknown</option><option value="partial">has partial</option></select>
-    <select id="attention"><option value="">All attention</option><option value="yes">needs attention</option><option value="no">no attention reason</option><option value="prs">has open PRs</option></select>
-  </div>
-  <div class="matrix-wrap">
-    <table class="matrix">
-      <thead><tr><th>Project</th><th>Lifecycle</th><th>Priority</th><th>CI</th><th>PRs</th>{% for dimension in dimensions %}<th title="{{ dimension.value }}">{{ dimension.value }}</th>{% endfor %}</tr></thead>
-      <tbody id="project-rows">
-      {% for card in dashboard.cards %}
-        <tr data-project-row data-search="{{ (card.project.name ~ ' ' ~ card.project.repository)|lower }}" data-lifecycle="{{ card.project.status.value }}" data-priority="{{ card.project.priority.value }}" data-ci="{{ card.project.operational.ci_state.value }}" data-health="{% for dimension in dimensions %}{{ card.project.health.state_for(dimension).value }} {% endfor %}" data-attention="{{ 'yes' if card.reasons else 'no' }}" data-prs="{{ card.project.operational.open_pull_requests|length }}">
-          <td class="project-cell"><a href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><small>{{ card.project.repository }} · score {{ card.attention_score }}</small></td>
-          <td>{{ card.project.status.value|replace("_", " ") }}</td>
-          <td>{{ card.project.priority.value }}</td>
-          <td><span class="state-dot {{ card.project.operational.ci_state.value }}" title="CI {{ card.project.operational.ci_state.value }}">{{ card.project.operational.ci_state.value[0]|upper }}</span></td>
-          <td>{{ card.project.operational.open_pull_requests|length }}</td>
-          {% for dimension in dimensions %}{% set state = card.project.health.state_for(dimension).value %}<td><span class="state-dot {{ state }}" title="{{ dimension.value }}: {{ state }}">{% if state == 'complete' %}✓{% elif state == 'partial' %}◐{% elif state == 'missing' %}×{% elif state == 'unknown' %}?{% else %}–{% endif %}</span></td>{% endfor %}
-        </tr>
-      {% else %}<tr><td colspan="15" class="muted">No projects yet.</td></tr>{% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <div class="table-foot"><span>✓ complete · ◐ partial · × missing · ? unknown</span><span>Click a project for its full detail view.</span></div>
-</section>
-
-<script>
-(() => {
-  const controls = ["search","lifecycle","priority","ci","health","attention"].map(id => document.getElementById(id));
-  const rows = [...document.querySelectorAll("[data-project-row]")];
-  const visible = document.getElementById("visible-count");
-  function applyFilters() {
-    const search = document.getElementById("search").value.trim().toLowerCase();
-    const lifecycle = document.getElementById("lifecycle").value;
-    const priority = document.getElementById("priority").value;
-    const ci = document.getElementById("ci").value;
-    const health = document.getElementById("health").value;
-    const attention = document.getElementById("attention").value;
-    let count = 0;
-    for (const row of rows) {
-      const matches = (!search || row.dataset.search.includes(search)) &&
-        (!lifecycle || row.dataset.lifecycle === lifecycle) &&
-        (!priority || row.dataset.priority === priority) &&
-        (!ci || row.dataset.ci === ci) &&
-        (!health || row.dataset.health.split(" ").includes(health)) &&
-        (!attention || (attention === "prs" ? Number(row.dataset.prs) > 0 : row.dataset.attention === attention));
-      row.hidden = !matches;
-      if (matches) count += 1;
-    }
-    visible.textContent = `${count} visible`;
-  }
-  controls.forEach(control => control.addEventListener("input", applyFilters));
-})();
-</script>
+<header class="topbar"><div><div class="eyebrow">Portfolio control plane</div><h1>Code portfolio</h1><div class="muted">Declared lifecycle · engineering health · observed GitHub operations</div></div><div class="topbar-meta"><div><strong>{{ dashboard.total_count }}</strong> tracked repositories</div><div class="muted">Last portfolio refresh: {{ dashboard.generated_at or "not recorded" }}</div></div></header>
+<section class="kpis" aria-label="Portfolio metrics"><div class="kpi"><strong>{{ dashboard.total_count }}</strong><span>Total projects</span></div><div class="kpi"><strong>{{ dashboard.attention_count }}</strong><span>Need attention</span></div><div class="kpi"><strong>{{ dashboard.failing_ci_count }}</strong><span>Failing CI</span></div><div class="kpi"><strong>{{ dashboard.open_pr_count }}</strong><span>Open pull requests</span></div><div class="kpi"><strong>{{ dashboard.blocked_count }}</strong><span>Blocked</span></div><div class="kpi"><strong>{{ dashboard.missing_next_action_count }}</strong><span>Missing next action</span></div></section>
+<section class="grid-two"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Triage</div><h2>Attention queue</h2></div><span class="badge">highest score first</span></div><div class="queue">{% for card in dashboard.attention_queue %}<div class="queue-item"><div class="rank">{{ loop.index }}</div><div><a class="queue-name" href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><div class="reasons">{{ card.reasons|join(" · ") }}</div></div><div class="score">{{ card.attention_score }}</div></div>{% else %}<div class="muted">Nothing currently requires attention.</div>{% endfor %}</div></div><div class="panel"><div class="panel-head"><div><div class="eyebrow">Declared state</div><h2>Lifecycle distribution</h2></div><span class="badge">{{ dashboard.active_count }} active</span></div><div class="lifecycle">{% for status, count in dashboard.status_counts.items() %}{% if count %}<div class="lifecycle-row"><span>{{ status.value|replace("_", " ") }}</span><div class="bar"><span style="width:{{ (count * 100 / dashboard.total_count) if dashboard.total_count else 0 }}%"></span></div><strong>{{ count }}</strong></div>{% endif %}{% endfor %}</div></div></section>
+<section class="ops" aria-label="Live operations"><div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.failing_ci_count }}</strong><span class="muted">failing CI</span></div><div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.pending_ci_count }}</strong><span class="muted">pending CI</span></div><div class="panel"><div class="eyebrow">Live operations</div><strong>{{ dashboard.open_pr_count }}</strong><span class="muted">open PRs</span></div><div class="panel"><div class="eyebrow">Workflow</div><strong>{{ dashboard.missing_next_action_count }}</strong><span class="muted">without next action</span></div><div class="panel"><div class="eyebrow">Evidence freshness</div><strong class="stale">{{ dashboard.stale_operational_count }}</strong><span class="muted">stale &gt;24h</span></div><div class="panel"><div class="eyebrow">Evidence coverage</div><strong class="unobserved">{{ dashboard.unobserved_operational_count }}</strong><span class="muted">not observed</span></div></section>
+<section class="panel" style="margin-bottom:16px"><div class="panel-head"><div><div class="eyebrow">Trend</div><h2>Changes since previous refresh</h2></div><span class="badge">{{ history.improved_count }} improved · {{ history.degraded_count }} degraded</span></div><div class="muted" style="margin-bottom:8px">Previous snapshot: {{ history.previous_generated_at or "not available" }}</div><div class="queue">{% for change in history.changes[:12] %}<div class="queue-item"><div class="rank">{{ loop.index }}</div><div><a class="queue-name" href="/projects/{{ change.project_id }}">{{ change.project_name }}</a><div class="reasons">{{ change.message }}</div></div><div class="score">{{ change.direction.value }}</div></div>{% else %}<div class="muted">No tracked changes since the previous portfolio snapshot.</div>{% endfor %}</div></section>
+<section class="panel" style="padding-bottom:14px"><div class="panel-head"><div><div class="eyebrow">Portfolio maturity</div><h2>Engineering health matrix</h2></div><span class="badge" id="visible-count">{{ dashboard.total_count }} visible</span></div><div class="filters"><input id="search" type="search" placeholder="Search project or repository" aria-label="Search projects"><select id="lifecycle"><option value="">All lifecycle</option>{% for status in dashboard.status_counts %}<option value="{{ status.value }}">{{ status.value|replace("_", " ") }}</option>{% endfor %}</select><select id="priority"><option value="">All priority</option><option value="critical">critical</option><option value="high">high</option><option value="medium">medium</option><option value="low">low</option></select><select id="ci"><option value="">All CI</option><option value="failing">failing</option><option value="pending">pending</option><option value="passing">passing</option><option value="none">none</option><option value="unknown">unknown</option><option value="cancelled">cancelled</option></select><select id="health"><option value="">All health</option><option value="missing">has missing</option><option value="unknown">has unknown</option><option value="partial">has partial</option></select><select id="attention"><option value="">All attention</option><option value="yes">needs attention</option><option value="no">no attention reason</option><option value="prs">has open PRs</option></select></div><div class="matrix-wrap"><table class="matrix"><thead><tr><th>Project</th><th>Lifecycle</th><th>Priority</th><th>CI</th><th>PRs</th>{% for dimension in dimensions %}<th title="{{ dimension.value }}">{{ dimension.value }}</th>{% endfor %}</tr></thead><tbody id="project-rows">{% for card in dashboard.cards %}<tr data-project-row data-search="{{ (card.project.name ~ ' ' ~ card.project.repository)|lower }}" data-lifecycle="{{ card.project.status.value }}" data-priority="{{ card.project.priority.value }}" data-ci="{{ card.project.operational.ci_state.value }}" data-health="{% for dimension in dimensions %}{{ card.project.health.state_for(dimension).value }} {% endfor %}" data-attention="{{ 'yes' if card.reasons else 'no' }}" data-prs="{{ card.project.operational.open_pull_requests|length }}"><td class="project-cell"><a href="/projects/{{ card.project.id }}">{{ card.project.name }}</a><small>{{ card.project.repository }} · score {{ card.attention_score }} · {% if card.operational_unobserved %}<span class="unobserved">not observed</span>{% elif card.operational_stale %}<span class="stale">stale</span>{% else %}<span class="fresh">fresh</span>{% endif %}</small></td><td>{{ card.project.status.value|replace("_", " ") }}</td><td>{{ card.project.priority.value }}</td><td>{% if card.project.operational.ci_url %}<a href="{{ card.project.operational.ci_url }}" title="Open exact default-branch CI run"><span class="state-dot {{ card.project.operational.ci_state.value }}">{{ card.project.operational.ci_state.value[0]|upper }}</span></a>{% else %}<span class="state-dot {{ card.project.operational.ci_state.value }}" title="CI {{ card.project.operational.ci_state.value }}">{{ card.project.operational.ci_state.value[0]|upper }}</span>{% endif %}</td><td>{{ card.project.operational.open_pull_requests|length }}</td>{% for dimension in dimensions %}{% set state = card.project.health.state_for(dimension).value %}<td><span class="state-dot {{ state }}" title="{{ dimension.value }}: {{ state }}">{% if state == 'complete' %}✓{% elif state == 'partial' %}◐{% elif state == 'missing' %}×{% elif state == 'unknown' %}?{% else %}–{% endif %}</span></td>{% endfor %}</tr>{% else %}<tr><td colspan="15" class="muted">No projects yet.</td></tr>{% endfor %}</tbody></table></div><div class="table-foot"><span>✓ complete · ◐ partial · × missing · ? unknown</span><span>CI links open exact default-branch evidence.</span></div></section>
+<script>(()=>{const controls=["search","lifecycle","priority","ci","health","attention"].map(id=>document.getElementById(id));const rows=[...document.querySelectorAll("[data-project-row]")];const visible=document.getElementById("visible-count");function applyFilters(){const search=document.getElementById("search").value.trim().toLowerCase();const lifecycle=document.getElementById("lifecycle").value;const priority=document.getElementById("priority").value;const ci=document.getElementById("ci").value;const health=document.getElementById("health").value;const attention=document.getElementById("attention").value;let count=0;for(const row of rows){const matches=(!search||row.dataset.search.includes(search))&&(!lifecycle||row.dataset.lifecycle===lifecycle)&&(!priority||row.dataset.priority===priority)&&(!ci||row.dataset.ci===ci)&&(!health||row.dataset.health.split(" ").includes(health))&&(!attention||(attention==="prs"?Number(row.dataset.prs)>0:row.dataset.attention===attention));row.hidden=!matches;if(matches)count+=1}visible.textContent=`${count} visible`}controls.forEach(control=>control.addEventListener("input",applyFilters))})();</script>
 </body>
 </html>

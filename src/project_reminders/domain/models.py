@@ -79,6 +79,7 @@ class PullRequestSnapshot:
     title: str
     draft: bool
     updated_at: datetime | None = None
+    url: str | None = None
 
     def __post_init__(self) -> None:
         if self.number <= 0:
@@ -92,14 +93,19 @@ class OperationalSnapshot:
 
     open_pull_requests: tuple[PullRequestSnapshot, ...] = ()
     ci_state: CIState = CIState.UNKNOWN
+    ci_url: str | None = None
+    ci_updated_at: datetime | None = None
     latest_activity_at: datetime | None = None
     latest_release: str | None = None
     latest_release_at: datetime | None = None
+    latest_release_url: str | None = None
     latest_tag: str | None = None
+    latest_tag_url: str | None = None
     observed_at: datetime | None = None
 
     def __post_init__(self) -> None:
         for field_name, value in (
+            ("ci_updated_at", self.ci_updated_at),
             ("latest_activity_at", self.latest_activity_at),
             ("latest_release_at", self.latest_release_at),
             ("observed_at", self.observed_at),
