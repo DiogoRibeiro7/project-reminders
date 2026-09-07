@@ -254,7 +254,8 @@ class GitHubOperationalState(_GitHubClient):
         if tags_raw and isinstance(tags_raw[0], dict):
             latest_tag = str(cast(JsonObject, tags_raw[0]).get("name") or "") or None
             if latest_tag is not None:
-                latest_tag_url = f"https://github.com/{repository}/tree/{quote(latest_tag, safe='')}"
+                encoded_tag = quote(latest_tag, safe="")
+                latest_tag_url = f"https://github.com/{repository}/tree/{encoded_tag}"
 
         return OperationalSnapshot(
             open_pull_requests=tuple(pull_requests),
