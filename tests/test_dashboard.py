@@ -1,5 +1,7 @@
 """Attention-ranking and portfolio KPI tests."""
 
+from datetime import UTC, datetime, timedelta
+
 from project_reminders.application.dashboard import build_dashboard
 from project_reminders.domain.enums import (
     CIState,
@@ -92,3 +94,30 @@ def test_dashboard_aggregates_live_portfolio_metrics() -> None:
     assert dashboard.blocked_count == 1
     assert dashboard.missing_next_action_count == 1
     assert dashboard.attention_queue[0].project.id == "failing"
+
+
+def test_dashboard_separates_stale_from_unobserved_operational_evidence() -> None:
+    now = datetime(2026, 9, 7, 8, 0, tzinfo=UTC)
+    stale = Project(
+        id="stale",
+        name="Stale",
+        repository="owner/stale",
+        operational=OperationalSnapshot(observed_at=now - timedelta(hours=25)),
+    )
+    fresh = Project(
+        id="fresh",
+        name="Fresh",
+        repository="owner/fresh",
+        operational=OperationalSnapshot(observed_at=now - timedelta(hours=2)),
+    )
+    unobserved = Project(id="unknown", name="Unknown", repository="owner/unknown")
+
+    dashboard = build_dashboard(Portfolio(projects=(stale, fresh, unobserved)), now=now)
+    cards = {card.project.id: card for card in dashboard.cards}
+
+    assert dashboard.stale_operational_count == 1
+    assert dashboard.unobserved_operational_count == 1
+    assert cards["stale"].operational_stale
+    assert not cards["stale"].operational_unobserved
+    assert not cards["fresh"].operational_stale
+    assert cards["unknown"].operational_unobserved
