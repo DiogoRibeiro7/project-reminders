@@ -61,6 +61,16 @@
   <div class="panel"><div class="eyebrow">Workflow</div><strong>{{ dashboard.missing_next_action_count }}</strong><span class="muted">without next action</span></div>
 </section>
 
+<section class="panel" style="margin-bottom:16px">
+  <div class="panel-head"><div><div class="eyebrow">Trend</div><h2>Changes since previous refresh</h2></div><span class="badge">{{ history.improved_count }} improved · {{ history.degraded_count }} degraded</span></div>
+  <div class="muted" style="margin-bottom:8px">Previous snapshot: {{ history.previous_generated_at or "not available" }}</div>
+  <div class="queue">
+    {% for change in history.changes[:12] %}
+    <div class="queue-item"><div class="rank">{{ loop.index }}</div><div><a class="queue-name" href="/projects/{{ change.project_id }}">{{ change.project_name }}</a><div class="reasons">{{ change.message }}</div></div><div class="score">{{ change.direction.value }}</div></div>
+    {% else %}<div class="muted">No tracked changes since the previous portfolio snapshot.</div>{% endfor %}
+  </div>
+</section>
+
 <section class="panel" style="padding-bottom:14px">
   <div class="panel-head"><div><div class="eyebrow">Portfolio maturity</div><h2>Engineering health matrix</h2></div><span class="badge" id="visible-count">{{ dashboard.total_count }} visible</span></div>
   <div class="filters">

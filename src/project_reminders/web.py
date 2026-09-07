@@ -7,8 +7,10 @@ from fastapi.responses import HTMLResponse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from project_reminders.application.dashboard import build_dashboard, build_project_card
+from project_reminders.application.history import compare_portfolios
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension
+from project_reminders.infrastructure.git_history import GitPortfolioHistory
 
 _TEMPLATE_DIR = Path(__file__).with_name("templates")
 
@@ -26,22 +28,36 @@ def create_app(root: Path | None = None) -> FastAPI:
     @app.get("/", response_class=HTMLResponse)
     def dashboard_page() -> HTMLResponse:
         service = build_service(project_root)
-        dashboard = build_dashboard(service.load())
+        portfolio = service.load()
+        dashboard = build_dashboard(portfolio)
+        previous = GitPortfolioHistory(project_root).previous(portfolio)
+        history = compare_portfolios(previous, portfolio)
         template = environment.get_template("dashboard.html")
-        return HTMLResponse(template.render(dashboard=dashboard, dimensions=tuple(HealthDimension)))
+        return HTMLResponse(
+            template.render(
+                dashboard=dashboard,
+                history=history,
+                dimensions=tuple(HealthDimension),
+            )
+        )
 
     @app.get("/projects/{identifier}", response_class=HTMLResponse)
     def project_page(identifier: str) -> HTMLResponse:
         service = build_service(project_root)
+        portfolio = service.load()
         try:
             project = service.find(identifier)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
+        previous = GitPortfolioHistory(project_root).previous(portfolio)
+        history = compare_portfolios(previous, portfolio)
         template = environment.get_template("project.html")
         return HTMLResponse(
             template.render(
                 card=build_project_card(project),
                 project=project,
+                project_changes=history.for_project(project.id),
+                previous_generated_at=history.previous_generated_at,
                 dimensions=tuple(HealthDimension),
             )
         )
