@@ -78,23 +78,19 @@ def _change(project: Project, direction: ChangeDirection, message: str) -> Proje
 def _compare_project(before: Project, after: Project) -> list[ProjectChange]:
     changes: list[ProjectChange] = []
     if before.status != after.status:
-        changes.append(
-            _change(after, ChangeDirection.CHANGED, f"Lifecycle: {before.status.value} → {after.status.value}")
-        )
+        message = f"Lifecycle: {before.status.value} → {after.status.value}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     if before.priority != after.priority:
-        changes.append(
-            _change(after, ChangeDirection.CHANGED, f"Priority: {before.priority.value} → {after.priority.value}")
-        )
+        message = f"Priority: {before.priority.value} → {after.priority.value}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     before_action = before.next_action.description if before.next_action else None
     after_action = after.next_action.description if after.next_action else None
     if before_action != after_action:
-        changes.append(
-            _change(after, ChangeDirection.CHANGED, f"Next action: {before_action or '—'} → {after_action or '—'}")
-        )
+        message = f"Next action: {before_action or '—'} → {after_action or '—'}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     if before.blocker != after.blocker:
-        changes.append(
-            _change(after, ChangeDirection.CHANGED, f"Blocker: {before.blocker or '—'} → {after.blocker or '—'}")
-        )
+        message = f"Blocker: {before.blocker or '—'} → {after.blocker or '—'}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     if before.operational.ci_state != after.operational.ci_state:
         changes.append(
             _change(
@@ -106,13 +102,13 @@ def _compare_project(before: Project, after: Project) -> list[ProjectChange]:
     before_prs = len(before.operational.open_pull_requests)
     after_prs = len(after.operational.open_pull_requests)
     if before_prs != after_prs:
-        changes.append(_change(after, ChangeDirection.CHANGED, f"Open PRs: {before_prs} → {after_prs}"))
+        message = f"Open PRs: {before_prs} → {after_prs}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     before_release = before.operational.latest_release or before.operational.latest_tag
     after_release = after.operational.latest_release or after.operational.latest_tag
     if before_release != after_release:
-        changes.append(
-            _change(after, ChangeDirection.CHANGED, f"Release/tag: {before_release or '—'} → {after_release or '—'}")
-        )
+        message = f"Release/tag: {before_release or '—'} → {after_release or '—'}"
+        changes.append(_change(after, ChangeDirection.CHANGED, message))
     for dimension in HealthDimension:
         old_state = before.health.state_for(dimension)
         new_state = after.health.state_for(dimension)
@@ -140,12 +136,23 @@ def compare_portfolios(previous: Portfolio | None, current: Portfolio) -> Portfo
         current_project = after[project_id]
         old_project = before.get(project_id)
         if old_project is None:
-            changes.append(_change(current_project, ChangeDirection.CHANGED, "Project added to portfolio"))
+            changes.append(
+                _change(
+                    current_project,
+                    ChangeDirection.CHANGED,
+                    "Project added to portfolio",
+                )
+            )
         else:
             changes.extend(_compare_project(old_project, current_project))
     for project_id in sorted(set(before) - set(after)):
         old_project = before[project_id]
         changes.append(
-            ProjectChange(project_id, old_project.name, ChangeDirection.CHANGED, "Project removed from portfolio")
+            ProjectChange(
+                project_id,
+                old_project.name,
+                ChangeDirection.CHANGED,
+                "Project removed from portfolio",
+            )
         )
     return PortfolioHistory(previous_generated_at=previous.generated_at, changes=tuple(changes))
