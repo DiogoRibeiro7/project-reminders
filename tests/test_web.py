@@ -8,8 +8,8 @@ from fastapi.testclient import TestClient
 from project_reminders.web import create_app
 
 
-def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def _write_portfolio(root: Path) -> None:
+    data_dir = root / "data"
     data_dir.mkdir()
     (data_dir / "projects.json").write_text(
         json.dumps(
@@ -23,6 +23,7 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
                         "repository": "owner/alpha",
                         "status": "hardening",
                         "priority": "high",
+                        "summary": "Alpha summary",
                         "health": {"tests": "complete", "lint": "missing"},
                         "operational": {
                             "ci_state": "failing",
@@ -37,6 +38,10 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
         encoding="utf-8",
     )
 
+
+def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
+    _write_portfolio(tmp_path)
+
     response = TestClient(create_app(tmp_path)).get("/")
 
     assert response.status_code == 200
@@ -48,3 +53,17 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
     assert "1 visible" in response.text
     assert 'data-ci="failing"' in response.text
     assert 'data-health="complete unknown missing' in response.text
+
+
+def test_project_detail_renders_control_panel(tmp_path: Path) -> None:
+    _write_portfolio(tmp_path)
+
+    response = TestClient(create_app(tmp_path)).get("/projects/alpha")
+
+    assert response.status_code == 200
+    assert "Project control panel" in response.text
+    assert "Why this needs attention" in response.text
+    assert "Latest CI is failing" in response.text
+    assert "Known missing engineering health: lint" in response.text
+    assert "Engineering maturity" in response.text
+    assert "https://github.com/owner/alpha" in response.text
