@@ -1,7 +1,21 @@
 """Deterministic repository-assessment tests."""
 
-from project_reminders.application.assessment import RepositoryEvidence, assess_repository
+from project_reminders.application.assessment import (
+    AssessmentService,
+    RepositoryEvidence,
+    assess_repository,
+)
 from project_reminders.domain.enums import HealthDimension, HealthState
+
+
+class _Gateway:
+    def evidence(self, repository: str) -> RepositoryEvidence:
+        if repository.endswith("broken"):
+            raise RuntimeError("not accessible")
+        return RepositoryEvidence(
+            paths=frozenset({"README.md", "tests/test_core.py"}),
+            complete_tree=True,
+        )
 
 
 def test_complete_python_repository_detects_core_engineering_signals() -> None:
@@ -108,3 +122,13 @@ def test_tag_without_release_is_partial_release() -> None:
     )
 
     assert health.state_for(HealthDimension.RELEASE) is HealthState.PARTIAL
+
+
+def test_resilient_assessment_preserves_successes_when_one_repository_fails() -> None:
+    result = AssessmentService(_Gateway()).assess_many_resilient(
+        ("owner/one", "owner/broken", "owner/two")
+    )
+
+    assert result.updated == ("owner/one", "owner/two")
+    assert result.failed == (("owner/broken", "not accessible"),)
+    assert result.assessments["owner/one"].state_for(HealthDimension.TESTS) is HealthState.COMPLETE

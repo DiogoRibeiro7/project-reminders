@@ -56,7 +56,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     paths = evidence.paths
     states: dict[HealthDimension, HealthState] = {}
 
-    # Tests
     if _has_prefix(paths, "tests") or _has_prefix(paths, "test"):
         states[HealthDimension.TESTS] = HealthState.COMPLETE
     elif any(path.startswith("test_") or "/test_" in path for path in paths):
@@ -64,7 +63,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.TESTS] = _missing_or_unknown(evidence)
 
-    # CI
     if _has_prefix(paths, ".github/workflows") or _has_any(
         paths, {".gitlab-ci.yml", "azure-pipelines.yml"}
     ):
@@ -72,8 +70,9 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.CI] = _missing_or_unknown(evidence)
 
-    # Documentation
-    has_readme = any(path.casefold() in {"readme.md", "readme.rst", "readme.txt"} for path in paths)
+    has_readme = any(
+        path.casefold() in {"readme.md", "readme.rst", "readme.txt"} for path in paths
+    )
     has_docs = _has_prefix(paths, "docs") or _has_prefix(paths, "documentation")
     if has_readme and has_docs:
         states[HealthDimension.DOCUMENTATION] = HealthState.COMPLETE
@@ -82,7 +81,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.DOCUMENTATION] = _missing_or_unknown(evidence)
 
-    # Packaging
     packaging_files = {
         "pyproject.toml",
         "setup.py",
@@ -96,8 +94,14 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         HealthState.COMPLETE if _has_any(paths, packaging_files) else _missing_or_unknown(evidence)
     )
 
-    # Linting
-    lint_files = {"ruff.toml", ".ruff.toml", ".flake8", ".eslintrc", ".eslintrc.json", "biome.json"}
+    lint_files = {
+        "ruff.toml",
+        ".ruff.toml",
+        ".flake8",
+        ".eslintrc",
+        ".eslintrc.json",
+        "biome.json",
+    }
     has_lint_tool = bool(evidence.pyproject_tools & {"ruff", "flake8", "pylint"})
     states[HealthDimension.LINT] = (
         HealthState.COMPLETE
@@ -105,7 +109,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         else _config_absence_state(evidence)
     )
 
-    # Typing: only make a negative claim for languages where a recognizable typing gate exists.
     language = (evidence.primary_language or "").casefold()
     typing_files = {"mypy.ini", "pyrightconfig.json"}
     has_typing_tool = bool(evidence.pyproject_tools & {"mypy", "pyright"})
@@ -116,7 +119,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.TYPING] = HealthState.UNKNOWN
 
-    # Security
     security_signals = {
         "SECURITY.md",
         ".github/dependabot.yml",
@@ -127,10 +129,11 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         ".github/workflows/security.yaml",
     }
     states[HealthDimension.SECURITY] = (
-        HealthState.COMPLETE if _has_any(paths, security_signals) else _missing_or_unknown(evidence)
+        HealthState.COMPLETE
+        if _has_any(paths, security_signals)
+        else _missing_or_unknown(evidence)
     )
 
-    # Reproducibility
     lock_files = {
         "poetry.lock",
         "uv.lock",
@@ -140,7 +143,12 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
         "yarn.lock",
         "Cargo.lock",
     }
-    environment_files = {"Dockerfile", "docker-compose.yml", "compose.yml", "environment.yml"}
+    environment_files = {
+        "Dockerfile",
+        "docker-compose.yml",
+        "compose.yml",
+        "environment.yml",
+    }
     has_lock = _has_any(paths, lock_files)
     has_environment = _has_any(paths, environment_files)
     if has_lock and has_environment:
@@ -150,7 +158,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.REPRODUCIBILITY] = _missing_or_unknown(evidence)
 
-    # Release
     if evidence.has_release:
         states[HealthDimension.RELEASE] = HealthState.COMPLETE
     elif evidence.has_tag:
@@ -158,7 +165,6 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.RELEASE] = HealthState.MISSING
 
-    # Demo / runnable example
     demo_paths = {"examples", "example", "demo", "notebooks"}
     states[HealthDimension.DEMO] = (
         HealthState.COMPLETE
@@ -177,6 +183,20 @@ class AssessmentResult:
     health: EngineeringHealth
 
 
+@dataclass(frozen=True, slots=True)
+class AssessmentRefreshResult:
+    """Resilient multi-repository assessment result."""
+
+    assessments: Mapping[str, EngineeringHealth]
+    failed: tuple[tuple[str, str], ...]
+
+    @property
+    def updated(self) -> tuple[str, ...]:
+        """Repository names successfully assessed."""
+
+        return tuple(sorted(self.assessments, key=str.casefold))
+
+
 class AssessmentService:
     """Assess tracked repositories without altering lifecycle state."""
 
@@ -190,9 +210,21 @@ class AssessmentService:
         return AssessmentResult(repository=repository, health=assess_repository(evidence))
 
     def assess_many(self, repositories: tuple[str, ...]) -> Mapping[str, EngineeringHealth]:
-        """Assess repositories in stable order."""
+        """Assess repositories in stable order, failing fast on collection errors."""
 
         return {
             repository: self.assess(repository).health
             for repository in sorted(repositories, key=str.casefold)
         }
+
+    def assess_many_resilient(self, repositories: tuple[str, ...]) -> AssessmentRefreshResult:
+        """Assess repositories independently and report collection failures."""
+
+        assessments: dict[str, EngineeringHealth] = {}
+        failed: list[tuple[str, str]] = []
+        for repository in sorted(repositories, key=str.casefold):
+            try:
+                assessments[repository] = self.assess(repository).health
+            except (RuntimeError, TypeError, ValueError) as exc:
+                failed.append((repository, str(exc)))
+        return AssessmentRefreshResult(assessments=assessments, failed=tuple(failed))
