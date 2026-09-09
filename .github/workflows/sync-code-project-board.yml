@@ -8,8 +8,11 @@ on:
       - data/projects.json
       - data/github_project.json
       - scripts/sync_project_board.py
+      - scripts/sync_project_board_paginated.py
       - scripts/ensure_unclassified_board_option.py
       - scripts/ensure_project_views.py
+      - src/project_reminders/application/board_inventory.py
+      - src/project_reminders/application/board_markers.py
       - src/project_reminders/application/project_views.py
       - .github/workflows/sync-code-project-board.yml
   workflow_dispatch:
@@ -42,4 +45,5 @@ jobs:
       - name: Synchronize Code Projects board
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
-        run: python scripts/sync_project_board.py
+          PYTHONPATH: src:.
+        run: python scripts/sync_project_board_paginated.py
