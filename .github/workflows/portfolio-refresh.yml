@@ -52,11 +52,3 @@ jobs:
             git push origin HEAD:main
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Ensure unclassified lifecycle option
-        env:
-          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
-        run: poetry run python scripts/ensure_unclassified_board_option.py
-      - name: Synchronize GitHub Project board
-        env:
-          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
-        run: poetry run python scripts/sync_project_board.py
