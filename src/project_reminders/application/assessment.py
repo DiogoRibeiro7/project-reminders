@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -197,6 +198,13 @@ class AssessmentRefreshResult:
         return tuple(sorted(self.assessments, key=str.casefold))
 
 
+@dataclass(frozen=True, slots=True)
+class _SafeAssessment:
+    repository: str
+    health: EngineeringHealth | None = None
+    error: str | None = None
+
+
 class AssessmentService:
     """Assess tracked repositories without altering lifecycle state."""
 
@@ -217,14 +225,37 @@ class AssessmentService:
             for repository in sorted(repositories, key=str.casefold)
         }
 
-    def assess_many_resilient(self, repositories: tuple[str, ...]) -> AssessmentRefreshResult:
-        """Assess repositories independently and report collection failures."""
+    def _assess_safely(self, repository: str) -> _SafeAssessment:
+        try:
+            return _SafeAssessment(repository=repository, health=self.assess(repository).health)
+        except (RuntimeError, TypeError, ValueError) as exc:
+            return _SafeAssessment(repository=repository, error=str(exc))
+
+    def assess_many_resilient(
+        self,
+        repositories: tuple[str, ...],
+        *,
+        max_workers: int = 1,
+    ) -> AssessmentRefreshResult:
+        """Assess independently with deterministic output and bounded concurrency."""
+
+        if max_workers < 1:
+            raise ValueError("max_workers must be at least 1")
+        ordered = tuple(sorted(repositories, key=str.casefold))
+        if not ordered:
+            return AssessmentRefreshResult(assessments={}, failed=())
+
+        if max_workers == 1:
+            results = tuple(self._assess_safely(repository) for repository in ordered)
+        else:
+            with ThreadPoolExecutor(max_workers=min(max_workers, len(ordered))) as executor:
+                results = tuple(executor.map(self._assess_safely, ordered))
 
         assessments: dict[str, EngineeringHealth] = {}
         failed: list[tuple[str, str]] = []
-        for repository in sorted(repositories, key=str.casefold):
-            try:
-                assessments[repository] = self.assess(repository).health
-            except (RuntimeError, TypeError, ValueError) as exc:
-                failed.append((repository, str(exc)))
+        for result in results:
+            if result.health is not None:
+                assessments[result.repository] = result.health
+            elif result.error is not None:
+                failed.append((result.repository, result.error))
         return AssessmentRefreshResult(assessments=assessments, failed=tuple(failed))
