@@ -34,6 +34,8 @@ def _board(client: GraphQLClient, owner: str, number: int) -> JsonObject:
             nodes {
               __typename
               ... on ProjectV2Field { id name dataType databaseId }
+              ... on ProjectV2SingleSelectField { id name databaseId }
+              ... on ProjectV2IterationField { id name databaseId }
             }
           }
         }
