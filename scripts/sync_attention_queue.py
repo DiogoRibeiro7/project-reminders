@@ -276,7 +276,10 @@ def _ensure_view(token: str, owner: str, number: int, board: JsonObject) -> bool
         "layout": "table",
         "filter": "attention-reasons:>0 -Lifecycle:archived,abandoned",
         "visible_fields": [database_ids[name] for name in required],
-        "sort_by": [[database_ids["Attention"], "desc"], [database_ids["Priority"], "desc"]],
+        "sort_by": [
+            [database_ids["Attention"], "desc"],
+            [database_ids["Priority"], "desc"],
+        ],
     }
     endpoint = f"{REST_API_URL}/users/{quote(owner, safe='')}/projectsV2/{number}/views"
     _request(token, endpoint, data=payload)
@@ -290,7 +293,10 @@ def sync(root: Path, token: str) -> tuple[int, int, bool]:
     owner = str(binding["owner"])
     number = int(binding["number"])
     portfolio = JsonPortfolioRepository(root / "data" / "projects.json").load()
-    cards = {card.project.id: card for card in (build_project_card(project) for project in portfolio.projects)}
+    cards = {
+        card.project.id: card
+        for card in (build_project_card(project) for project in portfolio.projects)
+    }
 
     client = GraphQLClient(token)
     board = _board(client, owner, number)
