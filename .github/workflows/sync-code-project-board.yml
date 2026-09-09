@@ -9,10 +9,12 @@ on:
       - data/github_project.json
       - scripts/sync_project_board.py
       - scripts/sync_project_board_paginated.py
+      - scripts/sync_portfolio_view_metrics.py
       - scripts/ensure_unclassified_board_option.py
       - scripts/ensure_project_views.py
       - src/project_reminders/application/board_inventory.py
       - src/project_reminders/application/board_markers.py
+      - src/project_reminders/application/board_metrics.py
       - src/project_reminders/application/project_views.py
       - .github/workflows/sync-code-project-board.yml
   workflow_dispatch:
@@ -37,13 +39,18 @@ jobs:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
           PYTHONPATH: src
         run: python scripts/ensure_unclassified_board_option.py
-      - name: Ensure managed project views
-        env:
-          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
-          PYTHONPATH: src
-        run: python scripts/ensure_project_views.py
       - name: Synchronize Code Projects board
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
           PYTHONPATH: src:.
         run: python scripts/sync_project_board_paginated.py
+      - name: Synchronize typed portfolio view metrics
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          PYTHONPATH: src:.
+        run: python scripts/sync_portfolio_view_metrics.py
+      - name: Ensure managed project views
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          PYTHONPATH: src
+        run: python scripts/ensure_project_views.py
