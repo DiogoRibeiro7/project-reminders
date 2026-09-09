@@ -2,6 +2,14 @@ name: Refresh Code Portfolio
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/refresh_portfolio.py
+      - src/project_reminders/application/github_import.py
+      - src/project_reminders/infrastructure/github.py
+      - .github/workflows/portfolio-refresh.yml
   schedule:
     - cron: "17 */12 * * *"
 
