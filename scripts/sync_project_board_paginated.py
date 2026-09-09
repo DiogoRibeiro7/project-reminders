@@ -1,4 +1,4 @@
-"""Synchronize Project #16 using complete item pagination and duplicate repair."""
+"""Synchronize Project #16 using complete pagination, dedupe and delta writes."""
 
 from __future__ import annotations
 
@@ -7,16 +7,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from project_reminders.application.board_delta import body_with_last_activity, needs_card_sync
 from project_reminders.application.board_inventory import reconcile_managed_items
 from scripts.sync_project_board import (
     GraphQLClient,
     _archive_item,
-    _create_item,
+    _body,
     _ensure_fields,
     _field_values,
+    _last_activity,
     _load_json,
     _update_board_description,
-    _update_draft_if_needed,
     _update_fields,
 )
 
@@ -105,8 +106,74 @@ def _fetch_all_items(client: GraphQLClient, owner: str, number: int) -> list[obj
         cursor = next_cursor
 
 
-def sync(root: Path, token: str) -> tuple[int, int, int, int]:
-    """Synchronize all tracked projects and repair duplicate managed cards."""
+def _desired_body(project: JsonObject) -> str:
+    return body_with_last_activity(_body(project), _last_activity(project))
+
+
+def _create_item(client: GraphQLClient, project_id: str, project: JsonObject) -> str:
+    query = """
+    mutation($project: ID!, $title: String!, $body: String!) {
+      addProjectV2DraftIssue(input: {projectId: $project, title: $title, body: $body}) {
+        projectItem { id }
+      }
+    }
+    """
+    data = client.execute(
+        query,
+        {
+            "project": project_id,
+            "title": str(project["name"]),
+            "body": _desired_body(project),
+        },
+    )
+    result = data.get("addProjectV2DraftIssue")
+    if not isinstance(result, dict):
+        raise RuntimeError(f"Could not add board item for {project['name']}")
+    item = result.get("projectItem")
+    if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+        raise RuntimeError(f"Could not read board item ID for {project['name']}")
+    return str(item["id"])
+
+
+def _update_draft(client: GraphQLClient, item: JsonObject, project: JsonObject) -> None:
+    content = item.get("content")
+    if not isinstance(content, dict):
+        raise RuntimeError(f"Managed item for {project['name']} has no draft content")
+    draft_id = content.get("id")
+    if not isinstance(draft_id, str):
+        raise RuntimeError(f"Managed item for {project['name']} has no draft issue ID")
+    query = """
+    mutation($draft: ID!, $title: String!, $body: String!) {
+      updateProjectV2DraftIssue(
+        input: {draftIssueId: $draft, title: $title, body: $body}
+      ) {
+        draftIssue { id }
+      }
+    }
+    """
+    client.execute(
+        query,
+        {
+            "draft": draft_id,
+            "title": str(project["name"]),
+            "body": _desired_body(project),
+        },
+    )
+
+
+def _item_needs_sync(item: JsonObject, project: JsonObject) -> bool:
+    content = item.get("content")
+    if not isinstance(content, dict):
+        return True
+    current_title = str(content.get("title") or "")
+    current_body = str(content.get("body") or "")
+    return current_title != str(project["name"]) or needs_card_sync(
+        current_body, _desired_body(project)
+    )
+
+
+def sync(root: Path, token: str) -> tuple[int, int, int, int, int]:
+    """Synchronize tracked projects with duplicate repair and delta field writes."""
 
     binding = _load_json(root / "data" / "github_project.json")
     portfolio = _load_json(root / "data" / "projects.json")
@@ -132,6 +199,7 @@ def sync(root: Path, token: str) -> tuple[int, int, int, int]:
 
     created = 0
     updated = 0
+    field_synced = 0
     expected_ids: set[str] = set()
     for project in projects:
         tracked_id = str(project["id"])
@@ -140,11 +208,16 @@ def sync(root: Path, token: str) -> tuple[int, int, int, int]:
         if item is None:
             item_id = _create_item(client, project_id, project)
             created += 1
-        else:
-            item_id = str(item["id"])
-            if _update_draft_if_needed(client, item, project):
-                updated += 1
-        _update_fields(client, project_id, item_id, _field_values(fields, project))
+            _update_fields(client, project_id, item_id, _field_values(fields, project))
+            field_synced += 1
+            continue
+
+        item_id = str(item["id"])
+        if _item_needs_sync(item, project):
+            _update_draft(client, item, project)
+            _update_fields(client, project_id, item_id, _field_values(fields, project))
+            updated += 1
+            field_synced += 1
 
     stale_archived = 0
     for tracked_id, item in existing.items():
@@ -152,7 +225,7 @@ def sync(root: Path, token: str) -> tuple[int, int, int, int]:
             _archive_item(client, project_id, str(item["id"]))
             stale_archived += 1
 
-    return created, updated, stale_archived, duplicate_archived
+    return created, updated, field_synced, stale_archived, duplicate_archived
 
 
 def main() -> int:
@@ -161,13 +234,13 @@ def main() -> int:
     root = Path(os.environ.get("PROJECT_REMINDERS_ROOT", Path.cwd()))
     token = os.environ.get("PROJECT_TOKEN", "")
     try:
-        created, updated, stale_archived, duplicate_archived = sync(root, token)
+        created, updated, field_synced, stale_archived, duplicate_archived = sync(root, token)
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     print(
         "Board sync complete: "
-        f"created={created}, updated={updated}, "
+        f"created={created}, updated={updated}, field_synced={field_synced}, "
         f"stale_archived={stale_archived}, duplicate_archived={duplicate_archived}"
     )
     return 0
