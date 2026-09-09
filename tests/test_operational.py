@@ -2,6 +2,8 @@
 
 from datetime import UTC, datetime
 
+import pytest
+
 from project_reminders.application.dashboard import build_dashboard
 from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.application.services import PortfolioService
@@ -31,23 +33,42 @@ class _Gateway:
         )
 
 
-def test_refresh_isolates_repository_failures(tmp_path) -> None:  # type: ignore[no-untyped-def]
+def _service(tmp_path) -> PortfolioService:  # type: ignore[no-untyped-def]
     store = JsonPortfolioRepository(tmp_path / "projects.json")
     store.save(
         Portfolio(
             projects=(
                 Project(id="one", name="One", repository="owner/one"),
                 Project(id="broken", name="Broken", repository="owner/broken"),
+                Project(id="two", name="Two", repository="owner/two"),
             )
         )
     )
-    service = PortfolioService(store)
+    return PortfolioService(store)
+
+
+def test_refresh_isolates_repository_failures(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    service = _service(tmp_path)
     result = OperationalRefreshService(service, _Gateway()).refresh(write=True)
 
-    assert result.updated == ("owner/one",)
+    assert result.updated == ("owner/one", "owner/two")
     assert result.failed[0][0] == "owner/broken"
     assert service.find("one").operational.ci_state is CIState.FAILING
     assert service.find("broken").operational.ci_state is CIState.UNKNOWN
+
+
+def test_concurrent_refresh_preserves_deterministic_order(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    service = _service(tmp_path)
+    result = OperationalRefreshService(service, _Gateway()).refresh(max_workers=3)
+
+    assert result.updated == ("owner/one", "owner/two")
+    assert result.failed == (("owner/broken", "rate limited"),)
+
+
+def test_refresh_rejects_invalid_worker_bound(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    service = _service(tmp_path)
+    with pytest.raises(ValueError, match="max_workers"):
+        OperationalRefreshService(service, _Gateway()).refresh(max_workers=0)
 
 
 def test_failing_ci_raises_dashboard_attention() -> None:

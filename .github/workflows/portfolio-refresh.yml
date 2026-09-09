@@ -8,6 +8,8 @@ on:
     paths:
       - scripts/refresh_portfolio.py
       - src/project_reminders/application/github_import.py
+      - src/project_reminders/application/assessment.py
+      - src/project_reminders/application/operational.py
       - src/project_reminders/infrastructure/github.py
       - .github/workflows/portfolio-refresh.yml
   schedule:
@@ -37,6 +39,7 @@ jobs:
       - name: Discover and refresh portfolio evidence
         env:
           PROJECT_SCAN_TOKEN: ${{ secrets.PROJECT_SCAN_TOKEN }}
+          PROJECT_REFRESH_WORKERS: "8"
         run: poetry run python scripts/refresh_portfolio.py
       - name: Commit refreshed portfolio state
         id: commit

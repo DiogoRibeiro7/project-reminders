@@ -16,6 +16,8 @@ from project_reminders.infrastructure.github import (
     GitHubRepositoryEvidence,
 )
 
+DEFAULT_REFRESH_WORKERS = 8
+
 
 @dataclass(frozen=True, slots=True)
 class RefreshFailure:
@@ -33,12 +35,24 @@ def _token() -> str:
     return token
 
 
+def _worker_count() -> int:
+    raw = os.environ.get("PROJECT_REFRESH_WORKERS", str(DEFAULT_REFRESH_WORKERS))
+    try:
+        workers = int(raw)
+    except ValueError as exc:
+        raise ValueError("PROJECT_REFRESH_WORKERS must be an integer") from exc
+    if workers < 1 or workers > 32:
+        raise ValueError("PROJECT_REFRESH_WORKERS must be between 1 and 32")
+    return workers
+
+
 def main() -> int:
     """Discover eligible owned repos, then refresh tracked evidence resiliently."""
 
     root = Path.cwd()
     service = build_service(root)
     token = _token()
+    workers = _worker_count()
 
     importer = GitHubImportService(service, GitHubRepositoryDiscovery(token))
     imported = importer.import_repositories()
@@ -49,12 +63,12 @@ def main() -> int:
     repositories = tuple(project.repository for project in projects)
 
     assessor = AssessmentService(GitHubRepositoryEvidence(token))
-    assessment = assessor.assess_many_resilient(repositories)
+    assessment = assessor.assess_many_resilient(repositories, max_workers=workers)
     if assessment.assessments:
         service.apply_health_many(assessment.assessments)
 
     observer = OperationalRefreshService(service, GitHubOperationalState(token))
-    operational = observer.refresh(write=True)
+    operational = observer.refresh(write=True, max_workers=workers)
 
     failures = [
         RefreshFailure(repository, "assessment", error)
@@ -71,7 +85,8 @@ def main() -> int:
         f"imported={len(imported)} "
         f"assessed={len(assessment.updated)} "
         f"observed={len(operational.updated)} "
-        f"failures={len(failures)}"
+        f"failures={len(failures)} "
+        f"workers={workers}"
     )
     for project in imported:
         print(f"NEW {project.repository} [unclassified]")
