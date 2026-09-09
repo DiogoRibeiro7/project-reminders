@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from project_reminders.application.dashboard import build_project_card
+from project_reminders.domain.models import Project
+
 JsonObject = dict[str, Any]
 
 
@@ -27,3 +30,10 @@ def activity_date(project: JsonObject) -> str | None:
     if not isinstance(value, str) or len(value) < 10:
         return None
     return value[:10]
+
+
+def attention_metrics(project: Project) -> tuple[int, int]:
+    """Return the dashboard's exact attention score and reason count."""
+
+    card = build_project_card(project)
+    return card.attention_score, len(card.reasons)
