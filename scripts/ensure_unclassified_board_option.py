@@ -108,7 +108,11 @@ def main() -> int:
         if not isinstance(lifecycle, dict):
             raise RuntimeError("Lifecycle field was not found")
         raw_options = lifecycle.get("options")
-        options = [option for option in raw_options if isinstance(option, dict)] if isinstance(raw_options, list) else []
+        options = (
+            [option for option in raw_options if isinstance(option, dict)]
+            if isinstance(raw_options, list)
+            else []
+        )
         if any(option.get("name") == "unclassified" for option in options):
             print("Lifecycle option unclassified already exists")
             return 0
