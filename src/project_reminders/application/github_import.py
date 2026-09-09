@@ -84,7 +84,7 @@ class GitHubImportService:
         include_forks: bool = False,
         include_archived: bool = False,
     ) -> tuple[Project, ...]:
-        """Import eligible repositories with no inferred maturity or health claims."""
+        """Import eligible repositories without inventing lifecycle or health claims."""
 
         plan = self.plan(include_forks=include_forks, include_archived=include_archived)
         imported: list[Project] = []
@@ -92,7 +92,7 @@ class GitHubImportService:
             project = self._portfolio.add_project(
                 name=repository.name,
                 repository=repository.full_name,
-                status=ProjectStatus.IDEA,
+                status=ProjectStatus.UNCLASSIFIED,
                 priority=Priority.MEDIUM,
                 summary=repository.description,
             )

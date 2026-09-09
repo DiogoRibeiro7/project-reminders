@@ -6,6 +6,7 @@ from enum import StrEnum
 class ProjectStatus(StrEnum):
     """Lifecycle state of a code project."""
 
+    UNCLASSIFIED = "unclassified"
     IDEA = "idea"
     PROTOTYPE = "prototype"
     ACTIVE_DEVELOPMENT = "active_development"

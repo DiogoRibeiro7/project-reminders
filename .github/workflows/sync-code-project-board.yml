@@ -8,6 +8,7 @@ on:
       - data/projects.json
       - data/github_project.json
       - scripts/sync_project_board.py
+      - scripts/ensure_unclassified_board_option.py
       - .github/workflows/sync-code-project-board.yml
   workflow_dispatch:
 
@@ -26,6 +27,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - name: Ensure unclassified lifecycle option
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          PYTHONPATH: src
+        run: python scripts/ensure_unclassified_board_option.py
       - name: Synchronize Code Projects board
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
