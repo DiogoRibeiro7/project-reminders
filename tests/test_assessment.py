@@ -1,5 +1,7 @@
 """Deterministic repository-assessment tests."""
 
+import pytest
+
 from project_reminders.application.assessment import (
     AssessmentService,
     RepositoryEvidence,
@@ -132,3 +134,18 @@ def test_resilient_assessment_preserves_successes_when_one_repository_fails() ->
     assert result.updated == ("owner/one", "owner/two")
     assert result.failed == (("owner/broken", "not accessible"),)
     assert result.assessments["owner/one"].state_for(HealthDimension.TESTS) is HealthState.COMPLETE
+
+
+def test_concurrent_resilient_assessment_preserves_deterministic_output() -> None:
+    result = AssessmentService(_Gateway()).assess_many_resilient(
+        ("owner/two", "owner/broken", "owner/one"),
+        max_workers=3,
+    )
+
+    assert result.updated == ("owner/one", "owner/two")
+    assert result.failed == (("owner/broken", "not accessible"),)
+
+
+def test_assessment_rejects_invalid_worker_bound() -> None:
+    with pytest.raises(ValueError, match="max_workers"):
+        AssessmentService(_Gateway()).assess_many_resilient(("owner/one",), max_workers=0)
