@@ -1,4 +1,4 @@
-"""Refresh engineering health and live GitHub state for the tracked portfolio."""
+"""Discover, assess and observe the owned GitHub repository portfolio."""
 
 from __future__ import annotations
 
@@ -7,10 +7,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from project_reminders.application.assessment import AssessmentService
+from project_reminders.application.github_import import GitHubImportService
 from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.bootstrap import build_service
 from project_reminders.infrastructure.github import (
     GitHubOperationalState,
+    GitHubRepositoryDiscovery,
     GitHubRepositoryEvidence,
 )
 
@@ -32,15 +34,19 @@ def _token() -> str:
 
 
 def main() -> int:
-    """Refresh every tracked repository while preserving prior values on failure."""
+    """Discover eligible owned repos, then refresh tracked evidence resiliently."""
 
     root = Path.cwd()
     service = build_service(root)
+    token = _token()
+
+    importer = GitHubImportService(service, GitHubRepositoryDiscovery(token))
+    imported = importer.import_repositories()
+
     projects = tuple(
         sorted(service.load().projects, key=lambda project: project.repository.casefold())
     )
     repositories = tuple(project.repository for project in projects)
-    token = _token()
 
     assessor = AssessmentService(GitHubRepositoryEvidence(token))
     assessment = assessor.assess_many_resilient(repositories)
@@ -62,10 +68,13 @@ def main() -> int:
     print(
         "Portfolio refresh: "
         f"tracked={len(projects)} "
+        f"imported={len(imported)} "
         f"assessed={len(assessment.updated)} "
         f"observed={len(operational.updated)} "
         f"failures={len(failures)}"
     )
+    for project in imported:
+        print(f"NEW {project.repository} [unclassified]")
     for failure in failures:
         print(f"WARN {failure.repository} [{failure.stage}]: {failure.error}")
 
