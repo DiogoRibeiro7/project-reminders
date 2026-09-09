@@ -1,7 +1,5 @@
 """Managed board inventory reconciliation tests."""
 
-import pytest
-
 from project_reminders.application.board_inventory import reconcile_managed_items
 
 
