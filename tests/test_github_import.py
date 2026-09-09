@@ -61,7 +61,7 @@ def test_plan_skips_existing_forks_and_archived_by_default(tmp_path) -> None:  #
     assert [item.name for item in plan.skipped_archived] == ["old"]
 
 
-def test_import_does_not_infer_lifecycle_or_health(tmp_path) -> None:  # type: ignore[no-untyped-def]
+def test_import_marks_discovered_repository_unclassified(tmp_path) -> None:  # type: ignore[no-untyped-def]
     portfolio = PortfolioService(JsonPortfolioRepository(tmp_path / "projects.json"))
     importer = GitHubImportService(portfolio, StubDiscovery((_repository("new"),)))
 
@@ -69,8 +69,20 @@ def test_import_does_not_infer_lifecycle_or_health(tmp_path) -> None:  # type: i
 
     assert len(imported) == 1
     project = imported[0]
-    assert project.status is ProjectStatus.IDEA
+    assert project.status is ProjectStatus.UNCLASSIFIED
     assert project.priority is Priority.MEDIUM
     assert project.health.state_for(HealthDimension.CI) is HealthState.UNKNOWN
     assert project.health.state_for(HealthDimension.TESTS) is HealthState.UNKNOWN
     assert project.next_action is None
+
+
+def test_repeated_import_is_idempotent(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    portfolio = PortfolioService(JsonPortfolioRepository(tmp_path / "projects.json"))
+    importer = GitHubImportService(portfolio, StubDiscovery((_repository("new"),)))
+
+    first = importer.import_repositories()
+    second = importer.import_repositories()
+
+    assert len(first) == 1
+    assert second == ()
+    assert len(portfolio.load().projects) == 1
