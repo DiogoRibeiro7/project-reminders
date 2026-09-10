@@ -1,22 +1,42 @@
-"""Create the managed GitHub Project views that do not already exist."""
+"""Create and reconcile declaratively managed GitHub Project views."""
 
 from __future__ import annotations
 
 import json
 import os
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
-from project_reminders.application.project_views import missing_view_specs
+from project_reminders.application.project_views import MANAGED_VIEW_SPECS, ViewSpec
 
 GRAPHQL_URL = "https://api.github.com/graphql"
 REST_API_URL = "https://api.github.com"
 API_VERSION = "2026-03-10"
 JsonObject = dict[str, Any]
+
+
+@dataclass(frozen=True, slots=True)
+class FieldRef:
+    """GitHub Project field identifiers for REST and GraphQL view APIs."""
+
+    node_id: str
+    database_id: int
+
+
+@dataclass(frozen=True, slots=True)
+class ViewState:
+    """Supported mutable state for one existing Project view."""
+
+    node_id: str
+    name: str
+    layout: str
+    filter_query: str
+    visible_fields: tuple[str, ...]
 
 
 def _load_json(path: Path) -> JsonObject:
@@ -64,18 +84,39 @@ def _graphql(token: str, query: str, variables: JsonObject) -> JsonObject:
     return data
 
 
-def _board_metadata(token: str, owner: str, number: int) -> tuple[str, dict[str, int]]:
+def _board_metadata(
+    token: str,
+    owner: str,
+    number: int,
+) -> tuple[dict[str, ViewState], dict[str, FieldRef]]:
     query = """
     query($login: String!, $number: Int!) {
       user(login: $login) {
         projectV2(number: $number) {
-          views(first: 100) { nodes { name } }
+          views(first: 100) {
+            nodes {
+              id
+              name
+              layout
+              filter
+              configuration {
+                visibleFields(first: 100) {
+                  nodes {
+                    __typename
+                    ... on ProjectV2Field { id name }
+                    ... on ProjectV2SingleSelectField { id name }
+                    ... on ProjectV2IterationField { id name }
+                  }
+                }
+              }
+            }
+          }
           fields(first: 100) {
             nodes {
               __typename
-              ... on ProjectV2Field { name databaseId }
-              ... on ProjectV2SingleSelectField { name databaseId }
-              ... on ProjectV2IterationField { name databaseId }
+              ... on ProjectV2Field { id name databaseId }
+              ... on ProjectV2SingleSelectField { id name databaseId }
+              ... on ProjectV2IterationField { id name databaseId }
             }
           }
         }
@@ -94,59 +135,81 @@ def _board_metadata(token: str, owner: str, number: int) -> tuple[str, dict[str,
     view_nodes = views_connection.get("nodes") if isinstance(views_connection, dict) else None
     if not isinstance(view_nodes, list):
         raise RuntimeError("GitHub Project views were not returned")
-    existing_names = {
-        str(view.get("name"))
-        for view in view_nodes
-        if isinstance(view, dict) and isinstance(view.get("name"), str)
-    }
+    views: dict[str, ViewState] = {}
+    for raw in view_nodes:
+        if not isinstance(raw, dict):
+            continue
+        node_id = raw.get("id")
+        name = raw.get("name")
+        layout = raw.get("layout")
+        if not isinstance(node_id, str) or not isinstance(name, str) or not isinstance(layout, str):
+            continue
+        configuration = raw.get("configuration")
+        visible_connection = (
+            configuration.get("visibleFields") if isinstance(configuration, dict) else None
+        )
+        visible_nodes = (
+            visible_connection.get("nodes") if isinstance(visible_connection, dict) else None
+        )
+        visible_fields = tuple(
+            str(field["name"])
+            for field in (visible_nodes if isinstance(visible_nodes, list) else [])
+            if isinstance(field, dict) and isinstance(field.get("name"), str)
+        )
+        views[name.casefold()] = ViewState(
+            node_id=node_id,
+            name=name,
+            layout=layout.casefold(),
+            filter_query=str(raw.get("filter") or ""),
+            visible_fields=visible_fields,
+        )
 
     fields_connection = project.get("fields")
     field_nodes = fields_connection.get("nodes") if isinstance(fields_connection, dict) else None
     if not isinstance(field_nodes, list):
         raise RuntimeError("GitHub Project fields were not returned")
-    field_ids: dict[str, int] = {}
+    fields: dict[str, FieldRef] = {}
     for field in field_nodes:
         if not isinstance(field, dict):
             continue
         name = field.get("name")
+        node_id = field.get("id")
         database_id = field.get("databaseId")
-        if isinstance(name, str) and isinstance(database_id, int):
-            field_ids[name] = database_id
-    return "\n".join(sorted(existing_names)), field_ids
+        if isinstance(name, str) and isinstance(node_id, str) and isinstance(database_id, int):
+            fields[name] = FieldRef(node_id=node_id, database_id=database_id)
+    return views, fields
 
 
-def _field_ids(names: tuple[str, ...], fields: dict[str, int]) -> list[int]:
+def _field_refs(names: tuple[str, ...], fields: dict[str, FieldRef]) -> tuple[FieldRef, ...]:
     missing = [name for name in names if name not in fields]
     if missing:
         raise RuntimeError(f"Project fields not found: {', '.join(missing)}")
-    return [fields[name] for name in names]
+    return tuple(fields[name] for name in names)
 
 
 def _create_view(
     token: str,
     owner: str,
     project_number: int,
-    spec_name: str,
-    layout: str,
-    filter_query: str,
-    visible_fields: tuple[str, ...],
-    sort_by: tuple[tuple[str, str], ...],
-    group_by: tuple[str, ...],
-    vertical_group_by: tuple[str, ...],
-    fields: dict[str, int],
+    spec: ViewSpec,
+    fields: dict[str, FieldRef],
 ) -> None:
     payload: JsonObject = {
-        "name": spec_name,
-        "layout": layout,
-        "filter": filter_query,
-        "visible_fields": _field_ids(visible_fields, fields),
+        "name": spec.name,
+        "layout": spec.layout,
+        "filter": spec.filter_query,
+        "visible_fields": [ref.database_id for ref in _field_refs(spec.visible_fields, fields)],
     }
-    if sort_by:
-        payload["sort_by"] = [[fields[name], direction] for name, direction in sort_by]
-    if group_by:
-        payload["group_by"] = _field_ids(group_by, fields)
-    if vertical_group_by:
-        payload["vertical_group_by"] = _field_ids(vertical_group_by, fields)
+    if spec.sort_by:
+        payload["sort_by"] = [
+            [fields[name].database_id, direction] for name, direction in spec.sort_by
+        ]
+    if spec.group_by:
+        payload["group_by"] = [ref.database_id for ref in _field_refs(spec.group_by, fields)]
+    if spec.vertical_group_by:
+        payload["vertical_group_by"] = [
+            ref.database_id for ref in _field_refs(spec.vertical_group_by, fields)
+        ]
 
     endpoint = (
         f"{REST_API_URL}/users/{quote(owner, safe='')}/projectsV2/{project_number}/views"
@@ -154,8 +217,61 @@ def _create_view(
     _request(token, endpoint, data=payload)
 
 
+def _needs_update(state: ViewState, spec: ViewSpec) -> bool:
+    return (
+        state.name != spec.name
+        or state.layout != spec.layout.casefold()
+        or state.filter_query != spec.filter_query
+        or state.visible_fields != spec.visible_fields
+    )
+
+
+def _update_view(
+    token: str,
+    state: ViewState,
+    spec: ViewSpec,
+    fields: dict[str, FieldRef],
+) -> None:
+    query = """
+    mutation(
+      $view: ID!,
+      $name: String!,
+      $layout: ProjectV2ViewLayout!,
+      $filter: String!,
+      $configuration: ProjectV2ViewConfigurationInput!
+    ) {
+      updateProjectV2View(
+        input: {
+          viewId: $view,
+          name: $name,
+          layout: $layout,
+          filter: $filter,
+          configuration: $configuration
+        }
+      ) {
+        projectV2View { id }
+      }
+    }
+    """
+    _graphql(
+        token,
+        query,
+        {
+            "view": state.node_id,
+            "name": spec.name,
+            "layout": spec.layout.upper(),
+            "filter": spec.filter_query,
+            "configuration": {
+                "visibleFieldIds": [
+                    ref.node_id for ref in _field_refs(spec.visible_fields, fields)
+                ]
+            },
+        },
+    )
+
+
 def main() -> int:
-    """Provision missing managed views without modifying existing views."""
+    """Provision missing views and reconcile supported state for owned views."""
 
     root = Path(os.environ.get("PROJECT_REMINDERS_ROOT", Path.cwd()))
     token = os.environ.get("PROJECT_TOKEN", "")
@@ -163,30 +279,28 @@ def main() -> int:
         binding = _load_json(root / "data" / "github_project.json")
         owner = str(binding["owner"])
         number = int(binding["number"])
-        existing_text, fields = _board_metadata(token, owner, number)
-        existing_names = set(existing_text.splitlines()) if existing_text else set()
-        specs = missing_view_specs(existing_names)
-        for spec in specs:
-            _create_view(
-                token,
-                owner,
-                number,
-                spec.name,
-                spec.layout,
-                spec.filter_query,
-                spec.visible_fields,
-                spec.sort_by,
-                spec.group_by,
-                spec.vertical_group_by,
-                fields,
-            )
+        existing, fields = _board_metadata(token, owner, number)
+        created: list[ViewSpec] = []
+        updated: list[ViewSpec] = []
+        for spec in MANAGED_VIEW_SPECS:
+            state = existing.get(spec.name.casefold())
+            if state is None:
+                _create_view(token, owner, number, spec, fields)
+                created.append(spec)
+            elif _needs_update(state, spec):
+                _update_view(token, state, spec, fields)
+                updated.append(spec)
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
-    print(f"Project views: existing={len(existing_names)}, created={len(specs)}")
-    for spec in specs:
+    print(
+        f"Project views: existing={len(existing)}, created={len(created)}, updated={len(updated)}"
+    )
+    for spec in created:
         print(f"  + {spec.name} [{spec.layout}]")
+    for spec in updated:
+        print(f"  ~ {spec.name} [{spec.layout}]")
     return 0
 
 
