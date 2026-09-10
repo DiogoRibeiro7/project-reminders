@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any
 
 from scripts.sync_project_board import GraphQLClient
@@ -105,9 +106,9 @@ def sync_metric_values(
     client: GraphQLClient,
     project_id: str,
     item_id: str,
-    fields: dict[str, JsonObject],
-    current: dict[str, int | str | None],
-    desired: dict[str, int | str | None],
+    fields: Mapping[str, JsonObject],
+    current: Mapping[str, int | str | None],
+    desired: Mapping[str, int | str | None],
 ) -> bool:
     """Write all changed derived metrics in at most one GraphQL mutation."""
 
