@@ -10,7 +10,7 @@ on:
       - scripts/sync_project_board.py
       - scripts/sync_project_board_paginated.py
       - scripts/sync_portfolio_view_metrics.py
-      - scripts/sync_attention_queue.py
+      - scripts/sync_attention_metrics.py
       - scripts/ensure_unclassified_board_option.py
       - scripts/ensure_project_views.py
       - src/project_reminders/application/board_inventory.py
@@ -50,11 +50,11 @@ jobs:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
           PYTHONPATH: src:.
         run: python scripts/sync_portfolio_view_metrics.py
-      - name: Synchronize attention queue
+      - name: Synchronize attention metrics
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
           PYTHONPATH: src:.
-        run: python scripts/sync_attention_queue.py
+        run: python scripts/sync_attention_metrics.py
       - name: Ensure managed project views
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
