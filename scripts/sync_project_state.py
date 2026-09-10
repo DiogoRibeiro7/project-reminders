@@ -1,4 +1,4 @@
-"""Synchronize Project #16 using complete pagination, dedupe and delta writes."""
+"""Synchronize board cards and derived metrics from one paginated Project snapshot."""
 
 from __future__ import annotations
 
@@ -9,6 +9,17 @@ from typing import Any
 
 from project_reminders.application.board_delta import body_with_last_activity, needs_card_sync
 from project_reminders.application.board_inventory import reconcile_managed_items
+from project_reminders.application.board_metrics import (
+    activity_date,
+    attention_metrics,
+    health_score,
+)
+from project_reminders.infrastructure.json_store import JsonPortfolioRepository
+from scripts.project_metric_fields import (
+    current_metric_values,
+    ensure_metric_fields,
+    sync_metric_values,
+)
 from scripts.sync_project_board import (
     GraphQLClient,
     _archive_item,
@@ -67,6 +78,19 @@ def _fetch_all_items(client: GraphQLClient, owner: str, number: int) -> list[obj
               content {
                 __typename
                 ... on DraftIssue { id title body }
+              }
+              fieldValues(first: 30) {
+                nodes {
+                  __typename
+                  ... on ProjectV2ItemFieldNumberValue {
+                    number
+                    field { ... on ProjectV2Field { name } }
+                  }
+                  ... on ProjectV2ItemFieldDateValue {
+                    date
+                    field { ... on ProjectV2Field { name } }
+                  }
+                }
               }
             }
             pageInfo { hasNextPage endCursor }
@@ -172,22 +196,36 @@ def _item_needs_sync(item: JsonObject, project: JsonObject) -> bool:
     )
 
 
-def sync(root: Path, token: str) -> tuple[int, int, int, int, int]:
-    """Synchronize tracked projects with duplicate repair and delta field writes."""
+def _desired_metrics(raw_project: JsonObject, typed_project: object) -> dict[str, int | str | None]:
+    score, reasons = attention_metrics(typed_project)  # type: ignore[arg-type]
+    return {
+        "Health score": health_score(raw_project),
+        "Activity date": activity_date(raw_project),
+        "Attention": score,
+        "Attention reasons": reasons,
+    }
+
+
+def sync(root: Path, token: str) -> tuple[int, int, int, int, int, int, int]:
+    """Synchronize cards and metrics from one complete Project item snapshot."""
 
     binding = _load_json(root / "data" / "github_project.json")
-    portfolio = _load_json(root / "data" / "projects.json")
+    raw_portfolio = _load_json(root / "data" / "projects.json")
+    typed_portfolio = JsonPortfolioRepository(root / "data" / "projects.json").load()
     owner = str(binding["owner"])
     number = int(binding["number"])
-    raw_projects = portfolio.get("projects")
+
+    raw_projects = raw_portfolio.get("projects")
     if not isinstance(raw_projects, list):
         raise TypeError("data/projects.json must contain a projects list")
     projects = [project for project in raw_projects if isinstance(project, dict)]
+    typed_by_id = {project.id: project for project in typed_portfolio.projects}
 
     client = GraphQLClient(token)
     board = _fetch_board_metadata(client, owner, number)
     project_id = str(board["id"])
-    fields = _ensure_fields(client, board)
+    standard_fields = _ensure_fields(client, board)
+    metric_fields = ensure_metric_fields(client, board)
     inventory = reconcile_managed_items(_fetch_all_items(client, owner, number))
     existing = inventory.canonical
     _update_board_description(client, project_id)
@@ -200,24 +238,53 @@ def sync(root: Path, token: str) -> tuple[int, int, int, int, int]:
     created = 0
     updated = 0
     field_synced = 0
+    metrics_managed = 0
+    metrics_changed = 0
     expected_ids: set[str] = set()
+
     for project in projects:
         tracked_id = str(project["id"])
         expected_ids.add(tracked_id)
+        typed_project = typed_by_id.get(tracked_id)
         item = existing.get(tracked_id)
+
         if item is None:
             item_id = _create_item(client, project_id, project)
             created += 1
-            _update_fields(client, project_id, item_id, _field_values(fields, project))
+            _update_fields(client, project_id, item_id, _field_values(standard_fields, project))
             field_synced += 1
+            if typed_project is not None:
+                metrics_managed += 1
+                empty_metrics = {name: None for name in metric_fields}
+                if sync_metric_values(
+                    client,
+                    project_id,
+                    item_id,
+                    metric_fields,
+                    empty_metrics,
+                    _desired_metrics(project, typed_project),
+                ):
+                    metrics_changed += 1
             continue
 
         item_id = str(item["id"])
         if _item_needs_sync(item, project):
             _update_draft(client, item, project)
-            _update_fields(client, project_id, item_id, _field_values(fields, project))
+            _update_fields(client, project_id, item_id, _field_values(standard_fields, project))
             updated += 1
             field_synced += 1
+
+        if typed_project is not None:
+            metrics_managed += 1
+            if sync_metric_values(
+                client,
+                project_id,
+                item_id,
+                metric_fields,
+                current_metric_values(item),
+                _desired_metrics(project, typed_project),
+            ):
+                metrics_changed += 1
 
     stale_archived = 0
     for tracked_id, item in existing.items():
@@ -225,23 +292,41 @@ def sync(root: Path, token: str) -> tuple[int, int, int, int, int]:
             _archive_item(client, project_id, str(item["id"]))
             stale_archived += 1
 
-    return created, updated, field_synced, stale_archived, duplicate_archived
+    return (
+        created,
+        updated,
+        field_synced,
+        stale_archived,
+        duplicate_archived,
+        metrics_managed,
+        metrics_changed,
+    )
 
 
 def main() -> int:
-    """Run complete board synchronization from the repository root."""
+    """Run complete board and derived-metric synchronization."""
 
     root = Path(os.environ.get("PROJECT_REMINDERS_ROOT", Path.cwd()))
     token = os.environ.get("PROJECT_TOKEN", "")
     try:
-        created, updated, field_synced, stale_archived, duplicate_archived = sync(root, token)
+        result = sync(root, token)
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    (
+        created,
+        updated,
+        field_synced,
+        stale_archived,
+        duplicate_archived,
+        metrics_managed,
+        metrics_changed,
+    ) = result
     print(
-        "Board sync complete: "
+        "Project state sync complete: "
         f"created={created}, updated={updated}, field_synced={field_synced}, "
-        f"stale_archived={stale_archived}, duplicate_archived={duplicate_archived}"
+        f"stale_archived={stale_archived}, duplicate_archived={duplicate_archived}, "
+        f"metrics_managed={metrics_managed}, metrics_changed={metrics_changed}"
     )
     return 0
 
