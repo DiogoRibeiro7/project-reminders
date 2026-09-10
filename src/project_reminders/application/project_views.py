@@ -183,6 +183,23 @@ MANAGED_VIEW_SPECS: tuple[ViewSpec, ...] = (
         ),
         sort_by=(("Activity date", "asc"), ("Priority", "desc")),
     ),
+    ViewSpec(
+        name="Attention Queue",
+        layout="table",
+        filter_query="attention-reasons:>0 -Lifecycle:archived,abandoned",
+        visible_fields=(
+            "Title",
+            "Lifecycle",
+            "Priority",
+            "CI",
+            "Open PRs",
+            "Next action",
+            "Attention",
+            "Attention reasons",
+            "Repository URL",
+        ),
+        sort_by=(("Attention", "desc"), ("Priority", "desc")),
+    ),
 )
 
 
