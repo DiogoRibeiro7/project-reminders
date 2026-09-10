@@ -30,13 +30,14 @@ def create_app(root: Path | None = None) -> FastAPI:
         service = build_service(project_root)
         portfolio = service.load()
         dashboard = build_dashboard(portfolio)
-        previous = GitPortfolioHistory(project_root).previous(portfolio)
-        history = compare_portfolios(previous, portfolio)
+        history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
+        history = compare_portfolios(history_lookup.previous, portfolio)
         template = environment.get_template("dashboard.html")
         return HTMLResponse(
             template.render(
                 dashboard=dashboard,
                 history=history,
+                history_availability=history_lookup.availability.value,
                 dimensions=tuple(HealthDimension),
             )
         )
@@ -49,8 +50,8 @@ def create_app(root: Path | None = None) -> FastAPI:
             project = service.find(identifier)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
-        previous = GitPortfolioHistory(project_root).previous(portfolio)
-        history = compare_portfolios(previous, portfolio)
+        history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
+        history = compare_portfolios(history_lookup.previous, portfolio)
         template = environment.get_template("project.html")
         return HTMLResponse(
             template.render(
@@ -58,6 +59,7 @@ def create_app(root: Path | None = None) -> FastAPI:
                 project=project,
                 project_changes=history.for_project(project.id),
                 previous_generated_at=history.previous_generated_at,
+                history_availability=history_lookup.availability.value,
                 dimensions=tuple(HealthDimension),
             )
         )
