@@ -1,15 +1,11 @@
-"""Synchronize exact dashboard attention metrics and ensure an Attention Queue view."""
+"""Synchronize exact dashboard attention metrics on managed Project cards."""
 
 from __future__ import annotations
 
-import json
 import os
 import sys
 from pathlib import Path
 from typing import Any
-from urllib.error import HTTPError, URLError
-from urllib.parse import quote
-from urllib.request import Request, urlopen
 
 from project_reminders.application.board_markers import parse_managed_marker
 from project_reminders.application.dashboard import build_project_card
@@ -17,10 +13,7 @@ from project_reminders.infrastructure.json_store import JsonPortfolioRepository
 from scripts.sync_project_board import GraphQLClient, _load_json
 
 JsonObject = dict[str, Any]
-REST_API_URL = "https://api.github.com"
-API_VERSION = "2026-03-10"
 FIELD_SPECS = (("Attention", "NUMBER"), ("Attention reasons", "NUMBER"))
-VIEW_NAME = "Attention Queue"
 
 
 def _board(client: GraphQLClient, owner: str, number: int) -> JsonObject:
@@ -29,13 +22,12 @@ def _board(client: GraphQLClient, owner: str, number: int) -> JsonObject:
       user(login: $login) {
         projectV2(number: $number) {
           id
-          views(first: 100) { nodes { name } }
           fields(first: 100) {
             nodes {
               __typename
-              ... on ProjectV2Field { id name dataType databaseId }
-              ... on ProjectV2SingleSelectField { id name databaseId }
-              ... on ProjectV2IterationField { id name databaseId }
+              ... on ProjectV2Field { id name dataType }
+              ... on ProjectV2SingleSelectField { id name }
+              ... on ProjectV2IterationField { id name }
             }
           }
         }
@@ -63,7 +55,7 @@ def _create_field(
       createProjectV2Field(input: {projectId: $project, name: $name, dataType: $type}) {
         projectV2Field {
           __typename
-          ... on ProjectV2Field { id name dataType databaseId }
+          ... on ProjectV2Field { id name dataType }
         }
       }
     }
@@ -215,81 +207,8 @@ def _update_values(
     )
 
 
-def _request(token: str, url: str, *, data: JsonObject) -> object:
-    body = json.dumps(data).encode("utf-8")
-    request = Request(
-        url,
-        data=body,
-        method="POST",
-        headers={
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-            "User-Agent": "project-reminders",
-            "X-GitHub-Api-Version": API_VERSION,
-        },
-    )
-    try:
-        with urlopen(request, timeout=30) as response:
-            return json.loads(response.read().decode("utf-8"))
-    except HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"GitHub API HTTP {exc.code}: {detail}") from exc
-    except URLError as exc:
-        raise RuntimeError(f"GitHub API request failed: {exc.reason}") from exc
-
-
-def _ensure_view(token: str, owner: str, number: int, board: JsonObject) -> bool:
-    views = board.get("views")
-    raw_nodes = views.get("nodes") if isinstance(views, dict) else None
-    nodes = raw_nodes if isinstance(raw_nodes, list) else []
-    existing = {
-        str(view.get("name")).casefold()
-        for view in nodes
-        if isinstance(view, dict) and isinstance(view.get("name"), str)
-    }
-    if VIEW_NAME.casefold() in existing:
-        return False
-
-    fields = board.get("fields")
-    raw_fields = fields.get("nodes") if isinstance(fields, dict) else None
-    field_nodes = raw_fields if isinstance(raw_fields, list) else []
-    database_ids = {
-        str(field.get("name")): field.get("databaseId")
-        for field in field_nodes
-        if isinstance(field, dict) and isinstance(field.get("databaseId"), int)
-    }
-    required = (
-        "Title",
-        "Lifecycle",
-        "Priority",
-        "CI",
-        "Open PRs",
-        "Next action",
-        "Attention",
-        "Attention reasons",
-        "Repository URL",
-    )
-    missing = [name for name in required if name not in database_ids]
-    if missing:
-        raise RuntimeError(f"Project fields not found: {', '.join(missing)}")
-    payload: JsonObject = {
-        "name": VIEW_NAME,
-        "layout": "table",
-        "filter": "attention-reasons:>0 -Lifecycle:archived,abandoned",
-        "visible_fields": [database_ids[name] for name in required],
-        "sort_by": [
-            [database_ids["Attention"], "desc"],
-            [database_ids["Priority"], "desc"],
-        ],
-    }
-    endpoint = f"{REST_API_URL}/users/{quote(owner, safe='')}/projectsV2/{number}/views"
-    _request(token, endpoint, data=payload)
-    return True
-
-
-def sync(root: Path, token: str) -> tuple[int, int, bool]:
-    """Synchronize exact attention metrics and ensure the queue view."""
+def sync(root: Path, token: str) -> tuple[int, int]:
+    """Synchronize exact attention metrics for managed Project cards."""
 
     binding = _load_json(root / "data" / "github_project.json")
     owner = str(binding["owner"])
@@ -322,25 +241,20 @@ def sync(root: Path, token: str) -> tuple[int, int, bool]:
             _update_values(client, str(board["id"]), item_id, fields, *desired)
             changed += 1
 
-    refreshed_board = _board(client, owner, number)
-    created_view = _ensure_view(token, owner, number, refreshed_board)
-    return managed, changed, created_view
+    return managed, changed
 
 
 def main() -> int:
-    """Run attention synchronization from the repository root."""
+    """Run attention metric synchronization from the repository root."""
 
     root = Path(os.environ.get("PROJECT_REMINDERS_ROOT", Path.cwd()))
     token = os.environ.get("PROJECT_TOKEN", "")
     try:
-        managed, changed, created_view = sync(root, token)
+        managed, changed = sync(root, token)
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    print(
-        "Attention queue: "
-        f"managed={managed}, changed={changed}, view_created={str(created_view).lower()}"
-    )
+    print(f"Attention metrics: managed={managed}, changed={changed}")
     return 0
 
 
