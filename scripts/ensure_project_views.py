@@ -12,7 +12,12 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
-from project_reminders.application.project_views import MANAGED_VIEW_SPECS, ViewSpec
+from project_reminders.application.project_views import (
+    MANAGED_VIEW_SPECS,
+    ManagedViewState,
+    ViewSpec,
+    needs_supported_view_update,
+)
 
 GRAPHQL_URL = "https://api.github.com/graphql"
 REST_API_URL = "https://api.github.com"
@@ -26,17 +31,6 @@ class FieldRef:
 
     node_id: str
     database_id: int
-
-
-@dataclass(frozen=True, slots=True)
-class ViewState:
-    """Supported mutable state for one existing Project view."""
-
-    node_id: str
-    name: str
-    layout: str
-    filter_query: str
-    visible_fields: tuple[str, ...]
 
 
 def _load_json(path: Path) -> JsonObject:
@@ -84,11 +78,31 @@ def _graphql(token: str, query: str, variables: JsonObject) -> JsonObject:
     return data
 
 
+def _normalise_layout(layout: str) -> str:
+    """Map GraphQL view layout enums back to declarative REST-style names."""
+
+    return layout.casefold().removesuffix("_layout")
+
+
+def _graphql_layout(layout: str) -> str:
+    """Map declarative REST-style view layouts to GraphQL enum values."""
+
+    mapping = {
+        "table": "TABLE_LAYOUT",
+        "board": "BOARD_LAYOUT",
+        "roadmap": "ROADMAP_LAYOUT",
+    }
+    try:
+        return mapping[layout.casefold()]
+    except KeyError as exc:
+        raise ValueError(f"Unsupported Project view layout: {layout}") from exc
+
+
 def _board_metadata(
     token: str,
     owner: str,
     number: int,
-) -> tuple[dict[str, ViewState], dict[str, FieldRef]]:
+) -> tuple[dict[str, ManagedViewState], dict[str, FieldRef]]:
     query = """
     query($login: String!, $number: Int!) {
       user(login: $login) {
@@ -135,7 +149,7 @@ def _board_metadata(
     view_nodes = views_connection.get("nodes") if isinstance(views_connection, dict) else None
     if not isinstance(view_nodes, list):
         raise RuntimeError("GitHub Project views were not returned")
-    views: dict[str, ViewState] = {}
+    views: dict[str, ManagedViewState] = {}
     for raw in view_nodes:
         if not isinstance(raw, dict):
             continue
@@ -156,10 +170,10 @@ def _board_metadata(
             for field in (visible_nodes if isinstance(visible_nodes, list) else [])
             if isinstance(field, dict) and isinstance(field.get("name"), str)
         )
-        views[name.casefold()] = ViewState(
+        views[name.casefold()] = ManagedViewState(
             node_id=node_id,
             name=name,
-            layout=layout.casefold(),
+            layout=_normalise_layout(layout),
             filter_query=str(raw.get("filter") or ""),
             visible_fields=visible_fields,
         )
@@ -217,18 +231,9 @@ def _create_view(
     _request(token, endpoint, data=payload)
 
 
-def _needs_update(state: ViewState, spec: ViewSpec) -> bool:
-    return (
-        state.name != spec.name
-        or state.layout != spec.layout.casefold()
-        or state.filter_query != spec.filter_query
-        or state.visible_fields != spec.visible_fields
-    )
-
-
 def _update_view(
     token: str,
-    state: ViewState,
+    state: ManagedViewState,
     spec: ViewSpec,
     fields: dict[str, FieldRef],
 ) -> None:
@@ -259,7 +264,7 @@ def _update_view(
         {
             "view": state.node_id,
             "name": spec.name,
-            "layout": spec.layout.upper(),
+            "layout": _graphql_layout(spec.layout),
             "filter": spec.filter_query,
             "configuration": {
                 "visibleFieldIds": [
@@ -287,7 +292,7 @@ def main() -> int:
             if state is None:
                 _create_view(token, owner, number, spec, fields)
                 created.append(spec)
-            elif _needs_update(state, spec):
+            elif needs_supported_view_update(state, spec):
                 _update_view(token, state, spec, fields)
                 updated.append(spec)
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
