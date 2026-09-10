@@ -18,6 +18,17 @@ class ViewSpec:
     vertical_group_by: tuple[str, ...] = ()
 
 
+@dataclass(frozen=True, slots=True)
+class ManagedViewState:
+    """Supported mutable state observed for one existing managed view."""
+
+    node_id: str
+    name: str
+    layout: str
+    filter_query: str
+    visible_fields: tuple[str, ...]
+
+
 MANAGED_VIEW_SPECS: tuple[ViewSpec, ...] = (
     ViewSpec(
         name="Portfolio",
@@ -208,3 +219,14 @@ def missing_view_specs(existing_names: set[str]) -> tuple[ViewSpec, ...]:
 
     folded = {name.casefold() for name in existing_names}
     return tuple(spec for spec in MANAGED_VIEW_SPECS if spec.name.casefold() not in folded)
+
+
+def needs_supported_view_update(state: ManagedViewState, spec: ViewSpec) -> bool:
+    """Return whether GitHub's supported mutable view state differs from the spec."""
+
+    return (
+        state.name != spec.name
+        or state.layout != spec.layout.casefold()
+        or state.filter_query != spec.filter_query
+        or state.visible_fields != spec.visible_fields
+    )
