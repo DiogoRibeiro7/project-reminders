@@ -195,37 +195,17 @@ class GitHubOperationalState(_GitHubClient):
         metadata = cast(JsonObject, metadata_raw)
         default_branch = str(metadata.get("default_branch") or "main")
 
-        pulls_raw = self._get_json(
-            f"/repos/{encoded}/pulls",
-            {"state": "open", "sort": "updated", "direction": "desc", "per_page": "20"},
-        )
+        pull_requests = self._open_pull_requests(encoded)
         runs_raw = self._get_json(
             f"/repos/{encoded}/actions/runs",
             {"branch": default_branch, "per_page": "1"},
         )
         releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
         tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
-        if not isinstance(pulls_raw, list):
-            raise TypeError("GitHub pull request response must be a list")
         if not isinstance(runs_raw, dict):
             raise TypeError("GitHub Actions response must be an object")
         if not isinstance(releases_raw, list) or not isinstance(tags_raw, list):
             raise TypeError("GitHub releases/tags response must be a list")
-
-        pull_requests: list[PullRequestSnapshot] = []
-        for raw in pulls_raw:
-            if not isinstance(raw, dict):
-                continue
-            record = cast(JsonObject, raw)
-            pull_requests.append(
-                PullRequestSnapshot(
-                    number=int(record["number"]),
-                    title=str(record.get("title") or ""),
-                    draft=bool(record.get("draft", False)),
-                    updated_at=_parse_timestamp(record.get("updated_at")),
-                    url=_optional_url(record, "html_url"),
-                )
-            )
 
         runs = runs_raw.get("workflow_runs", [])
         if not isinstance(runs, list):
@@ -258,7 +238,7 @@ class GitHubOperationalState(_GitHubClient):
                 latest_tag_url = f"https://github.com/{repository}/tree/{encoded_tag}"
 
         return OperationalSnapshot(
-            open_pull_requests=tuple(pull_requests),
+            open_pull_requests=pull_requests,
             ci_state=ci_state,
             ci_url=ci_url,
             ci_updated_at=ci_updated_at,
@@ -270,6 +250,45 @@ class GitHubOperationalState(_GitHubClient):
             latest_tag_url=latest_tag_url,
             observed_at=datetime.now(UTC),
         )
+
+    def _open_pull_requests(self, encoded_repository: str) -> tuple[PullRequestSnapshot, ...]:
+        """Retrieve every open pull request across GitHub REST pagination."""
+
+        pull_requests: list[PullRequestSnapshot] = []
+        page = 1
+        while True:
+            pulls_raw = self._get_json(
+                f"/repos/{encoded_repository}/pulls",
+                {
+                    "state": "open",
+                    "sort": "updated",
+                    "direction": "desc",
+                    "per_page": "100",
+                    "page": str(page),
+                },
+            )
+            if not isinstance(pulls_raw, list):
+                raise TypeError("GitHub pull request response must be a list")
+
+            for raw in pulls_raw:
+                if not isinstance(raw, dict):
+                    continue
+                record = cast(JsonObject, raw)
+                pull_requests.append(
+                    PullRequestSnapshot(
+                        number=int(record["number"]),
+                        title=str(record.get("title") or ""),
+                        draft=bool(record.get("draft", False)),
+                        updated_at=_parse_timestamp(record.get("updated_at")),
+                        url=_optional_url(record, "html_url"),
+                    )
+                )
+
+            if len(pulls_raw) < 100:
+                break
+            page += 1
+
+        return tuple(pull_requests)
 
     @staticmethod
     def _ci_state(raw: object) -> CIState:
