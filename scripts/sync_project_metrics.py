@@ -1,4 +1,4 @@
-"""Synchronize exact dashboard attention metrics on managed Project cards."""
+"""Synchronize all derived metrics on managed GitHub Project cards."""
 
 from __future__ import annotations
 
@@ -8,12 +8,21 @@ from pathlib import Path
 from typing import Any
 
 from project_reminders.application.board_markers import parse_managed_marker
-from project_reminders.application.dashboard import build_project_card
+from project_reminders.application.board_metrics import (
+    activity_date,
+    attention_metrics,
+    health_score,
+)
 from project_reminders.infrastructure.json_store import JsonPortfolioRepository
 from scripts.sync_project_board import GraphQLClient, _load_json
 
 JsonObject = dict[str, Any]
-FIELD_SPECS = (("Attention", "NUMBER"), ("Attention reasons", "NUMBER"))
+FIELD_SPECS = (
+    ("Health score", "NUMBER"),
+    ("Activity date", "DATE"),
+    ("Attention", "NUMBER"),
+    ("Attention reasons", "NUMBER"),
+)
 
 
 def _board(client: GraphQLClient, owner: str, number: int) -> JsonObject:
@@ -26,8 +35,6 @@ def _board(client: GraphQLClient, owner: str, number: int) -> JsonObject:
             nodes {
               __typename
               ... on ProjectV2Field { id name dataType }
-              ... on ProjectV2SingleSelectField { id name }
-              ... on ProjectV2IterationField { id name }
             }
           }
         }
@@ -112,6 +119,10 @@ def _fetch_items(client: GraphQLClient, owner: str, number: int) -> list[JsonObj
                     number
                     field { ... on ProjectV2Field { name } }
                   }
+                  ... on ProjectV2ItemFieldDateValue {
+                    date
+                    field { ... on ProjectV2Field { name } }
+                  }
                 }
               }
             }
@@ -149,11 +160,16 @@ def _fetch_items(client: GraphQLClient, owner: str, number: int) -> list[JsonObj
         cursor = next_cursor
 
 
-def _current_values(item: JsonObject) -> tuple[int | None, int | None]:
+def _current_values(item: JsonObject) -> dict[str, int | str | None]:
+    values: dict[str, int | str | None] = {
+        "Health score": None,
+        "Activity date": None,
+        "Attention": None,
+        "Attention reasons": None,
+    }
     connection = item.get("fieldValues")
     raw_nodes = connection.get("nodes") if isinstance(connection, dict) else None
     nodes = raw_nodes if isinstance(raw_nodes, list) else []
-    values: dict[str, int] = {}
     for raw in nodes:
         if not isinstance(raw, dict):
             continue
@@ -161,67 +177,89 @@ def _current_values(item: JsonObject) -> tuple[int | None, int | None]:
         if not isinstance(field, dict):
             continue
         name = field.get("name")
-        number = raw.get("number")
-        if (
-            isinstance(name, str)
-            and name in {"Attention", "Attention reasons"}
-            and isinstance(number, (int, float))
-            and not isinstance(number, bool)
-        ):
-            values[name] = int(number)
-    return values.get("Attention"), values.get("Attention reasons")
+        if not isinstance(name, str) or name not in values:
+            continue
+        if name == "Activity date":
+            date = raw.get("date")
+            if isinstance(date, str):
+                values[name] = date
+        else:
+            number = raw.get("number")
+            if isinstance(number, (int, float)) and not isinstance(number, bool):
+                values[name] = int(number)
+    return values
 
 
-def _update_values(
+def _sync_values(
     client: GraphQLClient,
     project_id: str,
     item_id: str,
     fields: dict[str, JsonObject],
-    score: int,
-    reasons: int,
-) -> None:
-    query = """
-    mutation(
-      $project: ID!, $item: ID!,
-      $scoreField: ID!, $scoreValue: ProjectV2FieldValue!,
-      $reasonField: ID!, $reasonValue: ProjectV2FieldValue!
-    ) {
-      score: updateProjectV2ItemFieldValue(
-        input: {projectId: $project, itemId: $item, fieldId: $scoreField, value: $scoreValue}
-      ) { projectV2Item { id } }
-      reasons: updateProjectV2ItemFieldValue(
-        input: {projectId: $project, itemId: $item, fieldId: $reasonField, value: $reasonValue}
-      ) { projectV2Item { id } }
-    }
-    """
-    client.execute(
-        query,
-        {
-            "project": project_id,
-            "item": item_id,
-            "scoreField": str(fields["Attention"]["id"]),
-            "scoreValue": {"number": score},
-            "reasonField": str(fields["Attention reasons"]["id"]),
-            "reasonValue": {"number": reasons},
-        },
-    )
+    current: dict[str, int | str | None],
+    desired: dict[str, int | str | None],
+) -> bool:
+    operations: list[str] = []
+    variables: JsonObject = {"project": project_id, "item": item_id}
+    definitions = ["$project: ID!", "$item: ID!"]
+
+    for index, (name, _) in enumerate(FIELD_SPECS):
+        if current[name] == desired[name]:
+            continue
+        field_var = f"field{index}"
+        value_var = f"value{index}"
+        definitions.append(f"${field_var}: ID!")
+        variables[field_var] = str(fields[name]["id"])
+        if name == "Activity date" and desired[name] is None:
+            operations.append(
+                f"metric{index}: clearProjectV2ItemFieldValue(input: {{projectId: $project, "
+                f"itemId: $item, fieldId: ${field_var}}}) {{ projectV2Item {{ id }} }}"
+            )
+            continue
+        definitions.append(f"${value_var}: ProjectV2FieldValue!")
+        variables[value_var] = (
+            {"date": desired[name]}
+            if name == "Activity date"
+            else {"number": desired[name]}
+        )
+        operations.append(
+            f"metric{index}: updateProjectV2ItemFieldValue(input: {{projectId: $project, "
+            f"itemId: $item, fieldId: ${field_var}, value: ${value_var}}}) "
+            "{ projectV2Item { id } }"
+        )
+
+    if not operations:
+        return False
+    query = "mutation(" + ", ".join(definitions) + ") {\n"
+    query += "\n".join(operations)
+    query += "\n}"
+    client.execute(query, variables)
+    return True
 
 
 def sync(root: Path, token: str) -> tuple[int, int]:
-    """Synchronize exact attention metrics for managed Project cards."""
+    """Ensure derived metric fields and synchronize changed managed cards."""
 
     binding = _load_json(root / "data" / "github_project.json")
+    raw_portfolio = _load_json(root / "data" / "projects.json")
+    typed_portfolio = JsonPortfolioRepository(root / "data" / "projects.json").load()
     owner = str(binding["owner"])
     number = int(binding["number"])
-    portfolio = JsonPortfolioRepository(root / "data" / "projects.json").load()
-    cards = {
-        card.project.id: card
-        for card in (build_project_card(project) for project in portfolio.projects)
+
+    raw_projects = raw_portfolio.get("projects")
+    if not isinstance(raw_projects, list):
+        raise TypeError("data/projects.json must contain a projects list")
+    raw_by_id = {
+        str(project["id"]): project
+        for project in raw_projects
+        if isinstance(project, dict) and "id" in project
     }
+    typed_by_id = {project.id: project for project in typed_portfolio.projects}
 
     client = GraphQLClient(token)
     board = _board(client, owner, number)
     fields = _ensure_fields(client, board)
+    project_id = str(board["id"])
+
     managed = 0
     changed = 0
     for item in _fetch_items(client, owner, number):
@@ -231,21 +269,35 @@ def sync(root: Path, token: str) -> tuple[int, int]:
         marker = parse_managed_marker(str(content.get("body") or ""))
         if marker is None:
             continue
-        card = cards.get(marker.project_id)
+        raw_project = raw_by_id.get(marker.project_id)
+        typed_project = typed_by_id.get(marker.project_id)
         item_id = item.get("id")
-        if card is None or not isinstance(item_id, str):
+        if raw_project is None or typed_project is None or not isinstance(item_id, str):
             continue
+
+        attention_score, attention_reasons = attention_metrics(typed_project)
+        desired: dict[str, int | str | None] = {
+            "Health score": health_score(raw_project),
+            "Activity date": activity_date(raw_project),
+            "Attention": attention_score,
+            "Attention reasons": attention_reasons,
+        }
         managed += 1
-        desired = (card.attention_score, len(card.reasons))
-        if _current_values(item) != desired:
-            _update_values(client, str(board["id"]), item_id, fields, *desired)
+        if _sync_values(
+            client,
+            project_id,
+            item_id,
+            fields,
+            _current_values(item),
+            desired,
+        ):
             changed += 1
 
     return managed, changed
 
 
 def main() -> int:
-    """Run attention metric synchronization from the repository root."""
+    """Run combined Project metric synchronization from the repository root."""
 
     root = Path(os.environ.get("PROJECT_REMINDERS_ROOT", Path.cwd()))
     token = os.environ.get("PROJECT_TOKEN", "")
@@ -254,7 +306,7 @@ def main() -> int:
     except (KeyError, RuntimeError, TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    print(f"Attention metrics: managed={managed}, changed={changed}")
+    print(f"Project metrics: managed={managed}, changed={changed}")
     return 0
 
 
