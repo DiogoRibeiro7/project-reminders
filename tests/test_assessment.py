@@ -30,7 +30,7 @@ def test_complete_python_repository_detects_core_engineering_signals() -> None:
                 "pyproject.toml",
                 "poetry.lock",
                 "Dockerfile",
-                "SECURITY.md",
+                ".github/workflows/security.yml",
                 ".github/workflows/ci.yml",
                 "examples/basic.py",
             }
@@ -49,8 +49,52 @@ def test_complete_python_repository_detects_core_engineering_signals() -> None:
     assert health.state_for(HealthDimension.DOCUMENTATION) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.LINT) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.TYPING) is HealthState.COMPLETE
+    assert health.state_for(HealthDimension.SECURITY) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.REPRODUCIBILITY) is HealthState.COMPLETE
     assert health.state_for(HealthDimension.RELEASE) is HealthState.COMPLETE
+
+
+def test_security_policy_without_automation_is_partial() -> None:
+    health = assess_repository(
+        RepositoryEvidence(paths=frozenset({"SECURITY.md"}), complete_tree=True)
+    )
+
+    assert health.state_for(HealthDimension.SECURITY) is HealthState.PARTIAL
+
+
+def test_dependabot_without_security_workflow_is_partial() -> None:
+    health = assess_repository(
+        RepositoryEvidence(
+            paths=frozenset({".github/dependabot.yml"}),
+            complete_tree=True,
+        )
+    )
+
+    assert health.state_for(HealthDimension.SECURITY) is HealthState.PARTIAL
+
+
+@pytest.mark.parametrize(
+    "workflow",
+    [
+        ".github/workflows/codeql.yml",
+        ".github/workflows/dependency-review.yml",
+        ".github/workflows/security.yml",
+    ],
+)
+def test_automated_security_workflow_is_complete(workflow: str) -> None:
+    health = assess_repository(
+        RepositoryEvidence(paths=frozenset({workflow}), complete_tree=True)
+    )
+
+    assert health.state_for(HealthDimension.SECURITY) is HealthState.COMPLETE
+
+
+def test_security_absence_is_missing_only_for_complete_tree() -> None:
+    complete = assess_repository(RepositoryEvidence(paths=frozenset(), complete_tree=True))
+    truncated = assess_repository(RepositoryEvidence(paths=frozenset(), complete_tree=False))
+
+    assert complete.state_for(HealthDimension.SECURITY) is HealthState.MISSING
+    assert truncated.state_for(HealthDimension.SECURITY) is HealthState.UNKNOWN
 
 
 def test_packaging_only_pyproject_does_not_prove_lint_or_typing() -> None:
