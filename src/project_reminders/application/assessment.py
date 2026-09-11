@@ -120,20 +120,25 @@ def assess_repository(evidence: RepositoryEvidence) -> EngineeringHealth:
     else:
         states[HealthDimension.TYPING] = HealthState.UNKNOWN
 
-    security_signals = {
+    security_policy_signals = {
         "SECURITY.md",
         ".github/dependabot.yml",
         ".github/dependabot.yaml",
+    }
+    automated_security_signals = {
         ".github/workflows/codeql.yml",
         ".github/workflows/codeql.yaml",
+        ".github/workflows/dependency-review.yml",
+        ".github/workflows/dependency-review.yaml",
         ".github/workflows/security.yml",
         ".github/workflows/security.yaml",
     }
-    states[HealthDimension.SECURITY] = (
-        HealthState.COMPLETE
-        if _has_any(paths, security_signals)
-        else _missing_or_unknown(evidence)
-    )
+    if _has_any(paths, automated_security_signals):
+        states[HealthDimension.SECURITY] = HealthState.COMPLETE
+    elif _has_any(paths, security_policy_signals):
+        states[HealthDimension.SECURITY] = HealthState.PARTIAL
+    else:
+        states[HealthDimension.SECURITY] = _missing_or_unknown(evidence)
 
     lock_files = {
         "poetry.lock",
