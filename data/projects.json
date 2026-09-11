@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-11T13:00:55.803877+00:00",
+  "generated_at": "2026-09-11T13:07:35.685172+00:00",
   "projects": [
     {
       "id": "1030ec9e7ecd",
@@ -5534,7 +5534,7 @@
         "lint": "missing",
         "typing": "unknown",
         "security": "partial",
-        "reproducibility": "partial",
+        "reproducibility": "missing",
         "release": "missing",
         "demo": "missing"
       },
