@@ -4,10 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from threading import Lock
+from typing import cast
 
+from project_reminders.application.assessment import RepositoryEvidence
 from project_reminders.infrastructure.github import (
+    GitHubApiError,
     GitHubOperationalState,
     GitHubRepositoryEvidence,
+    JsonObject,
     _encoded_repository,
 )
 
@@ -16,6 +20,7 @@ CacheKey = tuple[str, str, tuple[tuple[str, str], ...]]
 Loader = Callable[[str, Query], object]
 _CONTROL_WORKFLOW_NAMES = frozenset({"Refresh Code Portfolio", "Sync Code Projects board"})
 _REFRESH_COMMIT_PREFIX = "data: refresh code portfolio evidence"
+_EMPTY_REPOSITORY_MESSAGE = "Git Repository is empty."
 
 
 class GitHubRunCache:
@@ -90,6 +95,36 @@ class CachedGitHubRepositoryEvidence(_RunCachedGitHubMixin, GitHubRepositoryEvid
 
     def _get_json(self, path: str, query: Query = None) -> object:
         return self._cached_get_json(path, query, super()._get_json)
+
+    def evidence(self, repository: str) -> RepositoryEvidence:
+        """Treat GitHub's exact empty-repository tree response as complete empty evidence."""
+
+        try:
+            return super().evidence(repository)
+        except GitHubApiError as exc:
+            if exc.status != 409 or exc.message != _EMPTY_REPOSITORY_MESSAGE:
+                raise
+
+        encoded = _encoded_repository(repository)
+        metadata_raw = self._get_json(f"/repos/{encoded}")
+        if not isinstance(metadata_raw, dict):
+            raise TypeError("GitHub repository metadata must be an object")
+        metadata = cast(JsonObject, metadata_raw)
+        releases_raw = self._get_json(f"/repos/{encoded}/releases", {"per_page": "1"})
+        tags_raw = self._get_json(f"/repos/{encoded}/tags", {"per_page": "1"})
+        if not isinstance(releases_raw, list) or not isinstance(tags_raw, list):
+            raise TypeError("GitHub releases/tags response must be a list")
+
+        language = metadata.get("language")
+        return RepositoryEvidence(
+            paths=frozenset(),
+            complete_tree=True,
+            primary_language=str(language) if language is not None else None,
+            has_release=bool(releases_raw),
+            has_tag=bool(tags_raw),
+            pyproject_tools=frozenset(),
+            pyproject_inspected=True,
+        )
 
 
 class CachedGitHubOperationalState(_RunCachedGitHubMixin, GitHubOperationalState):
