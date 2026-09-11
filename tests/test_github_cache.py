@@ -1,9 +1,19 @@
 """Run-scoped GitHub response-cache tests."""
 
+from __future__ import annotations
+
+import io
+import json
 from datetime import UTC, datetime
+from email.message import Message
+from urllib.error import HTTPError
+
+import pytest
 
 from project_reminders.domain.enums import CIState
+from project_reminders.infrastructure.github import GitHubApiError
 from project_reminders.infrastructure.github_cache import (
+    CachedGitHubRepositoryEvidence,
     ControlPlaneGitHubOperationalState,
     GitHubRunCache,
 )
@@ -54,6 +64,65 @@ def test_run_cache_normalizes_query_order() -> None:
 
     assert found is True
     assert value == [1]
+
+
+def _api_error(message: str) -> GitHubApiError:
+    headers = Message()
+    body = io.BytesIO(json.dumps({"message": message}).encode("utf-8"))
+    error = HTTPError(
+        "https://api.github.com/repos/owner/empty/git/trees/main",
+        409,
+        "Conflict",
+        headers,
+        body,
+    )
+    return GitHubApiError(
+        endpoint="/repos/owner/empty/git/trees/main",
+        status=409,
+        exc=error,
+    )
+
+
+class _EmptyEvidenceFixture(CachedGitHubRepositoryEvidence):
+    def __init__(self, tree_message: str = "Git Repository is empty.") -> None:
+        super().__init__("token", GitHubRunCache())
+        self.tree_message = tree_message
+        self.queries: list[tuple[str, dict[str, str] | None]] = []
+
+    def _cached_get_json(self, path, query, loader):  # type: ignore[no-untyped-def]
+        self.queries.append((path, query))
+        if path == "/repos/owner/empty":
+            return {"default_branch": "main", "language": None}
+        if path == "/repos/owner/empty/git/trees/main":
+            raise _api_error(self.tree_message)
+        if path == "/repos/owner/empty/releases":
+            return []
+        if path == "/repos/owner/empty/tags":
+            return []
+        raise AssertionError(f"unexpected GitHub request: {path} {query}")
+
+
+def test_empty_repository_is_complete_empty_assessment_evidence() -> None:
+    gateway = _EmptyEvidenceFixture()
+
+    evidence = gateway.evidence("owner/empty")
+
+    assert evidence.paths == frozenset()
+    assert evidence.complete_tree is True
+    assert evidence.primary_language is None
+    assert evidence.has_release is False
+    assert evidence.has_tag is False
+    assert evidence.pyproject_tools == frozenset()
+    assert evidence.pyproject_inspected is True
+    assert ("/repos/owner/empty/releases", {"per_page": "1"}) in gateway.queries
+    assert ("/repos/owner/empty/tags", {"per_page": "1"}) in gateway.queries
+
+
+def test_non_empty_repository_409_is_not_swallowed() -> None:
+    gateway = _EmptyEvidenceFixture("Repository is locked.")
+
+    with pytest.raises(GitHubApiError, match="Repository is locked"):
+        gateway.evidence("owner/empty")
 
 
 class _ControlPlaneFixture(ControlPlaneGitHubOperationalState):
