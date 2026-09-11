@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from dataclasses import replace
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import TypeVar
 from uuid import uuid4
 
@@ -20,12 +20,38 @@ from project_reminders.domain.models import (
 
 Clock = Callable[[], datetime]
 T = TypeVar("T")
+_OPERATIONAL_HEARTBEAT_AFTER = timedelta(hours=18)
 
 
 def utc_now() -> datetime:
     """Return an aware UTC timestamp."""
 
     return datetime.now(UTC)
+
+
+def _same_operational_evidence(
+    current: OperationalSnapshot,
+    observed: OperationalSnapshot,
+) -> bool:
+    """Compare operational evidence while ignoring the observation heartbeat."""
+
+    return replace(current, observed_at=None) == replace(observed, observed_at=None)
+
+
+def _coalesce_operational_snapshot(
+    current: OperationalSnapshot,
+    observed: OperationalSnapshot,
+) -> OperationalSnapshot:
+    """Suppress no-op observation heartbeats while preserving freshness safety."""
+
+    if not _same_operational_evidence(current, observed):
+        return observed
+    if current.observed_at is None or observed.observed_at is None:
+        return observed
+    elapsed = observed.observed_at - current.observed_at
+    if elapsed < _OPERATIONAL_HEARTBEAT_AFTER:
+        return current
+    return observed
 
 
 class PortfolioService:
@@ -131,10 +157,14 @@ class PortfolioService:
     def apply_operational_many(
         self, snapshots: Mapping[str, OperationalSnapshot]
     ) -> tuple[Project, ...]:
-        """Persist observed GitHub state without changing declared project metadata."""
+        """Persist changed GitHub state and coalesced freshness heartbeats."""
 
         return self._apply_many(
-            snapshots, lambda project, value: replace(project, operational=value)
+            snapshots,
+            lambda project, value: replace(
+                project,
+                operational=_coalesce_operational_snapshot(project.operational, value),
+            ),
         )
 
     def _apply_many(
@@ -149,7 +179,8 @@ class PortfolioService:
             else project
             for project in portfolio.projects
         )
-        self._save_projects(updated_projects, now)
+        if updated_projects != portfolio.projects:
+            self._save_projects(updated_projects, now)
         return tuple(
             project
             for project in updated_projects
