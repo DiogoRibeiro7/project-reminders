@@ -17,6 +17,16 @@ from project_reminders.domain.enums import CIState
 from project_reminders.domain.models import OperationalSnapshot, PullRequestSnapshot
 
 JsonObject = dict[str, Any]
+_ERROR_BODY_LIMIT = 16_384
+_ERROR_MESSAGE_LIMIT = 300
+_PERMISSION_MESSAGE_MARKERS = (
+    "resource not accessible by personal access token",
+    "resource not accessible by integration",
+    "must have admin rights",
+    "must have push access",
+    "requires write access",
+    "requires admin access",
+)
 
 
 def _parse_timestamp(value: object) -> datetime | None:
@@ -33,6 +43,97 @@ def _parse_timestamp(value: object) -> datetime | None:
 def _optional_url(record: JsonObject, key: str) -> str | None:
     value = record.get(key)
     return str(value) if isinstance(value, str) and value else None
+
+
+def _sanitize_error_message(value: str) -> str:
+    collapsed = " ".join(value.split())
+    if len(collapsed) <= _ERROR_MESSAGE_LIMIT:
+        return collapsed
+    return collapsed[: _ERROR_MESSAGE_LIMIT - 1] + "…"
+
+
+def _optional_error_header(exc: HTTPError, name: str) -> str | None:
+    if exc.headers is None:
+        return None
+    value = exc.headers.get(name)
+    if value is None:
+        return None
+    return _sanitize_error_message(str(value))
+
+
+def _error_message(exc: HTTPError) -> str | None:
+    try:
+        raw = exc.read(_ERROR_BODY_LIMIT)
+    except OSError:
+        return None
+    if not raw:
+        return None
+    try:
+        payload = json.loads(raw.decode("utf-8", errors="replace"))
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(payload, dict):
+        return None
+    message = payload.get("message")
+    return _sanitize_error_message(message) if isinstance(message, str) and message else None
+
+
+def _classify_http_error(
+    status: int,
+    message: str | None,
+    rate_limit_remaining: str | None,
+    retry_after: str | None,
+) -> str:
+    normalized = (message or "").casefold()
+    if status == 401:
+        return "authentication"
+    if status in {403, 429}:
+        if rate_limit_remaining == "0" or (
+            "rate limit exceeded" in normalized and "secondary" not in normalized
+        ):
+            return "primary_rate_limit"
+        if retry_after is not None or "secondary rate limit" in normalized:
+            return "secondary_rate_limit"
+        if any(marker in normalized for marker in _PERMISSION_MESSAGE_MARKERS):
+            return "permission"
+    return "http_error"
+
+
+class GitHubApiError(RuntimeError):
+    """Sanitized structured error returned by the GitHub REST API."""
+
+    def __init__(self, *, endpoint: str, status: int, exc: HTTPError) -> None:
+        self.endpoint = endpoint
+        self.status = status
+        self.message = _error_message(exc)
+        self.request_id = _optional_error_header(exc, "X-GitHub-Request-Id")
+        self.rate_limit_limit = _optional_error_header(exc, "X-RateLimit-Limit")
+        self.rate_limit_remaining = _optional_error_header(exc, "X-RateLimit-Remaining")
+        self.rate_limit_reset = _optional_error_header(exc, "X-RateLimit-Reset")
+        self.rate_limit_resource = _optional_error_header(exc, "X-RateLimit-Resource")
+        self.retry_after = _optional_error_header(exc, "Retry-After")
+        self.kind = _classify_http_error(
+            status,
+            self.message,
+            self.rate_limit_remaining,
+            self.retry_after,
+        )
+        super().__init__(self._summary())
+
+    def _summary(self) -> str:
+        parts = [f"GitHub API HTTP {self.status} [{self.kind}] endpoint={self.endpoint}"]
+        if self.message:
+            parts.append(self.message)
+        diagnostics = (
+            ("request_id", self.request_id),
+            ("rate_remaining", self.rate_limit_remaining),
+            ("rate_limit", self.rate_limit_limit),
+            ("rate_reset", self.rate_limit_reset),
+            ("rate_resource", self.rate_limit_resource),
+            ("retry_after", self.retry_after),
+        )
+        parts.extend(f"{name}={value}" for name, value in diagnostics if value is not None)
+        return "; ".join(parts)
 
 
 class _GitHubClient:
@@ -57,7 +158,7 @@ class _GitHubClient:
             with urlopen(request, timeout=30) as response:
                 return json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
-            raise RuntimeError(f"GitHub API returned HTTP {exc.code}") from exc
+            raise GitHubApiError(endpoint=path, status=exc.code, exc=exc) from exc
         except URLError as exc:
             raise RuntimeError(f"GitHub API request failed: {exc.reason}") from exc
 
