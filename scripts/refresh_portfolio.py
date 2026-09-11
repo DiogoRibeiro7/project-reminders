@@ -10,10 +10,11 @@ from project_reminders.application.assessment import AssessmentService
 from project_reminders.application.github_import import GitHubImportService
 from project_reminders.application.operational import OperationalRefreshService
 from project_reminders.bootstrap import build_service
-from project_reminders.infrastructure.github import (
-    GitHubOperationalState,
-    GitHubRepositoryDiscovery,
-    GitHubRepositoryEvidence,
+from project_reminders.infrastructure.github import GitHubRepositoryDiscovery
+from project_reminders.infrastructure.github_cache import (
+    CachedGitHubOperationalState,
+    CachedGitHubRepositoryEvidence,
+    GitHubRunCache,
 )
 
 DEFAULT_REFRESH_WORKERS = 8
@@ -61,13 +62,17 @@ def main() -> int:
         sorted(service.load().projects, key=lambda project: project.repository.casefold())
     )
     repositories = tuple(project.repository for project in projects)
+    cache = GitHubRunCache()
 
-    assessor = AssessmentService(GitHubRepositoryEvidence(token))
+    assessor = AssessmentService(CachedGitHubRepositoryEvidence(token, cache))
     assessment = assessor.assess_many_resilient(repositories, max_workers=workers)
     if assessment.assessments:
         service.apply_health_many(assessment.assessments)
 
-    observer = OperationalRefreshService(service, GitHubOperationalState(token))
+    observer = OperationalRefreshService(
+        service,
+        CachedGitHubOperationalState(token, cache),
+    )
     operational = observer.refresh(write=True, max_workers=workers)
 
     failures = [
@@ -86,7 +91,9 @@ def main() -> int:
         f"assessed={len(assessment.updated)} "
         f"observed={len(operational.updated)} "
         f"failures={len(failures)} "
-        f"workers={workers}"
+        f"workers={workers} "
+        f"cache_hits={cache.hits} "
+        f"cache_entries={cache.entries}"
     )
     for project in imported:
         print(f"NEW {project.repository} [unclassified]")
