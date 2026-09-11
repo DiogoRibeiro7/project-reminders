@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-11T11:39:38.595434+00:00",
+  "generated_at": "2026-09-11T13:00:55.803877+00:00",
   "projects": [
     {
       "id": "1030ec9e7ecd",
@@ -786,15 +786,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/ai-incident-analysis-agent/actions/runs/34479307641",
-        "ci_updated_at": "2026-09-10T12:53:41+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/ai-incident-analysis-agent/actions/runs/34600790624",
+        "ci_updated_at": "2026-09-11T12:48:04+00:00",
         "latest_activity_at": "2026-09-07T06:13:10+00:00",
         "latest_release": "v0.2.4",
         "latest_release_at": "2026-08-09T11:26:18+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/ai-incident-analysis-agent/releases/tag/v0.2.4",
         "latest_tag": "v0.2.4",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/ai-incident-analysis-agent/tree/v0.2.4",
-        "observed_at": "2026-09-11T11:38:50.268581+00:00"
+        "observed_at": "2026-09-11T13:00:25.732718+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.557513+00:00",
@@ -996,20 +996,20 @@
             "number": 159,
             "title": "chore(deps-dev)(deps-dev): bump the development-dependencies group across 1 directory with 4 updates",
             "draft": false,
-            "updated_at": "2026-09-11T07:39:27+00:00",
+            "updated_at": "2026-09-11T12:52:05+00:00",
             "url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/pull/159"
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34592797881",
-        "ci_updated_at": "2026-09-11T11:12:06+00:00",
-        "latest_activity_at": "2026-09-11T11:12:00+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34600991002",
+        "ci_updated_at": "2026-09-11T12:51:39+00:00",
+        "latest_activity_at": "2026-09-11T12:56:42+00:00",
         "latest_release": "v0.6.1",
         "latest_release_at": "2026-09-11T11:12:01+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/releases/tag/v0.6.1",
         "latest_tag": "v0.6.1",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/tree/v0.6.1",
-        "observed_at": "2026-09-11T11:38:50.658129+00:00"
+        "observed_at": "2026-09-11T13:00:26.079899+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.563397+00:00",
@@ -2027,16 +2027,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
+        "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/actions/runs/34594501999",
-        "ci_updated_at": "2026-09-11T11:32:22+00:00",
+        "ci_updated_at": "2026-09-11T11:51:02+00:00",
         "latest_activity_at": "2026-09-11T11:36:29+00:00",
         "latest_release": "v0.2.0",
         "latest_release_at": "2026-08-30T08:26:24+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/releases/tag/v0.2.0",
         "latest_tag": "v0.2.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/tree/v0.2.0",
-        "observed_at": "2026-09-11T11:38:52.649040+00:00"
+        "observed_at": "2026-09-11T13:00:27.410338+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -4528,17 +4528,25 @@
         "demo": "complete"
       },
       "operational": {
-        "open_pull_requests": [],
+        "open_pull_requests": [
+          {
+            "number": 35,
+            "title": "Add Zenodo concept DOI citation metadata",
+            "draft": false,
+            "updated_at": "2026-09-11T12:58:43+00:00",
+            "url": "https://github.com/DiogoRibeiro7/crop-protection-predictive-science/pull/35"
+          }
+        ],
         "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/crop-protection-predictive-science/actions/runs/34594477237",
         "ci_updated_at": "2026-09-11T11:33:02+00:00",
-        "latest_activity_at": "2026-09-11T11:32:54+00:00",
+        "latest_activity_at": "2026-09-11T12:56:56+00:00",
         "latest_release": "v1.1.1",
         "latest_release_at": "2026-09-11T11:32:57+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/crop-protection-predictive-science/releases/tag/v1.1.1",
         "latest_tag": "v1.1.1",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/crop-protection-predictive-science/tree/v1.1.1",
-        "observed_at": "2026-09-11T11:38:57.523184+00:00"
+        "observed_at": "2026-09-11T13:00:30.508621+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -5493,15 +5501,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/diogoribeiro7/actions/runs/34226685035",
-        "ci_updated_at": "2026-09-08T12:33:19+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/diogoribeiro7/actions/runs/23775130686",
+        "ci_updated_at": "2026-03-31T00:54:32+00:00",
         "latest_activity_at": "2026-09-08T12:33:15+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": "v1.0.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/diogoribeiro7/tree/v1.0.0",
-        "observed_at": "2026-09-11T11:38:59.890215+00:00"
+        "observed_at": "2026-09-11T13:00:32.048875+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.901825+00:00",
@@ -5531,46 +5539,17 @@
         "demo": "missing"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 399,
-            "title": "chore(deps): bump fast-uri from 3.1.5 to 3.1.7 in the npm_and_yarn group across 1 directory",
-            "draft": false,
-            "updated_at": "2026-09-03T05:05:44+00:00",
-            "url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/pull/399"
-          },
-          {
-            "number": 398,
-            "title": "chore(deps): bump actions/setup-python from 6 to 7",
-            "draft": false,
-            "updated_at": "2026-09-01T05:44:58+00:00",
-            "url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/pull/398"
-          },
-          {
-            "number": 397,
-            "title": "chore(deps): bump minimal-mistakes-jekyll from 4.28.0 to 4.28.1",
-            "draft": false,
-            "updated_at": "2026-09-01T05:43:17+00:00",
-            "url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/pull/397"
-          },
-          {
-            "number": 396,
-            "title": "chore(deps): bump jekyll-include-cache from 0.2.1 to 0.2.2",
-            "draft": false,
-            "updated_at": "2026-09-01T05:43:05+00:00",
-            "url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/pull/396"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/actions/runs/34574615236",
         "ci_updated_at": "2026-09-11T07:29:33+00:00",
-        "latest_activity_at": "2026-09-11T11:19:18+00:00",
+        "latest_activity_at": "2026-09-11T12:53:28+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:38:59.960331+00:00"
+        "observed_at": "2026-09-11T13:00:32.012216+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.907015+00:00",
@@ -5801,16 +5780,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
+        "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/drl-cox/actions/runs/34594957446",
-        "ci_updated_at": "2026-09-11T11:37:59+00:00",
-        "latest_activity_at": "2026-09-11T11:22:14+00:00",
+        "ci_updated_at": "2026-09-11T11:41:15+00:00",
+        "latest_activity_at": "2026-09-11T11:37:48+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:00.311773+00:00"
+        "observed_at": "2026-09-11T13:00:32.144402+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.938781+00:00",
@@ -5977,15 +5956,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/ds-projects-portfolio/actions/runs/34475731805",
-        "ci_updated_at": "2026-09-10T12:16:24+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/ds-projects-portfolio/actions/runs/34597889032",
+        "ci_updated_at": "2026-09-11T12:15:00+00:00",
         "latest_activity_at": "2026-09-06T21:24:43+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": "monolith-final-2026-08",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/ds-projects-portfolio/tree/monolith-final-2026-08",
-        "observed_at": "2026-09-11T11:39:01.145220+00:00"
+        "observed_at": "2026-09-11T13:00:32.649747+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -8277,25 +8256,17 @@
         "demo": "missing"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 5,
-            "title": "Quantify finite-sample tail identifiability",
-            "draft": true,
-            "updated_at": "2026-09-11T11:32:25+00:00",
-            "url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/pull/5"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34575427144",
-        "ci_updated_at": "2026-09-11T07:39:47+00:00",
-        "latest_activity_at": "2026-09-11T11:32:11+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34596164746",
+        "ci_updated_at": "2026-09-11T11:53:06+00:00",
+        "latest_activity_at": "2026-09-11T11:54:35+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:05.262826+00:00"
+        "observed_at": "2026-09-11T13:00:35.245193+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-10T21:29:00.147579+00:00",
@@ -10436,13 +10407,6 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 50,
-            "title": "docs: add model diagnostics decision-flow diagram",
-            "draft": true,
-            "updated_at": "2026-09-11T11:37:40+00:00",
-            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/50"
-          },
-          {
             "number": 48,
             "title": "test: validate Plackett-Burman foldover guarantees",
             "draft": true,
@@ -10451,15 +10415,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34589074161",
-        "ci_updated_at": "2026-09-11T10:24:58+00:00",
-        "latest_activity_at": "2026-09-11T11:36:16+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34601479213",
+        "ci_updated_at": "2026-09-11T12:56:00+00:00",
+        "latest_activity_at": "2026-09-11T12:55:40+00:00",
         "latest_release": "v0.2.0",
         "latest_release_at": "2026-09-04T22:15:45+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/industrialstats/releases/tag/v0.2.0",
         "latest_tag": "v0.2.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/industrialstats/tree/v0.2.0",
-        "observed_at": "2026-09-11T11:39:09.681372+00:00"
+        "observed_at": "2026-09-11T13:00:38.134695+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.491693+00:00",
@@ -12206,15 +12170,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/mbgp-poisson/actions/runs/34481912194",
-        "ci_updated_at": "2026-09-10T13:19:28+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/mbgp-poisson/actions/runs/30265583387",
+        "ci_updated_at": "2026-07-27T12:21:44+00:00",
         "latest_activity_at": "2025-10-13T20:39:54+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:13.620126+00:00"
+        "observed_at": "2026-09-11T13:00:40.885285+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.825343+00:00",
@@ -12285,6 +12249,27 @@
       },
       "operational": {
         "open_pull_requests": [
+          {
+            "number": 63,
+            "title": "Add deterministic public reproduction contract",
+            "draft": false,
+            "updated_at": "2026-09-11T12:58:27+00:00",
+            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/63"
+          },
+          {
+            "number": 62,
+            "title": "Add public output schema contract",
+            "draft": false,
+            "updated_at": "2026-09-11T12:39:55+00:00",
+            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/62"
+          },
+          {
+            "number": 61,
+            "title": "Add machine-checkable public privacy contract",
+            "draft": false,
+            "updated_at": "2026-09-11T11:45:40+00:00",
+            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/61"
+          },
           {
             "number": 60,
             "title": "Use package-native imports for validation gates",
@@ -12394,13 +12379,13 @@
         "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/Medium-Blog/actions/runs/34415937688",
         "ci_updated_at": "2026-09-09T23:14:09+00:00",
-        "latest_activity_at": "2026-09-11T10:24:49+00:00",
+        "latest_activity_at": "2026-09-11T12:57:18+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:14.558677+00:00"
+        "observed_at": "2026-09-11T13:00:40.939964+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.842731+00:00",
@@ -13945,25 +13930,17 @@
         "demo": "missing"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 18,
-            "title": "Add NX-2026-09-017: five-node monic minimax problem",
-            "draft": false,
-            "updated_at": "2026-09-11T11:36:05+00:00",
-            "url": "https://github.com/DiogoRibeiro7/newtonx-math-problems/pull/18"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/newtonx-math-problems/actions/runs/34532540524",
-        "ci_updated_at": "2026-09-10T21:30:22+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/newtonx-math-problems/actions/runs/34601850739",
+        "ci_updated_at": "2026-09-11T13:00:02+00:00",
         "latest_activity_at": "2026-09-11T11:35:57+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:17.246130+00:00"
+        "observed_at": "2026-09-11T13:00:42.687498+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T14:31:45.996333+00:00",
@@ -17740,16 +17717,16 @@
             "url": "https://github.com/DiogoRibeiro7/project-reminders/pull/20"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34594857549",
-        "ci_updated_at": "2026-09-11T11:37:10+00:00",
-        "latest_activity_at": "2026-09-11T11:36:33+00:00",
+        "ci_state": "pending",
+        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34601759303",
+        "ci_updated_at": "2026-09-11T12:58:56+00:00",
+        "latest_activity_at": "2026-09-11T12:58:52+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-11T11:39:24.985380+00:00"
+        "observed_at": "2026-09-11T13:00:47.364476+00:00"
       },
       "current_pr": null,
       "created_at": null,
