@@ -9,6 +9,11 @@ from pathlib import Path
 from project_reminders.application.assessment import AssessmentService
 from project_reminders.application.github_import import GitHubImportService
 from project_reminders.application.operational import OperationalRefreshService
+from project_reminders.application.refresh_safety import (
+    MIN_STAGE_COVERAGE,
+    RefreshCoverage,
+    refresh_is_safe,
+)
 from project_reminders.bootstrap import build_service
 from project_reminders.infrastructure.github import GitHubRepositoryDiscovery
 from project_reminders.infrastructure.github_cache import (
@@ -67,8 +72,6 @@ def main() -> int:
 
     assessor = AssessmentService(CachedGitHubRepositoryEvidence(token, cache))
     assessment = assessor.assess_many_resilient(repositories, max_workers=workers)
-    if assessment.assessments:
-        service.apply_health_many(assessment.assessments)
 
     control_repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
     operational_gateway = (
@@ -77,7 +80,7 @@ def main() -> int:
         else CachedGitHubOperationalState(token, cache)
     )
     observer = OperationalRefreshService(service, operational_gateway)
-    operational = observer.refresh(write=True, max_workers=workers)
+    operational = observer.refresh(write=False, max_workers=workers)
 
     failures = [
         RefreshFailure(repository, "assessment", error)
@@ -104,9 +107,22 @@ def main() -> int:
     for failure in failures:
         print(f"WARN {failure.repository} [{failure.stage}]: {failure.error}")
 
-    successful_repositories = set(assessment.updated) | set(operational.updated)
-    if not successful_repositories and projects:
+    total = len(projects)
+    assessment_coverage = RefreshCoverage(len(assessment.updated), total)
+    observation_coverage = RefreshCoverage(len(operational.updated), total)
+    if not refresh_is_safe(assessment_coverage, observation_coverage):
+        print(
+            "ERROR unsafe refresh coverage: "
+            f"assessment={assessment_coverage.ratio:.1%} "
+            f"observation={observation_coverage.ratio:.1%} "
+            f"minimum={MIN_STAGE_COVERAGE:.0%}"
+        )
         return 2
+
+    if assessment.assessments:
+        service.apply_health_many(assessment.assessments)
+    if operational.snapshots:
+        service.apply_operational_many(dict(operational.snapshots))
     return 0
 
 
