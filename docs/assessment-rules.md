@@ -20,10 +20,12 @@ Assessment is deliberately **evidence based**. It classifies only engineering-he
 | packaging | recognized package manifest | — | none found |
 | lint | recognized linter config or `pyproject.toml` | — | none found |
 | typing | mypy/pyright config or Python `pyproject.toml` | — | only a negative claim for complete Python repos |
-| security | `SECURITY.md`, Dependabot, CodeQL, or security workflow | — | none found |
+| security | CodeQL, dependency-review, or explicitly named security workflow | `SECURITY.md` or Dependabot configuration without an automated security workflow | none found on complete tree / truncated tree |
 | reproducibility | lock file + environment/container definition | one of those | neither |
 | release | GitHub release | tag only | no release/tag |
 | demo | `examples/`, `example/`, `demo/`, or `notebooks/` | — | none found |
+
+Security intentionally distinguishes **policy/configuration** from **automated enforcement**. A disclosure policy or Dependabot configuration is useful security hygiene and earns `partial`; `complete` requires an automated security workflow signal.
 
 ## Incomplete trees
 
