@@ -8,11 +8,14 @@ from threading import Lock
 from project_reminders.infrastructure.github import (
     GitHubOperationalState,
     GitHubRepositoryEvidence,
+    _encoded_repository,
 )
 
 Query = dict[str, str] | None
 CacheKey = tuple[str, str, tuple[tuple[str, str], ...]]
 Loader = Callable[[str, Query], object]
+_CONTROL_WORKFLOW_NAMES = frozenset({"Refresh Code Portfolio", "Sync Code Projects board"})
+_REFRESH_COMMIT_PREFIX = "data: refresh code portfolio evidence"
 
 
 class GitHubRunCache:
@@ -104,3 +107,69 @@ class CachedGitHubOperationalState(_RunCachedGitHubMixin, GitHubOperationalState
 
     def _get_json(self, path: str, query: Query = None) -> object:
         return self._cached_get_json(path, query, super()._get_json)
+
+
+class ControlPlaneGitHubOperationalState(CachedGitHubOperationalState):
+    """Cached operational adapter that removes control-plane self-observation noise."""
+
+    def __init__(
+        self,
+        token: str,
+        cache: GitHubRunCache,
+        control_repository: str,
+        *,
+        api_url: str = "https://api.github.com",
+    ) -> None:
+        super().__init__(token, cache, api_url=api_url)
+        self._control_repository = control_repository.casefold()
+        self._control_encoded = _encoded_repository(control_repository)
+
+    def _get_json(self, path: str, query: Query = None) -> object:
+        metadata_path = f"/repos/{self._control_encoded}"
+        actions_path = f"{metadata_path}/actions/runs"
+        if path == metadata_path:
+            raw = super()._get_json(path, query)
+            if not isinstance(raw, dict):
+                return raw
+            commits = super()._get_json(f"{metadata_path}/commits", {"per_page": "20"})
+            activity = self._latest_meaningful_activity(commits)
+            return raw if activity is None else {**raw, "pushed_at": activity}
+        if path == actions_path:
+            expanded = dict(query or {})
+            expanded["per_page"] = "20"
+            raw = super()._get_json(path, expanded)
+            if not isinstance(raw, dict):
+                return raw
+            runs = raw.get("workflow_runs")
+            if not isinstance(runs, list):
+                return raw
+            filtered = [
+                run
+                for run in runs
+                if not isinstance(run, dict)
+                or str(run.get("name") or "") not in _CONTROL_WORKFLOW_NAMES
+            ]
+            return {**raw, "workflow_runs": filtered[:1]}
+        return super()._get_json(path, query)
+
+    @staticmethod
+    def _latest_meaningful_activity(raw: object) -> str | None:
+        if not isinstance(raw, list):
+            return None
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            commit = item.get("commit")
+            if not isinstance(commit, dict):
+                continue
+            message = str(commit.get("message") or "")
+            if message.startswith(_REFRESH_COMMIT_PREFIX):
+                continue
+            for actor_key in ("committer", "author"):
+                actor = commit.get(actor_key)
+                if not isinstance(actor, dict):
+                    continue
+                date = actor.get("date")
+                if isinstance(date, str) and date:
+                    return date
+        return None
