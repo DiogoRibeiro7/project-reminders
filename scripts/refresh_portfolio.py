@@ -14,6 +14,7 @@ from project_reminders.infrastructure.github import GitHubRepositoryDiscovery
 from project_reminders.infrastructure.github_cache import (
     CachedGitHubOperationalState,
     CachedGitHubRepositoryEvidence,
+    ControlPlaneGitHubOperationalState,
     GitHubRunCache,
 )
 
@@ -69,10 +70,13 @@ def main() -> int:
     if assessment.assessments:
         service.apply_health_many(assessment.assessments)
 
-    observer = OperationalRefreshService(
-        service,
-        CachedGitHubOperationalState(token, cache),
+    control_repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    operational_gateway = (
+        ControlPlaneGitHubOperationalState(token, cache, control_repository)
+        if control_repository
+        else CachedGitHubOperationalState(token, cache)
     )
+    observer = OperationalRefreshService(service, operational_gateway)
     operational = observer.refresh(write=True, max_workers=workers)
 
     failures = [
