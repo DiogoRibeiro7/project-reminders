@@ -14,7 +14,6 @@ from project_reminders.domain.enums import (
     Priority,
     ProjectStatus,
 )
-from project_reminders.domain.metadata import ProjectMetadataSnapshot
 
 
 def _require_timezone(value: datetime | None, field_name: str) -> None:
@@ -129,7 +128,6 @@ class Project:
     tags: tuple[str, ...] = ()
     health: EngineeringHealth = field(default_factory=EngineeringHealth)
     operational: OperationalSnapshot = field(default_factory=OperationalSnapshot)
-    metadata: ProjectMetadataSnapshot | None = None
     current_pr: int | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
