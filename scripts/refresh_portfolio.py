@@ -9,6 +9,7 @@ from pathlib import Path
 from project_reminders.application.assessment import AssessmentService
 from project_reminders.application.github_import import GitHubImportService
 from project_reminders.application.operational import OperationalRefreshService
+from project_reminders.application.project_metadata import ProjectMetadataRefreshService
 from project_reminders.application.refresh_safety import (
     MIN_STAGE_COVERAGE,
     RefreshCoverage,
@@ -22,6 +23,7 @@ from project_reminders.infrastructure.github_cache import (
     ControlPlaneGitHubOperationalState,
     GitHubRunCache,
 )
+from project_reminders.infrastructure.metadata_inventory import write_metadata_inventory
 
 DEFAULT_REFRESH_WORKERS = 8
 
@@ -70,8 +72,12 @@ def main() -> int:
     repositories = tuple(project.repository for project in projects)
     cache = GitHubRunCache()
 
-    assessor = AssessmentService(CachedGitHubRepositoryEvidence(token, cache))
+    evidence_gateway = CachedGitHubRepositoryEvidence(token, cache)
+    assessor = AssessmentService(evidence_gateway)
     assessment = assessor.assess_many_resilient(repositories, max_workers=workers)
+
+    metadata_reader = ProjectMetadataRefreshService(evidence_gateway)
+    metadata = metadata_reader.refresh(repositories, max_workers=workers)
 
     control_repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
     operational_gateway = (
@@ -87,6 +93,10 @@ def main() -> int:
         for repository, error in assessment.failed
     ]
     failures.extend(
+        RefreshFailure(repository, "metadata", error)
+        for repository, error in metadata.failed
+    )
+    failures.extend(
         RefreshFailure(repository, "observation", error)
         for repository, error in operational.failed
     )
@@ -96,6 +106,8 @@ def main() -> int:
         f"tracked={len(projects)} "
         f"imported={len(imported)} "
         f"assessed={len(assessment.updated)} "
+        f"metadata={len(metadata.snapshots)} "
+        f"unmigrated={len(metadata.missing)} "
         f"observed={len(operational.updated)} "
         f"failures={len(failures)} "
         f"workers={workers} "
@@ -118,6 +130,19 @@ def main() -> int:
             f"minimum={MIN_STAGE_COVERAGE:.0%}"
         )
         return 2
+
+    metadata_coverage = RefreshCoverage(metadata.succeeded, total)
+    if metadata_coverage.is_safe():
+        write_metadata_inventory(
+            root / "data" / "project_metadata.json",
+            metadata.snapshots,
+            metadata.missing,
+        )
+    else:
+        print(
+            "WARN unsafe metadata coverage; preserving prior inventory: "
+            f"coverage={metadata_coverage.ratio:.1%} minimum={MIN_STAGE_COVERAGE:.0%}"
+        )
 
     if assessment.assessments:
         service.apply_health_many(assessment.assessments)
