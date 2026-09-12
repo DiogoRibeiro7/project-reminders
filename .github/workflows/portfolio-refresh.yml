@@ -54,7 +54,10 @@ jobs:
         run: |
           git config user.name "Diogo Ribeiro"
           git config user.email "diogo_dj@hotmail.com"
-          git add data/projects.json data/project_metadata.json
+          git add data/projects.json
+          if [ -f data/project_metadata.json ]; then
+            git add data/project_metadata.json
+          fi
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Portfolio state is unchanged"
