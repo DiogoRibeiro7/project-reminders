@@ -20,6 +20,8 @@ jobs:
         run: pip install poetry
       - name: Install project
         run: poetry install --no-interaction
+      - name: Validate project metadata
+        run: poetry run python scripts/validate_project_metadata.py
       - name: Ruff
         run: poetry run ruff check .
       - name: Mypy
