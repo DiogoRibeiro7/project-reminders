@@ -182,3 +182,79 @@ class ProjectMetadata:
         outcome_ids = [outcome.id for outcome in self.outcomes]
         if len(outcome_ids) != len(set(outcome_ids)):
             raise ValueError("outcome ids must be unique")
+
+
+@dataclass(frozen=True, slots=True)
+class MilestoneSnapshot:
+    """Compact central summary of one repository-local current milestone."""
+
+    id: str
+    title: str
+    status: MilestoneStatus
+    acceptance_done: int = 0
+    acceptance_total: int = 0
+
+    def __post_init__(self) -> None:
+        _require_text(self.id, "milestone snapshot id")
+        _require_text(self.title, "milestone snapshot title")
+        if self.acceptance_done < 0 or self.acceptance_total < 0:
+            raise ValueError("acceptance counts must be non-negative")
+        if self.acceptance_done > self.acceptance_total:
+            raise ValueError("completed acceptance count cannot exceed total")
+
+
+@dataclass(frozen=True, slots=True)
+class ProjectMetadataSnapshot:
+    """Compact validated mirror of repository-local planning metadata."""
+
+    project_type: ProjectType
+    strategic_themes: tuple[str, ...] = ()
+    planning_horizon: PlanningHorizon = PlanningHorizon.LATER
+    wip: bool = False
+    milestone: MilestoneSnapshot | None = None
+    dependency_count: int = 0
+    outcome_count: int = 0
+    schema_version: int = 1
+
+    def __post_init__(self) -> None:
+        if self.schema_version != 1:
+            raise ValueError(f"unsupported project metadata snapshot version: {self.schema_version}")
+        if self.dependency_count < 0 or self.outcome_count < 0:
+            raise ValueError("metadata snapshot counts must be non-negative")
+        normalized_themes = tuple(theme.strip() for theme in self.strategic_themes)
+        if any(not theme for theme in normalized_themes):
+            raise ValueError("strategic themes must not contain empty values")
+        if len(normalized_themes) != len(set(normalized_themes)):
+            raise ValueError("strategic themes must be unique")
+        object.__setattr__(self, "strategic_themes", normalized_themes)
+        if self.planning_horizon is PlanningHorizon.NOW and not self.wip:
+            raise ValueError("planning horizon 'now' requires wip=true")
+        active = {MilestoneStatus.WIP, MilestoneStatus.FINISHING}
+        if self.wip and (self.milestone is None or self.milestone.status not in active):
+            raise ValueError("wip metadata snapshot requires an active current milestone")
+        if not self.wip and self.milestone is not None and self.milestone.status in active:
+            raise ValueError("active milestone snapshot requires wip=true")
+
+
+def summarize_project_metadata(metadata: ProjectMetadata) -> ProjectMetadataSnapshot:
+    """Reduce repository-local metadata to the compact central portfolio representation."""
+
+    milestone: MilestoneSnapshot | None = None
+    if metadata.milestone is not None:
+        milestone = MilestoneSnapshot(
+            id=metadata.milestone.id,
+            title=metadata.milestone.title,
+            status=metadata.milestone.status,
+            acceptance_done=sum(criterion.done for criterion in metadata.milestone.acceptance),
+            acceptance_total=len(metadata.milestone.acceptance),
+        )
+    return ProjectMetadataSnapshot(
+        schema_version=metadata.schema_version,
+        project_type=metadata.project_type,
+        strategic_themes=metadata.strategic_themes,
+        planning_horizon=metadata.planning_horizon,
+        wip=metadata.wip,
+        milestone=milestone,
+        dependency_count=len(metadata.dependencies),
+        outcome_count=len(metadata.outcomes),
+    )
