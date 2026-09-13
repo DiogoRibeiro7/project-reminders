@@ -84,6 +84,22 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
     assert 'data-health="complete unknown missing' in response.text
 
 
+def test_dashboard_renders_metadata_filters_and_row_dimensions(tmp_path: Path) -> None:
+    _write_portfolio(tmp_path)
+
+    response = TestClient(create_app(tmp_path)).get("/")
+
+    assert response.status_code == 200
+    assert 'id="metadata"' in response.text
+    assert 'id="project-type"' in response.text
+    assert 'id="horizon"' in response.text
+    assert 'id="wip"' in response.text
+    assert 'data-metadata="migrated"' in response.text
+    assert 'data-project-type="research"' in response.text
+    assert 'data-horizon="now"' in response.text
+    assert 'data-wip="yes"' in response.text
+
+
 def test_project_detail_renders_control_panel(tmp_path: Path) -> None:
     _write_portfolio(tmp_path)
 
