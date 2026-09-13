@@ -12,7 +12,7 @@
   "milestone": {
     "id": "M46",
     "title": "Ingest repository-local metadata into the portfolio refresh",
-    "status": "wip",
+    "status": "finishing",
     "acceptance": [
       {
         "id": "A1",
@@ -32,7 +32,7 @@
       {
         "id": "A4",
         "text": "Pass lint, typing, and regression tests on the exact PR head",
-        "done": false
+        "done": true
       }
     ]
   },
