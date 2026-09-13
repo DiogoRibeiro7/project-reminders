@@ -6,7 +6,11 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Protocol
 
-from project_reminders.domain.metadata import ProjectMetadata, ProjectMetadataSnapshot, summarize_project_metadata
+from project_reminders.domain.metadata import (
+    ProjectMetadata,
+    ProjectMetadataSnapshot,
+    summarize_project_metadata,
+)
 
 
 class ProjectMetadataGateway(Protocol):
