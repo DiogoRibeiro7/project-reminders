@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-13T16:22:57.475939+00:00",
+  "generated_at": "2026-09-13T20:54:49.114267+00:00",
   "projects": [
     {
       "id": "1030ec9e7ecd",
@@ -991,25 +991,17 @@
         "demo": "missing"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 194,
-            "title": "Load MathJax and the search bundle only where pages use them",
-            "draft": false,
-            "updated_at": "2026-09-13T09:30:04+00:00",
-            "url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/pull/194"
-          }
-        ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34750511594",
-        "ci_updated_at": "2026-09-13T09:54:35+00:00",
-        "latest_activity_at": "2026-09-13T09:29:02+00:00",
+        "open_pull_requests": [],
+        "ci_state": "pending",
+        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34782169645",
+        "ci_updated_at": "2026-09-13T20:53:54+00:00",
+        "latest_activity_at": "2026-09-13T20:28:58+00:00",
         "latest_release": "v0.7.0",
         "latest_release_at": "2026-09-12T09:35:51+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/releases/tag/v0.7.0",
         "latest_tag": "v0.7.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/tree/v0.7.0",
-        "observed_at": "2026-09-13T16:22:12.206768+00:00"
+        "observed_at": "2026-09-13T20:54:03.656889+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.563397+00:00",
@@ -2028,23 +2020,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 174,
-            "title": "Compare uncertainty diagnostics by correctness separation",
+            "number": 176,
+            "title": "Add Paper 1 uncertainty panel runner",
             "draft": false,
-            "updated_at": "2026-09-13T09:24:08+00:00",
-            "url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/pull/174"
+            "updated_at": "2026-09-13T20:24:13+00:00",
+            "url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/pull/176"
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/actions/runs/34749256658",
-        "ci_updated_at": "2026-09-13T09:38:08+00:00",
-        "latest_activity_at": "2026-09-13T09:23:06+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/actions/runs/34780398315",
+        "ci_updated_at": "2026-09-13T20:39:49+00:00",
+        "latest_activity_at": "2026-09-13T20:23:09+00:00",
         "latest_release": "v0.3.0",
         "latest_release_at": "2026-09-12T19:37:41+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/releases/tag/v0.3.0",
         "latest_tag": "v0.3.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/tree/v0.3.0",
-        "observed_at": "2026-09-13T16:22:14.325274+00:00"
+        "observed_at": "2026-09-13T20:54:05.939661+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -2759,15 +2751,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/carbon-transition-duckdb-lab/actions/runs/34549465137",
-        "ci_updated_at": "2026-09-11T01:09:39+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/carbon-transition-duckdb-lab/actions/runs/34781246182",
+        "ci_updated_at": "2026-09-13T20:36:20+00:00",
         "latest_activity_at": "2026-06-19T01:15:45+00:00",
         "latest_release": "v0.7.0",
         "latest_release_at": "2026-06-10T17:33:45+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/carbon-transition-duckdb-lab/releases/tag/v0.7.0",
         "latest_tag": "v0.7.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/carbon-transition-duckdb-lab/tree/v0.7.0",
-        "observed_at": "2026-09-13T16:22:15.594752+00:00"
+        "observed_at": "2026-09-13T20:54:07.295140+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.668490+00:00",
@@ -5541,15 +5533,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/actions/runs/34749581481",
-        "ci_updated_at": "2026-09-13T09:33:31+00:00",
-        "latest_activity_at": "2026-09-13T09:49:10+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/actions/runs/34782147216",
+        "ci_updated_at": "2026-09-13T20:53:40+00:00",
+        "latest_activity_at": "2026-09-13T20:39:27+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:21.074614+00:00"
+        "observed_at": "2026-09-13T20:54:12.753352+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.907015+00:00",
@@ -8258,15 +8250,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34749812799",
-        "ci_updated_at": "2026-09-13T09:36:27+00:00",
-        "latest_activity_at": "2026-09-13T09:37:08+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34778679392",
+        "ci_updated_at": "2026-09-13T19:45:55+00:00",
+        "latest_activity_at": "2026-09-13T19:45:50+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:26.003066+00:00"
+        "observed_at": "2026-09-13T20:54:17.854850+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-10T21:29:00.147579+00:00",
@@ -9206,15 +9198,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/greeting-toolkit/actions/runs/33208274839",
-        "ci_updated_at": "2026-08-28T20:28:03+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/greeting-toolkit/actions/runs/34602188060",
+        "ci_updated_at": "2026-09-11T13:04:28+00:00",
         "latest_activity_at": "2026-09-07T11:13:58+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:27.939866+00:00"
+        "observed_at": "2026-09-13T20:54:19.651194+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.294074+00:00",
@@ -10410,30 +10402,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 67,
-            "title": "fix: surface log transform failures with DataExcept",
+            "number": 70,
+            "title": "test: cover CLI DataExcept loading boundaries",
             "draft": true,
-            "updated_at": "2026-09-13T09:22:41+00:00",
-            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/67"
-          },
-          {
-            "number": 69,
-            "title": "docs: record Milestone 2 DataExcept audit",
-            "draft": true,
-            "updated_at": "2026-09-13T08:11:20+00:00",
-            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/69"
+            "updated_at": "2026-09-13T20:54:05+00:00",
+            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/70"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34746909721",
-        "ci_updated_at": "2026-09-13T08:08:35+00:00",
-        "latest_activity_at": "2026-09-13T09:21:52+00:00",
+        "ci_state": "pending",
+        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34782121100",
+        "ci_updated_at": "2026-09-13T20:53:06+00:00",
+        "latest_activity_at": "2026-09-13T20:52:52+00:00",
         "latest_release": "v0.2.0",
         "latest_release_at": "2026-09-04T22:15:45+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/industrialstats/releases/tag/v0.2.0",
         "latest_tag": "v0.2.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/industrialstats/tree/v0.2.0",
-        "observed_at": "2026-09-13T16:22:30.075889+00:00"
+        "observed_at": "2026-09-13T20:54:21.996864+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.491693+00:00",
@@ -11871,23 +11856,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 6,
-            "title": "Add nonlinear shape stress regime",
+            "number": 7,
+            "title": "Add paired repeated-seed representation experiment",
             "draft": true,
-            "updated_at": "2026-09-13T09:17:27+00:00",
-            "url": "https://github.com/DiogoRibeiro7/longcluster-robust/pull/6"
+            "updated_at": "2026-09-13T20:53:31+00:00",
+            "url": "https://github.com/DiogoRibeiro7/longcluster-robust/pull/7"
           }
         ],
         "ci_state": "none",
         "ci_url": null,
         "ci_updated_at": null,
-        "latest_activity_at": "2026-09-13T09:17:16+00:00",
+        "latest_activity_at": "2026-09-13T20:53:02+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:32.989006+00:00"
+        "observed_at": "2026-09-13T20:54:24.849876+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-13T07:35:10.397341+00:00",
@@ -12319,13 +12304,6 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 72,
-            "title": "Add pulse-oximeter fields to blood-pressure source",
-            "draft": true,
-            "updated_at": "2026-09-13T09:31:06+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/72"
-          },
-          {
             "number": 30,
             "title": "chore(deps): bump protobuf from 6.33.5 to 7.34.1",
             "draft": false,
@@ -12341,15 +12319,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/Medium-Blog/actions/runs/34715418370",
-        "ci_updated_at": "2026-09-12T19:53:20+00:00",
-        "latest_activity_at": "2026-09-13T09:30:48+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/Medium-Blog/actions/runs/34782133052",
+        "ci_updated_at": "2026-09-13T20:54:13+00:00",
+        "latest_activity_at": "2026-09-13T20:53:06+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:34.114537+00:00"
+        "observed_at": "2026-09-13T20:54:26.104140+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.842731+00:00",
@@ -13094,23 +13072,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 47,
-            "title": "feat: add concise print method for sample moments",
+            "number": 48,
+            "title": "test: lock seeded RNG preservation across inference layers",
             "draft": false,
-            "updated_at": "2026-09-13T07:41:08+00:00",
-            "url": "https://github.com/DiogoRibeiro7/momentineq/pull/47"
+            "updated_at": "2026-09-13T20:26:58+00:00",
+            "url": "https://github.com/DiogoRibeiro7/momentineq/pull/48"
           }
         ],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/momentineq/actions/runs/34745721592",
-        "ci_updated_at": "2026-09-13T07:38:19+00:00",
-        "latest_activity_at": "2026-09-13T07:40:49+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/momentineq/actions/runs/34780636692",
+        "ci_updated_at": "2026-09-13T20:24:05+00:00",
+        "latest_activity_at": "2026-09-13T20:26:39+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:35.590486+00:00"
+        "observed_at": "2026-09-13T20:54:27.516744+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.968418+00:00",
@@ -16811,23 +16789,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 40,
-            "title": "Harmonize three-way school type across PISA 2015\u20132025",
+            "number": 42,
+            "title": "Harmonize class size across PISA 2015\u20132025",
             "draft": false,
-            "updated_at": "2026-09-13T09:34:10+00:00",
-            "url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/pull/40"
+            "updated_at": "2026-09-13T19:50:10+00:00",
+            "url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/pull/42"
           }
         ],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/actions/runs/34749640390",
-        "ci_updated_at": "2026-09-13T09:31:15+00:00",
-        "latest_activity_at": "2026-09-13T09:33:53+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/actions/runs/34778722020",
+        "ci_updated_at": "2026-09-13T19:46:46+00:00",
+        "latest_activity_at": "2026-09-13T19:49:57+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:42.628593+00:00"
+        "observed_at": "2026-09-13T20:54:34.350766+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T14:31:46.034191+00:00",
@@ -17682,13 +17660,6 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 48,
-            "title": "feat: expose project metadata in read-only views",
-            "draft": true,
-            "updated_at": "2026-09-13T08:11:15+00:00",
-            "url": "https://github.com/DiogoRibeiro7/project-reminders/pull/48"
-          },
-          {
             "number": 20,
             "title": "chore(deps-dev): bump pytest from 8.4.2 to 9.0.3 in the pip group across 1 directory",
             "draft": false,
@@ -17697,15 +17668,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34745581850",
-        "ci_updated_at": "2026-09-13T07:35:19+00:00",
-        "latest_activity_at": "2026-09-13T07:34:48+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34782071709",
+        "ci_updated_at": "2026-09-13T20:52:23+00:00",
+        "latest_activity_at": "2026-09-13T20:51:49+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:45.306176+00:00"
+        "observed_at": "2026-09-13T20:54:36.977119+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -18181,25 +18152,17 @@
         "demo": "complete"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 8,
-            "title": "Test anisotropic variogram fitting",
-            "draft": false,
-            "updated_at": "2026-09-13T09:47:22+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/8"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34749739983",
-        "ci_updated_at": "2026-09-13T09:37:15+00:00",
-        "latest_activity_at": "2026-09-13T09:46:44+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34778408741",
+        "ci_updated_at": "2026-09-13T19:43:18+00:00",
+        "latest_activity_at": "2026-09-13T19:40:21+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:44.999834+00:00"
+        "observed_at": "2026-09-13T20:54:36.693877+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-12T15:34:12.010452+00:00",
@@ -18229,25 +18192,17 @@
         "demo": "complete"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 8,
-            "title": "Test anisotropic variogram fitting",
-            "draft": false,
-            "updated_at": "2026-09-13T09:47:22+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/8"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34749739983",
-        "ci_updated_at": "2026-09-13T09:37:15+00:00",
-        "latest_activity_at": "2026-09-13T09:46:44+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34778408741",
+        "ci_updated_at": "2026-09-13T19:43:18+00:00",
+        "latest_activity_at": "2026-09-13T19:40:21+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:45.723826+00:00"
+        "observed_at": "2026-09-13T20:54:37.442770+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.911998+00:00",
@@ -19384,23 +19339,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 16,
-            "title": "Scaffold four-layer Riccati manuscript",
+            "number": 18,
+            "title": "Formalize reproducible Riccati audit protocol",
             "draft": false,
-            "updated_at": "2026-09-13T09:31:20+00:00",
-            "url": "https://github.com/DiogoRibeiro7/riccati-projective-atlas/pull/16"
+            "updated_at": "2026-09-13T20:24:05+00:00",
+            "url": "https://github.com/DiogoRibeiro7/riccati-projective-atlas/pull/18"
           }
         ],
         "ci_state": "none",
         "ci_url": null,
         "ci_updated_at": null,
-        "latest_activity_at": "2026-09-13T09:30:42+00:00",
+        "latest_activity_at": "2026-09-13T20:23:56+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:47.418245+00:00"
+        "observed_at": "2026-09-13T20:54:39.179361+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-12T15:34:12.043783+00:00",
@@ -20127,15 +20082,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/semisup-methods/actions/runs/34749625914",
-        "ci_updated_at": "2026-09-13T09:30:37+00:00",
-        "latest_activity_at": "2026-09-13T09:30:26+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/semisup-methods/actions/runs/34778157197",
+        "ci_updated_at": "2026-09-13T19:35:32+00:00",
+        "latest_activity_at": "2026-09-13T19:35:26+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-13T16:22:49.086440+00:00"
+        "observed_at": "2026-09-13T20:54:40.764821+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-13T07:35:10.430964+00:00",

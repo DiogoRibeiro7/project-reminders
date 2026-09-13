@@ -11,10 +11,10 @@
       "planning_horizon": "now",
       "wip": true,
       "milestone": {
-        "id": "M46",
-        "title": "Ingest repository-local metadata into the portfolio refresh",
-        "status": "finishing",
-        "acceptance_done": 4,
+        "id": "M47",
+        "title": "Expose repository-local metadata in read-only project views",
+        "status": "wip",
+        "acceptance_done": 3,
         "acceptance_total": 4
       },
       "dependency_count": 0,
