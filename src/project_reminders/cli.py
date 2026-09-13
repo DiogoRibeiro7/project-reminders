@@ -135,11 +135,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     service = build_service(root)
     try:
         if args.command == "dashboard":
-            dashboard = build_dashboard(service.load(), metadata_inventory=_metadata_inventory(root))
+            dashboard = build_dashboard(
+                service.load(),
+                metadata_inventory=_metadata_inventory(root),
+            )
             print(
-                f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count} | "
+                f"Active: {dashboard.active_count} | "
+                f"Needs attention: {dashboard.attention_count} | "
                 f"Metadata: {dashboard.migrated_metadata_count} migrated, "
-                f"{dashboard.missing_metadata_count} missing, {dashboard.wip_metadata_count} WIP"
+                f"{dashboard.missing_metadata_count} missing, "
+                f"{dashboard.wip_metadata_count} WIP"
             )
             for card in dashboard.cards:
                 next_text = (
