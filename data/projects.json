@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-12T15:35:42.432694+00:00",
+  "generated_at": "2026-09-13T04:54:32.390311+00:00",
   "projects": [
     {
       "id": "1030ec9e7ecd",
@@ -993,15 +993,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34687676180",
-        "ci_updated_at": "2026-09-12T10:09:23+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/actions/runs/34714347844",
+        "ci_updated_at": "2026-09-12T19:30:27+00:00",
         "latest_activity_at": "2026-09-12T10:08:54+00:00",
         "latest_release": "v0.7.0",
         "latest_release_at": "2026-09-12T09:35:51+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/releases/tag/v0.7.0",
         "latest_tag": "v0.7.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/analytics-blog-jekyll/tree/v0.7.0",
-        "observed_at": "2026-09-12T15:35:16.070335+00:00"
+        "observed_at": "2026-09-13T04:53:47.599350+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.563397+00:00",
@@ -1651,13 +1651,13 @@
         "ci_state": "passing",
         "ci_url": "https://github.com/DiogoRibeiro7/article-reminders/actions/runs/34689132296",
         "ci_updated_at": "2026-09-12T10:42:34+00:00",
-        "latest_activity_at": "2026-09-12T10:41:57+00:00",
+        "latest_activity_at": "2026-09-12T20:22:50+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:16.891955+00:00"
+        "observed_at": "2026-09-13T04:53:48.885010+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -2020,15 +2020,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/actions/runs/34689217068",
-        "ci_updated_at": "2026-09-12T10:45:01+00:00",
-        "latest_activity_at": "2026-09-12T10:43:59+00:00",
-        "latest_release": "v0.2.0",
-        "latest_release_at": "2026-08-30T08:26:24+00:00",
-        "latest_release_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/releases/tag/v0.2.0",
-        "latest_tag": "v0.2.0",
-        "latest_tag_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/tree/v0.2.0",
-        "observed_at": "2026-09-12T15:35:17.415322+00:00"
+        "ci_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/actions/runs/34715976185",
+        "ci_updated_at": "2026-09-12T20:24:27+00:00",
+        "latest_activity_at": "2026-09-12T20:22:33+00:00",
+        "latest_release": "v0.3.0",
+        "latest_release_at": "2026-09-12T19:37:41+00:00",
+        "latest_release_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/releases/tag/v0.3.0",
+        "latest_tag": "v0.3.0",
+        "latest_tag_url": "https://github.com/DiogoRibeiro7/behavioral-sensing-research/tree/v0.3.0",
+        "observed_at": "2026-09-13T04:53:49.609587+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -2519,16 +2519,16 @@
             "url": "https://github.com/DiogoRibeiro7/brw-fpt/pull/24"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/brw-fpt/actions/runs/34694587135",
-        "ci_updated_at": "2026-09-12T12:46:31+00:00",
+        "ci_state": "failing",
+        "ci_url": "https://github.com/DiogoRibeiro7/brw-fpt/actions/runs/34731265837",
+        "ci_updated_at": "2026-09-13T01:45:20+00:00",
         "latest_activity_at": "2026-09-07T11:04:21+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:17.780566+00:00"
+        "observed_at": "2026-09-13T04:53:50.387860+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.649870+00:00",
@@ -3954,7 +3954,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:13.778711+00:00"
+        "observed_at": "2026-09-13T04:53:53.313246+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.754181+00:00",
@@ -4284,7 +4284,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:14.196238+00:00"
+        "observed_at": "2026-09-13T04:53:53.799122+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.785143+00:00",
@@ -5525,15 +5525,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/actions/runs/34684575435",
-        "ci_updated_at": "2026-09-12T08:57:33+00:00",
-        "latest_activity_at": "2026-09-12T10:54:50+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/DiogoRibeiro7.github.io/actions/runs/34716756623",
+        "ci_updated_at": "2026-09-12T20:19:49+00:00",
+        "latest_activity_at": "2026-09-12T20:34:16+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:21.272245+00:00"
+        "observed_at": "2026-09-13T04:53:56.357105+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.907015+00:00",
@@ -6332,7 +6332,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:17.254160+00:00"
+        "observed_at": "2026-09-13T04:53:58.076098+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -6510,7 +6510,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:17.262338+00:00"
+        "observed_at": "2026-09-13T04:53:58.112002+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.999128+00:00",
@@ -7183,16 +7183,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
-        "ci_url": "https://github.com/DiogoRibeiro7/eu_economy_decision_lab/actions/runs/34633907398",
-        "ci_updated_at": "2026-09-11T18:33:12+00:00",
+        "ci_state": "cancelled",
+        "ci_url": "https://github.com/DiogoRibeiro7/eu_economy_decision_lab/actions/runs/34633907456",
+        "ci_updated_at": "2026-09-12T18:33:14+00:00",
         "latest_activity_at": "2026-07-10T08:09:59+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:18.117133+00:00"
+        "observed_at": "2026-09-13T04:53:59.517124+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.075153+00:00",
@@ -8240,25 +8240,17 @@
         "demo": "missing"
       },
       "operational": {
-        "open_pull_requests": [
-          {
-            "number": 16,
-            "title": "Benchmark Pareto convergence against Tukey-h",
-            "draft": true,
-            "updated_at": "2026-09-12T11:54:43+00:00",
-            "url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/pull/16"
-          }
-        ],
+        "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34687759492",
-        "ci_updated_at": "2026-09-12T10:10:51+00:00",
-        "latest_activity_at": "2026-09-12T11:54:26+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/gauss-pareto-bridge/actions/runs/34716911036",
+        "ci_updated_at": "2026-09-12T20:22:45+00:00",
+        "latest_activity_at": "2026-09-12T20:22:41+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:24.271491+00:00"
+        "observed_at": "2026-09-13T04:54:01.297450+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-10T21:29:00.147579+00:00",
@@ -10209,16 +10201,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
+        "ci_state": "cancelled",
         "ci_url": "https://github.com/DiogoRibeiro7/il_supply_side_policy_tests/actions/runs/34636743758",
-        "ci_updated_at": "2026-09-11T19:03:25+00:00",
+        "ci_updated_at": "2026-09-12T19:03:27+00:00",
         "latest_activity_at": "2026-07-10T08:10:02+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:21.845556+00:00"
+        "observed_at": "2026-09-13T04:54:04.943735+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.453809+00:00",
@@ -10410,30 +10402,30 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 64,
-            "title": "feat: structure config read and parse failures",
+            "number": 66,
+            "title": "feat: structure missing config dependency errors",
             "draft": true,
-            "updated_at": "2026-09-12T10:46:04+00:00",
-            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/64"
+            "updated_at": "2026-09-12T20:21:23+00:00",
+            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/66"
           },
           {
-            "number": 62,
-            "title": "feat: validate CSV dtypes with DataExcept",
+            "number": 65,
+            "title": "feat: validate exact CSV schema with DataExcept",
             "draft": true,
-            "updated_at": "2026-09-12T10:44:05+00:00",
-            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/62"
+            "updated_at": "2026-09-12T20:02:56+00:00",
+            "url": "https://github.com/DiogoRibeiro7/industrialstats/pull/65"
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34689217784",
-        "ci_updated_at": "2026-09-12T10:45:11+00:00",
-        "latest_activity_at": "2026-09-12T10:45:11+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/industrialstats/actions/runs/34715082451",
+        "ci_updated_at": "2026-09-12T19:46:30+00:00",
+        "latest_activity_at": "2026-09-12T20:20:44+00:00",
         "latest_release": "v0.2.0",
         "latest_release_at": "2026-09-04T22:15:45+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/industrialstats/releases/tag/v0.2.0",
         "latest_tag": "v0.2.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/industrialstats/tree/v0.2.0",
-        "observed_at": "2026-09-12T15:35:26.637821+00:00"
+        "observed_at": "2026-09-13T04:54:05.570609+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.491693+00:00",
@@ -11296,15 +11288,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/learning-pathways/actions/runs/34007640292",
-        "ci_updated_at": "2026-09-06T02:53:56+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/learning-pathways/actions/runs/34734680880",
+        "ci_updated_at": "2026-09-13T03:06:51+00:00",
         "latest_activity_at": "2025-08-21T19:29:44+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:27.734680+00:00"
+        "observed_at": "2026-09-13T04:54:07.389928+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.656672+00:00",
@@ -11911,15 +11903,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/loss-functions-gof/actions/runs/34134921888",
-        "ci_updated_at": "2026-09-07T14:48:03+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/loss-functions-gof/actions/runs/34738178843",
+        "ci_updated_at": "2026-09-13T04:33:50+00:00",
         "latest_activity_at": "2026-04-21T12:07:15+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:28.397927+00:00"
+        "observed_at": "2026-09-13T04:54:08.344474+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.765142+00:00",
@@ -12271,158 +12263,11 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 69,
-            "title": "Remove blood-pressure compatibility shims",
+            "number": 70,
+            "title": "Add repository modernization roadmap",
             "draft": false,
-            "updated_at": "2026-09-12T10:44:38+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/69"
-          },
-          {
-            "number": 68,
-            "title": "Use canonical package imports in secret-backed tests",
-            "draft": false,
-            "updated_at": "2026-09-12T10:22:12+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/68"
-          },
-          {
-            "number": 67,
-            "title": "Use canonical package imports in public regression tests",
-            "draft": false,
-            "updated_at": "2026-09-12T10:12:30+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/67"
-          },
-          {
-            "number": 66,
-            "title": "Use canonical package imports in blood-pressure notebook",
-            "draft": false,
-            "updated_at": "2026-09-12T09:38:18+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/66"
-          },
-          {
-            "number": 65,
-            "title": "Run blood-pressure automation through canonical package modules",
-            "draft": false,
-            "updated_at": "2026-09-12T07:32:09+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/65"
-          },
-          {
-            "number": 64,
-            "title": "Add installable blood-pressure package boundary",
-            "draft": false,
-            "updated_at": "2026-09-11T15:13:38+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/64"
-          },
-          {
-            "number": 63,
-            "title": "Add deterministic public reproduction contract",
-            "draft": false,
-            "updated_at": "2026-09-11T14:51:21+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/63"
-          },
-          {
-            "number": 62,
-            "title": "Add public output schema contract",
-            "draft": false,
-            "updated_at": "2026-09-11T12:39:55+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/62"
-          },
-          {
-            "number": 61,
-            "title": "Add machine-checkable public privacy contract",
-            "draft": false,
-            "updated_at": "2026-09-11T11:45:40+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/61"
-          },
-          {
-            "number": 60,
-            "title": "Use package-native imports for validation gates",
-            "draft": false,
-            "updated_at": "2026-09-11T10:25:44+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/60"
-          },
-          {
-            "number": 59,
-            "title": "Refactor validation gate implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-11T10:23:34+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/59"
-          },
-          {
-            "number": 58,
-            "title": "Use package-native imports for temperature analyses",
-            "draft": false,
-            "updated_at": "2026-09-11T07:21:31+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/58"
-          },
-          {
-            "number": 57,
-            "title": "Refactor temperature sensitivity implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T21:24:28+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/57"
-          },
-          {
-            "number": 56,
-            "title": "Refactor temperature covariate implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T21:21:41+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/56"
-          },
-          {
-            "number": 55,
-            "title": "Refactor Google Sheets ingestion implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T21:05:50+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/55"
-          },
-          {
-            "number": 54,
-            "title": "Refactor observation-process implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T19:25:55+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/54"
-          },
-          {
-            "number": 53,
-            "title": "Use package-native imports for episode and temporal analyses",
-            "draft": false,
-            "updated_at": "2026-09-10T14:01:36+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/53"
-          },
-          {
-            "number": 52,
-            "title": "Refactor episode and temporal analysis implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T08:10:31+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/52"
-          },
-          {
-            "number": 51,
-            "title": "Use package-native imports for blood-pressure dependency spine",
-            "draft": false,
-            "updated_at": "2026-09-10T07:44:37+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/51"
-          },
-          {
-            "number": 50,
-            "title": "Refactor gap-aware and influence implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T07:20:02+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/50"
-          },
-          {
-            "number": 49,
-            "title": "Refactor blood-pressure core implementation ownership",
-            "draft": false,
-            "updated_at": "2026-09-10T07:03:48+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/49"
-          },
-          {
-            "number": 48,
-            "title": "Refactor blood-pressure analysis into canonical package",
-            "draft": false,
-            "updated_at": "2026-09-09T23:24:07+00:00",
-            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/48"
+            "updated_at": "2026-09-12T20:24:15+00:00",
+            "url": "https://github.com/DiogoRibeiro7/Medium-Blog/pull/70"
           },
           {
             "number": 30,
@@ -12440,15 +12285,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/Medium-Blog/actions/runs/34415937688",
-        "ci_updated_at": "2026-09-09T23:14:09+00:00",
-        "latest_activity_at": "2026-09-12T10:44:16+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/Medium-Blog/actions/runs/34715418370",
+        "ci_updated_at": "2026-09-12T19:53:20+00:00",
+        "latest_activity_at": "2026-09-12T20:22:55+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:28.913815+00:00"
+        "observed_at": "2026-09-13T04:54:09.422782+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.842731+00:00",
@@ -12575,16 +12420,16 @@
             "url": "https://github.com/DiogoRibeiro7/min_ratio_cycle/pull/82"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/min_ratio_cycle/actions/runs/34135534888",
-        "ci_updated_at": "2026-09-07T14:55:32+00:00",
+        "ci_state": "failing",
+        "ci_url": "https://github.com/DiogoRibeiro7/min_ratio_cycle/actions/runs/34737260270",
+        "ci_updated_at": "2026-09-13T04:34:29+00:00",
         "latest_activity_at": "2026-07-07T14:45:49+00:00",
         "latest_release": "v0.1.5",
         "latest_release_at": "2026-03-13T09:39:08+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/min_ratio_cycle/releases/tag/v0.1.5",
         "latest_tag": "v0.1.5",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/min_ratio_cycle/tree/v0.1.5",
-        "observed_at": "2026-09-12T15:35:29.017217+00:00"
+        "observed_at": "2026-09-13T04:54:09.793310+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -13193,23 +13038,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 41,
-            "title": "feat: add print methods for set-valued results",
+            "number": 43,
+            "title": "feat: summarize refined confidence-set diagnostics",
             "draft": false,
-            "updated_at": "2026-09-12T10:46:07+00:00",
-            "url": "https://github.com/DiogoRibeiro7/momentineq/pull/41"
+            "updated_at": "2026-09-12T20:04:50+00:00",
+            "url": "https://github.com/DiogoRibeiro7/momentineq/pull/43"
           }
         ],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/momentineq/actions/runs/34689207622",
-        "ci_updated_at": "2026-09-12T10:43:57+00:00",
-        "latest_activity_at": "2026-09-12T10:45:43+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/momentineq/actions/runs/34715927929",
+        "ci_updated_at": "2026-09-12T20:03:04+00:00",
+        "latest_activity_at": "2026-09-12T20:04:33+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:29.819269+00:00"
+        "observed_at": "2026-09-13T04:54:10.813925+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:18.968418+00:00",
@@ -13694,16 +13539,16 @@
             "url": "https://github.com/DiogoRibeiro7/myRpackage/pull/11"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/myRpackage/actions/runs/25305610741",
-        "ci_updated_at": "2026-05-04T07:03:56+00:00",
-        "latest_activity_at": "2026-03-01T11:27:44+00:00",
+        "ci_state": "failing",
+        "ci_url": "https://github.com/DiogoRibeiro7/myRpackage/actions/runs/34716329535",
+        "ci_updated_at": "2026-09-12T20:18:35+00:00",
+        "latest_activity_at": "2026-09-12T20:15:17+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:30.283820+00:00"
+        "observed_at": "2026-09-13T04:54:11.884996+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.061028+00:00",
@@ -15386,15 +15231,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/peak_detection/actions/runs/34657080455",
-        "ci_updated_at": "2026-09-11T23:11:20+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/peak_detection/actions/runs/34724157994",
+        "ci_updated_at": "2026-09-12T22:58:26+00:00",
         "latest_activity_at": "2026-03-13T22:00:31+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:28.863080+00:00"
+        "observed_at": "2026-09-13T04:54:14.826732+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.379422+00:00",
@@ -15792,7 +15637,7 @@
         "latest_release_url": "https://github.com/DiogoRibeiro7/pinn/releases/tag/v0.6.1",
         "latest_tag": "v0.6.1",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/pinn/tree/v0.6.1",
-        "observed_at": "2026-09-12T04:40:29.312732+00:00"
+        "observed_at": "2026-09-13T04:54:15.798913+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -16900,17 +16745,25 @@
         "demo": "complete"
       },
       "operational": {
-        "open_pull_requests": [],
+        "open_pull_requests": [
+          {
+            "number": 34,
+            "title": "Separate exact mappings from pooled harmonisation readiness",
+            "draft": false,
+            "updated_at": "2026-09-12T20:24:18+00:00",
+            "url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/pull/34"
+          }
+        ],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/actions/runs/34689242283",
-        "ci_updated_at": "2026-09-12T10:44:43+00:00",
-        "latest_activity_at": "2026-09-12T10:44:39+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/portugal-pisa-analysis/actions/runs/34716867948",
+        "ci_updated_at": "2026-09-12T20:22:12+00:00",
+        "latest_activity_at": "2026-09-12T20:24:01+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:33.759669+00:00"
+        "observed_at": "2026-09-13T04:54:17.720587+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T14:31:46.034191+00:00",
@@ -17159,16 +17012,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
-        "ci_url": "https://github.com/DiogoRibeiro7/portugal_swf_sim/actions/runs/34632053117",
-        "ci_updated_at": "2026-09-11T18:13:19+00:00",
+        "ci_state": "cancelled",
+        "ci_url": "https://github.com/DiogoRibeiro7/portugal_swf_sim/actions/runs/34632053429",
+        "ci_updated_at": "2026-09-12T18:13:22+00:00",
         "latest_activity_at": "2026-07-10T08:10:05+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:30.902508+00:00"
+        "observed_at": "2026-09-13T04:54:18.002561+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.687993+00:00",
@@ -17265,7 +17118,7 @@
         "latest_release_url": "https://github.com/DiogoRibeiro7/portuNLP/releases/tag/v1.8.0",
         "latest_tag": "v1.8.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/portuNLP/tree/v1.8.0",
-        "observed_at": "2026-09-12T04:40:31.080700+00:00"
+        "observed_at": "2026-09-13T04:54:18.527193+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.698995+00:00",
@@ -17336,16 +17189,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "cancelled",
-        "ci_url": "https://github.com/DiogoRibeiro7/power-consumption-generator/actions/runs/34343649255",
-        "ci_updated_at": "2026-09-10T11:05:00+00:00",
+        "ci_state": "failing",
+        "ci_url": "https://github.com/DiogoRibeiro7/power-consumption-generator/actions/runs/34735982187",
+        "ci_updated_at": "2026-09-13T03:38:32+00:00",
         "latest_activity_at": "2025-10-29T22:51:27+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:34.253453+00:00"
+        "observed_at": "2026-09-13T04:54:18.397236+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.721024+00:00",
@@ -17765,6 +17618,13 @@
       "operational": {
         "open_pull_requests": [
           {
+            "number": 46,
+            "title": "feat: ingest repository-local project metadata",
+            "draft": true,
+            "updated_at": "2026-09-12T20:23:57+00:00",
+            "url": "https://github.com/DiogoRibeiro7/project-reminders/pull/46"
+          },
+          {
             "number": 20,
             "title": "chore(deps-dev): bump pytest from 8.4.2 to 9.0.3 in the pip group across 1 directory",
             "draft": false,
@@ -17772,16 +17632,16 @@
             "url": "https://github.com/DiogoRibeiro7/project-reminders/pull/20"
           }
         ],
-        "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34605542558",
-        "ci_updated_at": "2026-09-11T13:39:56+00:00",
-        "latest_activity_at": "2026-09-11T13:39:14+00:00",
+        "ci_state": "failing",
+        "ci_url": "https://github.com/DiogoRibeiro7/project-reminders/actions/runs/34715900958",
+        "ci_updated_at": "2026-09-12T20:02:47+00:00",
+        "latest_activity_at": "2026-09-12T20:02:19+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:35.526558+00:00"
+        "observed_at": "2026-09-13T04:54:20.338560+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -18259,23 +18119,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 4,
-            "title": "Fix the three failures the first real CI run exposed",
+            "number": 5,
+            "title": "Fix variogram fitting: reach the optimum, report status honestly, repair the test oracle",
             "draft": false,
-            "updated_at": "2026-09-12T10:56:48+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/4"
+            "updated_at": "2026-09-12T20:21:07+00:00",
+            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/5"
           }
         ],
-        "ci_state": "pending",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34688578273",
-        "ci_updated_at": "2026-09-12T10:29:24+00:00",
-        "latest_activity_at": "2026-09-12T10:55:36+00:00",
+        "ci_state": "passing",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34714049509",
+        "ci_updated_at": "2026-09-12T19:24:47+00:00",
+        "latest_activity_at": "2026-09-12T20:20:07+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:35.333842+00:00"
+        "observed_at": "2026-09-13T04:54:20.220034+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-12T15:34:12.010452+00:00",
@@ -18307,23 +18167,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 4,
-            "title": "Fix the three failures the first real CI run exposed",
+            "number": 5,
+            "title": "Fix variogram fitting: reach the optimum, report status honestly, repair the test oracle",
             "draft": false,
-            "updated_at": "2026-09-12T10:56:48+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/4"
+            "updated_at": "2026-09-12T20:21:07+00:00",
+            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/5"
           }
         ],
-        "ci_state": "pending",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34688578273",
-        "ci_updated_at": "2026-09-12T10:29:24+00:00",
-        "latest_activity_at": "2026-09-12T10:55:36+00:00",
+        "ci_state": "passing",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/34714049509",
+        "ci_updated_at": "2026-09-12T19:24:47+00:00",
+        "latest_activity_at": "2026-09-12T20:20:07+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:35.708343+00:00"
+        "observed_at": "2026-09-13T04:54:20.834101+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.911998+00:00",
@@ -18958,15 +18818,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/rcpsp_cf_ivfth/actions/runs/34694359060",
-        "ci_updated_at": "2026-09-12T12:41:37+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/rcpsp_cf_ivfth/actions/runs/34710954531",
+        "ci_updated_at": "2026-09-12T18:22:47+00:00",
         "latest_activity_at": "2026-09-07T11:21:44+00:00",
         "latest_release": "v2.0.0",
         "latest_release_at": "2026-08-07T19:28:19+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/rcpsp_cf_ivfth/releases/tag/v2.0.0",
         "latest_tag": "v2.0.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/rcpsp_cf_ivfth/tree/v2.0.0",
-        "observed_at": "2026-09-12T15:35:36.238451+00:00"
+        "observed_at": "2026-09-13T04:54:21.742642+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:20.062508+00:00",
@@ -19452,23 +19312,23 @@
       "operational": {
         "open_pull_requests": [
           {
-            "number": 4,
-            "title": "Define Riccati equivalence transformations and invariants",
+            "number": 10,
+            "title": "Synthesize cross-paper Riccati equivalence classes",
             "draft": false,
-            "updated_at": "2026-09-12T10:45:10+00:00",
-            "url": "https://github.com/DiogoRibeiro7/riccati-projective-atlas/pull/4"
+            "updated_at": "2026-09-12T20:22:46+00:00",
+            "url": "https://github.com/DiogoRibeiro7/riccati-projective-atlas/pull/10"
           }
         ],
         "ci_state": "none",
         "ci_url": null,
         "ci_updated_at": null,
-        "latest_activity_at": "2026-09-12T10:44:55+00:00",
+        "latest_activity_at": "2026-09-12T20:22:37+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T15:35:36.870458+00:00"
+        "observed_at": "2026-09-13T04:54:22.547358+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-12T15:34:12.043783+00:00",
@@ -20529,16 +20389,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
-        "ci_url": "https://github.com/DiogoRibeiro7/shiftguard/actions/runs/34658498610",
-        "ci_updated_at": "2026-09-11T23:33:15+00:00",
+        "ci_state": "cancelled",
+        "ci_url": "https://github.com/DiogoRibeiro7/shiftguard/actions/runs/34658498689",
+        "ci_updated_at": "2026-09-12T23:33:17+00:00",
         "latest_activity_at": "2026-08-18T10:04:40+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:35.210352+00:00"
+        "observed_at": "2026-09-13T04:54:24.564870+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -21255,7 +21115,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:36.121616+00:00"
+        "observed_at": "2026-09-13T04:54:25.888806+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:20.622235+00:00",
@@ -23426,16 +23286,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
+        "ci_state": "cancelled",
         "ci_url": "https://github.com/DiogoRibeiro7/typescript-etl-pipeline/actions/runs/34657576749",
-        "ci_updated_at": "2026-09-11T23:18:50+00:00",
+        "ci_updated_at": "2026-09-12T23:18:53+00:00",
         "latest_activity_at": "2025-06-19T21:35:47+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:39.092397+00:00"
+        "observed_at": "2026-09-13T04:54:30.484714+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:21.280202+00:00",
@@ -23617,7 +23477,7 @@
         "latest_release_url": "https://github.com/DiogoRibeiro7/us-gdp-regime-1920/releases/tag/v1.1.1",
         "latest_tag": "v1.1.1",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/us-gdp-regime-1920/tree/v1.1.1",
-        "observed_at": "2026-09-12T04:40:39.349552+00:00"
+        "observed_at": "2026-09-13T04:54:30.759575+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:21.338985+00:00",
@@ -24066,7 +23926,7 @@
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-09-12T04:40:39.794077+00:00"
+        "observed_at": "2026-09-13T04:54:31.329494+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:21.458983+00:00",
