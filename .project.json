@@ -10,29 +10,29 @@
     "wip": true
   },
   "milestone": {
-    "id": "M47",
-    "title": "Expose repository-local metadata in read-only project views",
-    "status": "wip",
+    "id": "M48",
+    "title": "Filter the portfolio by repository-local planning metadata",
+    "status": "finishing",
     "acceptance": [
       {
         "id": "A1",
-        "text": "Load the derived metadata inventory without changing projects.json",
+        "text": "Filter by metadata migration status",
         "done": true
       },
       {
         "id": "A2",
-        "text": "Expose migration, planning, WIP, and milestone state in CLI and web views",
+        "text": "Filter migrated projects by project type and planning horizon",
         "done": true
       },
       {
         "id": "A3",
-        "text": "Keep attention scoring and portfolio admission semantics unchanged",
+        "text": "Filter explicitly by repository-local WIP state",
         "done": true
       },
       {
         "id": "A4",
-        "text": "Pass lint, typing, metadata validation, and regression tests on the exact PR head",
-        "done": false
+        "text": "Keep filters read-only with no ranking or lifecycle semantics",
+        "done": true
       }
     ]
   },
