@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import base64
+import json
 from collections.abc import Callable
 from threading import Lock
 from typing import cast
 
 from project_reminders.application.assessment import RepositoryEvidence
+from project_reminders.domain.metadata import ProjectMetadata
 from project_reminders.infrastructure.github import (
     GitHubApiError,
     GitHubOperationalState,
@@ -14,6 +17,7 @@ from project_reminders.infrastructure.github import (
     JsonObject,
     _encoded_repository,
 )
+from project_reminders.infrastructure.project_metadata import project_metadata_from_record
 
 Query = dict[str, str] | None
 CacheKey = tuple[str, str, tuple[tuple[str, str], ...]]
@@ -125,6 +129,29 @@ class CachedGitHubRepositoryEvidence(_RunCachedGitHubMixin, GitHubRepositoryEvid
             pyproject_tools=frozenset(),
             pyproject_inspected=True,
         )
+
+    def project_metadata(self, repository: str) -> ProjectMetadata | None:
+        """Return validated `.project.json` metadata when the repository declares it."""
+
+        evidence = self.evidence(repository)
+        if ".project.json" not in evidence.paths:
+            return None
+
+        encoded = _encoded_repository(repository)
+        raw = self._get_json(f"/repos/{encoded}/contents/.project.json")
+        if not isinstance(raw, dict):
+            raise TypeError("GitHub project metadata response must be an object")
+        record = cast(JsonObject, raw)
+        content = record.get("content")
+        encoding = record.get("encoding")
+        if not isinstance(content, str) or encoding != "base64":
+            raise TypeError("GitHub project metadata content must use base64 encoding")
+        try:
+            decoded = base64.b64decode(content).decode("utf-8")
+            payload = json.loads(decoded)
+        except (UnicodeDecodeError, ValueError, json.JSONDecodeError) as exc:
+            raise ValueError("repository .project.json is not valid UTF-8 JSON") from exc
+        return project_metadata_from_record(payload)
 
 
 class CachedGitHubOperationalState(_RunCachedGitHubMixin, GitHubOperationalState):

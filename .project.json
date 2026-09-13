@@ -10,23 +10,28 @@
     "wip": true
   },
   "milestone": {
-    "id": "M45",
-    "title": "Establish repository-local project metadata contract",
+    "id": "M46",
+    "title": "Ingest repository-local metadata into the portfolio refresh",
     "status": "wip",
     "acceptance": [
       {
         "id": "A1",
-        "text": "Define versioned repository-local metadata model",
+        "text": "Reuse cached repository evidence to detect metadata presence",
         "done": true
       },
       {
         "id": "A2",
-        "text": "Validate metadata deterministically without external dependencies",
+        "text": "Validate migrated metadata and preserve failures separately",
         "done": true
       },
       {
         "id": "A3",
-        "text": "Document the source-of-truth boundary with the central portfolio",
+        "text": "Persist a compact central migration inventory without changing projects.json",
+        "done": true
+      },
+      {
+        "id": "A4",
+        "text": "Pass lint, typing, and regression tests on the exact PR head",
         "done": false
       }
     ]

@@ -55,7 +55,7 @@ def test_now_requires_wip() -> None:
         "status": "ready",
     }
 
-    with pytest.raises(ValueError, match="now.*wip=true"):
+    with pytest.raises(ValueError, match=r"now.*wip=true"):
         project_metadata_from_record(record)
 
 
@@ -81,7 +81,7 @@ def test_unknown_fields_are_rejected() -> None:
     record = _valid_record()
     record["mystery"] = "silently accepting this would hide schema drift"
 
-    with pytest.raises(ValueError, match="unknown field.*mystery"):
+    with pytest.raises(ValueError, match=r"unknown field.*mystery"):
         project_metadata_from_record(record)
 
 
