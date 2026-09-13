@@ -21,15 +21,34 @@ from project_reminders.infrastructure.github import (
     GitHubRepositoryDiscovery,
     GitHubRepositoryEvidence,
 )
+from project_reminders.infrastructure.metadata_inventory import (
+    MetadataInventory,
+    load_metadata_inventory,
+)
 
 
-def _print_project(project: Project) -> None:
+def _print_project(project: Project, metadata_inventory: MetadataInventory | None = None) -> None:
     print(f"{project.name} [{project.status.value}] ({project.priority.value})")
     print(f"  repository: {project.repository}")
     print(f"  next: {project.next_action.description if project.next_action else '—'}")
     print(f"  blocker: {project.blocker or '—'}")
     print(f"  ci: {project.operational.ci_state.value}")
     print(f"  open PRs: {len(project.operational.open_pull_requests)}")
+    if metadata_inventory is not None:
+        status = metadata_inventory.migration_status(project.repository)
+        print(f"  metadata: {status}")
+        snapshot = metadata_inventory.snapshot_for(project.repository)
+        if snapshot is not None:
+            print(
+                f"  planning: type={snapshot.project_type.value} "
+                f"horizon={snapshot.planning_horizon.value} wip={str(snapshot.wip).lower()}"
+            )
+            if snapshot.milestone is not None:
+                milestone = snapshot.milestone
+                print(
+                    f"  milestone: {milestone.id} [{milestone.status.value}] "
+                    f"acceptance={milestone.acceptance_done}/{milestone.acceptance_total}"
+                )
     health = " ".join(
         f"{dimension.value}={project.health.state_for(dimension).value}"
         for dimension in HealthDimension
@@ -46,6 +65,10 @@ def _github_token() -> str:
 
 def _github_importer(root: Path) -> GitHubImportService:
     return GitHubImportService(build_service(root), GitHubRepositoryDiscovery(_github_token()))
+
+
+def _metadata_inventory(root: Path) -> MetadataInventory:
+    return load_metadata_inventory(root / "data" / "project_metadata.json")
 
 
 def _print_plan(plan: ImportPlan) -> None:
@@ -112,30 +135,39 @@ def main(argv: Sequence[str] | None = None) -> int:
     service = build_service(root)
     try:
         if args.command == "dashboard":
-            dashboard = build_dashboard(service.load())
+            dashboard = build_dashboard(service.load(), metadata_inventory=_metadata_inventory(root))
             print(
-                f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count}"
+                f"Active: {dashboard.active_count} | Needs attention: {dashboard.attention_count} | "
+                f"Metadata: {dashboard.migrated_metadata_count} migrated, "
+                f"{dashboard.missing_metadata_count} missing, {dashboard.wip_metadata_count} WIP"
             )
             for card in dashboard.cards:
                 next_text = (
                     card.project.next_action.description if card.project.next_action else "—"
                 )
+                metadata_text = card.migration_status
+                if card.metadata is not None:
+                    metadata_text = (
+                        f"{card.metadata.project_type.value}/"
+                        f"{card.metadata.planning_horizon.value}"
+                    )
                 print(
                     f"{card.project.name:36} {card.project.status.value:20} "
                     f"{card.project.priority.value:8} "
                     f"CI={card.project.operational.ci_state.value:9} "
                     f"PRs={len(card.project.operational.open_pull_requests):2} "
-                    f"next: {next_text}"
+                    f"META={metadata_text:22} next: {next_text}"
                 )
                 for reason in card.reasons:
                     print(f"  ! {reason}")
             return 0
         if args.command == "list":
+            metadata_inventory = _metadata_inventory(root)
             for project in service.load().projects:
-                _print_project(project)
+                _print_project(project, metadata_inventory)
             return 0
         if args.command == "show":
-            _print_project(service.find(args.identifier))
+            _print_project(service.find(args.identifier), _metadata_inventory(root))
             return 0
         if args.command == "add":
             project = service.add_project(
@@ -146,10 +178,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 next_action=args.next_action,
                 summary=args.summary,
             )
-            _print_project(project)
+            _print_project(project, _metadata_inventory(root))
             return 0
         if args.command == "status":
-            _print_project(service.set_status(args.identifier, ProjectStatus(args.status)))
+            _print_project(
+                service.set_status(args.identifier, ProjectStatus(args.status)),
+                _metadata_inventory(root),
+            )
             return 0
         if args.command == "next-action":
             if args.clear and args.description is not None:
@@ -157,14 +192,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             if not args.clear and args.description is None:
                 raise ValueError("next-action requires a description or --clear")
             _print_project(
-                service.set_next_action(args.identifier, None if args.clear else args.description)
+                service.set_next_action(args.identifier, None if args.clear else args.description),
+                _metadata_inventory(root),
             )
             return 0
         if args.command == "health":
             _print_project(
                 service.set_health(
                     args.identifier, HealthDimension(args.dimension), HealthState(args.state)
-                )
+                ),
+                _metadata_inventory(root),
             )
             return 0
         if args.command in {"discover", "import-github"}:
