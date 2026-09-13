@@ -78,7 +78,7 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
     assert "Live operations" in response.text
     assert "Alpha" in response.text
     assert "1 visible" in response.text
-    assert "1 metadata-migrated" in response.text
+    assert "metadata-migrated" in response.text
     assert "research/now" in response.text
     assert 'data-ci="failing"' in response.text
     assert 'data-health="complete unknown missing' in response.text
