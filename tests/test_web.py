@@ -37,6 +37,33 @@ def _write_portfolio(root: Path) -> None:
         ),
         encoding="utf-8",
     )
+    (data_dir / "project_metadata.json").write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "migrated": {
+                    "owner/alpha": {
+                        "schema_version": 1,
+                        "project_type": "research",
+                        "strategic_themes": ["mathematical-research"],
+                        "planning_horizon": "now",
+                        "wip": True,
+                        "milestone": {
+                            "id": "M04",
+                            "title": "Complete identifiability analysis",
+                            "status": "wip",
+                            "acceptance_done": 1,
+                            "acceptance_total": 2,
+                        },
+                        "dependency_count": 0,
+                        "outcome_count": 1,
+                    }
+                },
+                "missing": [],
+            }
+        ),
+        encoding="utf-8",
+    )
 
 
 def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
@@ -51,6 +78,8 @@ def test_dashboard_renders_control_plane_sections(tmp_path: Path) -> None:
     assert "Live operations" in response.text
     assert "Alpha" in response.text
     assert "1 visible" in response.text
+    assert "metadata-migrated" in response.text
+    assert "research/now" in response.text
     assert 'data-ci="failing"' in response.text
     assert 'data-health="complete unknown missing' in response.text
 
@@ -65,5 +94,9 @@ def test_project_detail_renders_control_panel(tmp_path: Path) -> None:
     assert "Why this needs attention" in response.text
     assert "Latest CI is failing" in response.text
     assert "Known missing engineering health: lint" in response.text
+    assert "Repository-local planning metadata" in response.text
+    assert "Complete identifiability analysis" in response.text
+    assert "Acceptance progress" in response.text
+    assert "1/2" in response.text
     assert "Engineering maturity" in response.text
     assert "https://github.com/owner/alpha" in response.text

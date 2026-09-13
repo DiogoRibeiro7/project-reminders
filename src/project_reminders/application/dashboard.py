@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
 from project_reminders.domain.enums import CIState, Priority, ProjectStatus
+from project_reminders.domain.metadata import ProjectMetadataSnapshot
 from project_reminders.domain.models import Portfolio, Project
 from project_reminders.domain.rules import ACTIVE_STATUSES, requires_next_action
+from project_reminders.infrastructure.metadata_inventory import MetadataInventory
 
 _PRIORITY_WEIGHT: dict[Priority, int] = {
     Priority.LOW: 0,
@@ -18,13 +20,15 @@ _OPERATIONAL_STALE_AFTER = timedelta(hours=24)
 
 @dataclass(frozen=True, slots=True)
 class ProjectCard:
-    """One dashboard row with derived attention information."""
+    """One dashboard row with derived attention and metadata information."""
 
     project: Project
     attention_score: int
     reasons: tuple[str, ...]
     operational_stale: bool = False
     operational_unobserved: bool = False
+    migration_status: str = "unknown"
+    metadata: ProjectMetadataSnapshot | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -42,6 +46,9 @@ class Dashboard:
     missing_next_action_count: int
     stale_operational_count: int
     unobserved_operational_count: int
+    migrated_metadata_count: int
+    missing_metadata_count: int
+    wip_metadata_count: int
     status_counts: dict[ProjectStatus, int]
     generated_at: datetime | None
 
@@ -79,30 +86,44 @@ def _freshness(project: Project, now: datetime) -> tuple[bool, bool]:
     return now - observed_at > _OPERATIONAL_STALE_AFTER, False
 
 
-def build_project_card(project: Project, now: datetime | None = None) -> ProjectCard:
-    """Build the shared attention and freshness read model for one project."""
+def build_project_card(
+    project: Project,
+    now: datetime | None = None,
+    metadata_inventory: MetadataInventory | None = None,
+) -> ProjectCard:
+    """Build the shared attention, freshness, and metadata read model for one project."""
 
     current_time = now or datetime.now(UTC)
     score, reasons = _attention(project)
     stale, unobserved = _freshness(project, current_time)
+    metadata = metadata_inventory.snapshot_for(project.repository) if metadata_inventory else None
+    migration_status = (
+        metadata_inventory.migration_status(project.repository) if metadata_inventory else "unknown"
+    )
     return ProjectCard(
         project=project,
         attention_score=score,
         reasons=reasons,
         operational_stale=stale,
         operational_unobserved=unobserved,
+        migration_status=migration_status,
+        metadata=metadata,
     )
 
 
-def build_dashboard(portfolio: Portfolio, now: datetime | None = None) -> Dashboard:
-    """Build a deterministic portfolio dashboard."""
+def build_dashboard(
+    portfolio: Portfolio,
+    now: datetime | None = None,
+    metadata_inventory: MetadataInventory | None = None,
+) -> Dashboard:
+    """Build a deterministic portfolio dashboard without changing attention semantics."""
 
     current_time = now or datetime.now(UTC)
     cards: list[ProjectCard] = []
     counts = {status: 0 for status in ProjectStatus}
     for project in portfolio.projects:
         counts[project.status] += 1
-        cards.append(build_project_card(project, current_time))
+        cards.append(build_project_card(project, current_time, metadata_inventory))
     cards.sort(key=lambda card: (-card.attention_score, card.project.name.casefold()))
 
     projects = portfolio.projects
@@ -124,6 +145,9 @@ def build_dashboard(portfolio: Portfolio, now: datetime | None = None) -> Dashbo
         ),
         stale_operational_count=sum(card.operational_stale for card in cards),
         unobserved_operational_count=sum(card.operational_unobserved for card in cards),
+        migrated_metadata_count=sum(card.migration_status == "migrated" for card in cards),
+        missing_metadata_count=sum(card.migration_status == "missing" for card in cards),
+        wip_metadata_count=sum(card.metadata is not None and card.metadata.wip for card in cards),
         status_counts=counts,
         generated_at=portfolio.generated_at,
     )
