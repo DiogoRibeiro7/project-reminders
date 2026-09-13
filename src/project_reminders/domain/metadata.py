@@ -218,7 +218,9 @@ class ProjectMetadataSnapshot:
 
     def __post_init__(self) -> None:
         if self.schema_version != 1:
-            raise ValueError(f"unsupported project metadata snapshot version: {self.schema_version}")
+            raise ValueError(
+                f"unsupported project metadata snapshot version: {self.schema_version}"
+            )
         if self.dependency_count < 0 or self.outcome_count < 0:
             raise ValueError("metadata snapshot counts must be non-negative")
         normalized_themes = tuple(theme.strip() for theme in self.strategic_themes)
