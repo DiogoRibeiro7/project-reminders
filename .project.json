@@ -12,22 +12,22 @@
   "milestone": {
     "id": "M48",
     "title": "Filter the portfolio by repository-local planning metadata",
-    "status": "wip",
+    "status": "finishing",
     "acceptance": [
       {
         "id": "A1",
         "text": "Filter by metadata migration status",
-        "done": false
+        "done": true
       },
       {
         "id": "A2",
         "text": "Filter migrated projects by project type and planning horizon",
-        "done": false
+        "done": true
       },
       {
         "id": "A3",
         "text": "Filter explicitly by repository-local WIP state",
-        "done": false
+        "done": true
       },
       {
         "id": "A4",
