@@ -10,29 +10,29 @@
     "wip": true
   },
   "milestone": {
-    "id": "M46",
-    "title": "Ingest repository-local metadata into the portfolio refresh",
-    "status": "finishing",
+    "id": "M47",
+    "title": "Expose repository-local metadata in read-only project views",
+    "status": "wip",
     "acceptance": [
       {
         "id": "A1",
-        "text": "Reuse cached repository evidence to detect metadata presence",
+        "text": "Load the derived metadata inventory without changing projects.json",
         "done": true
       },
       {
         "id": "A2",
-        "text": "Validate migrated metadata and preserve failures separately",
+        "text": "Expose migration, planning, WIP, and milestone state in CLI and web views",
         "done": true
       },
       {
         "id": "A3",
-        "text": "Persist a compact central migration inventory without changing projects.json",
+        "text": "Keep attention scoring and portfolio admission semantics unchanged",
         "done": true
       },
       {
         "id": "A4",
-        "text": "Pass lint, typing, and regression tests on the exact PR head",
-        "done": true
+        "text": "Pass lint, typing, metadata validation, and regression tests on the exact PR head",
+        "done": false
       }
     ]
   },
