@@ -30,7 +30,8 @@ def create_app(root: Path | None = None) -> FastAPI:
     def dashboard_page() -> HTMLResponse:
         service = build_service(project_root)
         portfolio = service.load()
-        metadata_inventory = load_metadata_inventory(project_root / "data" / "project_metadata.json")
+        metadata_path = project_root / "data" / "project_metadata.json"
+        metadata_inventory = load_metadata_inventory(metadata_path)
         dashboard = build_dashboard(portfolio, metadata_inventory=metadata_inventory)
         history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
         history = compare_portfolios(history_lookup.previous, portfolio)
@@ -52,7 +53,8 @@ def create_app(root: Path | None = None) -> FastAPI:
             project = service.find(identifier)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
-        metadata_inventory = load_metadata_inventory(project_root / "data" / "project_metadata.json")
+        metadata_path = project_root / "data" / "project_metadata.json"
+        metadata_inventory = load_metadata_inventory(metadata_path)
         history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
         history = compare_portfolios(history_lookup.previous, portfolio)
         template = environment.get_template("project.html")
