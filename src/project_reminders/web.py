@@ -11,6 +11,7 @@ from project_reminders.application.history import compare_portfolios
 from project_reminders.bootstrap import build_service
 from project_reminders.domain.enums import HealthDimension
 from project_reminders.infrastructure.git_history import GitPortfolioHistory
+from project_reminders.infrastructure.metadata_inventory import load_metadata_inventory
 
 _TEMPLATE_DIR = Path(__file__).with_name("templates")
 
@@ -29,7 +30,8 @@ def create_app(root: Path | None = None) -> FastAPI:
     def dashboard_page() -> HTMLResponse:
         service = build_service(project_root)
         portfolio = service.load()
-        dashboard = build_dashboard(portfolio)
+        metadata_inventory = load_metadata_inventory(project_root / "data" / "project_metadata.json")
+        dashboard = build_dashboard(portfolio, metadata_inventory=metadata_inventory)
         history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
         history = compare_portfolios(history_lookup.previous, portfolio)
         template = environment.get_template("dashboard.html")
@@ -50,12 +52,13 @@ def create_app(root: Path | None = None) -> FastAPI:
             project = service.find(identifier)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
+        metadata_inventory = load_metadata_inventory(project_root / "data" / "project_metadata.json")
         history_lookup = GitPortfolioHistory(project_root).lookup(portfolio)
         history = compare_portfolios(history_lookup.previous, portfolio)
         template = environment.get_template("project.html")
         return HTMLResponse(
             template.render(
-                card=build_project_card(project),
+                card=build_project_card(project, metadata_inventory=metadata_inventory),
                 project=project,
                 project_changes=history.for_project(project.id),
                 previous_generated_at=history.previous_generated_at,
