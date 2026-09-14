@@ -11,7 +11,6 @@ from project_reminders.application.metadata_migration import (
 from project_reminders.bootstrap import build_service
 from project_reminders.infrastructure.metadata_inventory import load_metadata_inventory
 
-
 DEFAULT_LIMIT = 30
 
 
