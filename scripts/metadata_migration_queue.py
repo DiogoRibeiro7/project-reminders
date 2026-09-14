@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from project_reminders.application.metadata_migration import (
-    build_metadata_migration_queue,
     MetadataMigrationWave,
+    build_metadata_migration_queue,
 )
 from project_reminders.bootstrap import build_service
 from project_reminders.infrastructure.metadata_inventory import load_metadata_inventory
