@@ -10,29 +10,29 @@
     "wip": true
   },
   "milestone": {
-    "id": "M48",
-    "title": "Filter the portfolio by repository-local planning metadata",
-    "status": "finishing",
+    "id": "M49",
+    "title": "Prioritize repository-local metadata migration",
+    "status": "wip",
     "acceptance": [
       {
         "id": "A1",
-        "text": "Filter by metadata migration status",
+        "text": "Build a deterministic queue containing only repositories with missing metadata",
         "done": true
       },
       {
         "id": "A2",
-        "text": "Filter migrated projects by project type and planning horizon",
+        "text": "Separate candidates into active, recent, and later migration waves",
         "done": true
       },
       {
         "id": "A3",
-        "text": "Filter explicitly by repository-local WIP state",
+        "text": "Expose a bounded human-readable migration queue without automatic writes",
         "done": true
       },
       {
         "id": "A4",
-        "text": "Keep filters read-only with no ranking or lifecycle semantics",
-        "done": true
+        "text": "Pass metadata validation, lint, typing, and regression tests on the exact PR head",
+        "done": false
       }
     ]
   },
