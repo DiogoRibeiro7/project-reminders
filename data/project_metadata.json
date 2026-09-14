@@ -1,6 +1,86 @@
 {
   "version": 1,
   "migrated": {
+    "DiogoRibeiro7/breakinfer": {
+      "schema_version": 1,
+      "project_type": "package",
+      "strategic_themes": [
+        "scientific-software",
+        "statistical-methodology",
+        "publishable-mathematical-research"
+      ],
+      "planning_horizon": "now",
+      "wip": true,
+      "milestone": {
+        "id": "M01",
+        "title": "Lock the core inference API and regression contracts",
+        "status": "wip",
+        "acceptance_done": 2,
+        "acceptance_total": 4
+      },
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
+    "DiogoRibeiro7/gauss-pareto-bridge": {
+      "schema_version": 1,
+      "project_type": "research",
+      "strategic_themes": [
+        "mathematical-research",
+        "statistical-methodology",
+        "scientific-software"
+      ],
+      "planning_horizon": "now",
+      "wip": true,
+      "milestone": {
+        "id": "M01",
+        "title": "Complete broader recovery-grid evidence for the Gaussian-Pareto bridge",
+        "status": "wip",
+        "acceptance_done": 2,
+        "acceptance_total": 4
+      },
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
+    "DiogoRibeiro7/longcluster-robust": {
+      "schema_version": 1,
+      "project_type": "research",
+      "strategic_themes": [
+        "mathematical-research",
+        "statistical-methodology",
+        "scientific-software"
+      ],
+      "planning_horizon": "now",
+      "wip": true,
+      "milestone": {
+        "id": "M01",
+        "title": "Extend trajectory representation uncertainty beyond the two-method baseline",
+        "status": "wip",
+        "acceptance_done": 2,
+        "acceptance_total": 4
+      },
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
+    "DiogoRibeiro7/portugal-pisa-analysis": {
+      "schema_version": 1,
+      "project_type": "research",
+      "strategic_themes": [
+        "public-data-empirical-research",
+        "publishable-mathematical-research",
+        "professional-technical-portfolio"
+      ],
+      "planning_horizon": "week",
+      "wip": false,
+      "milestone": {
+        "id": "M01",
+        "title": "Complete the Portugal 2018 response-rate sensitivity analysis",
+        "status": "ready",
+        "acceptance_done": 1,
+        "acceptance_total": 3
+      },
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
     "DiogoRibeiro7/project-reminders": {
       "schema_version": 1,
       "project_type": "infrastructure",
@@ -8,15 +88,23 @@
         "portfolio-management",
         "engineering-infrastructure"
       ],
-      "planning_horizon": "now",
-      "wip": true,
-      "milestone": {
-        "id": "M48",
-        "title": "Filter the portfolio by repository-local planning metadata",
-        "status": "finishing",
-        "acceptance_done": 4,
-        "acceptance_total": 4
-      },
+      "planning_horizon": "later",
+      "wip": false,
+      "milestone": null,
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
+    "DiogoRibeiro7/semisup-methods": {
+      "schema_version": 1,
+      "project_type": "research",
+      "strategic_themes": [
+        "mathematical-research",
+        "statistical-methodology",
+        "scientific-software"
+      ],
+      "planning_horizon": "later",
+      "wip": false,
+      "milestone": null,
       "dependency_count": 0,
       "outcome_count": 1
     }
@@ -62,7 +150,6 @@
     "DiogoRibeiro7/bmssp",
     "DiogoRibeiro7/bmssp-algorithm",
     "DiogoRibeiro7/brat-boosting",
-    "DiogoRibeiro7/breakinfer",
     "DiogoRibeiro7/breeden_pdf",
     "DiogoRibeiro7/brw-fpt",
     "DiogoRibeiro7/c_to_python",
@@ -185,7 +272,6 @@
     "DiogoRibeiro7/founder-equilibrium",
     "DiogoRibeiro7/fractalsets",
     "DiogoRibeiro7/Fuzzy",
-    "DiogoRibeiro7/gauss-pareto-bridge",
     "DiogoRibeiro7/gaussian_kl_toolkit",
     "DiogoRibeiro7/gaussian_processes_project",
     "DiogoRibeiro7/gdp-vs-social-outcomes-atlas",
@@ -262,7 +348,6 @@
     "DiogoRibeiro7/llm-rewrite-lineage-identifiability",
     "DiogoRibeiro7/llm-training-blueprint",
     "DiogoRibeiro7/LogStream",
-    "DiogoRibeiro7/longcluster-robust",
     "DiogoRibeiro7/longitudinal_clustering",
     "DiogoRibeiro7/loss-functions-gof",
     "DiogoRibeiro7/machine-failure-detection",
@@ -365,7 +450,6 @@
     "DiogoRibeiro7/portugal-investment-analysis",
     "DiogoRibeiro7/portugal-minimum-wage-inflation",
     "DiogoRibeiro7/portugal-pension-boundaries",
-    "DiogoRibeiro7/portugal-pisa-analysis",
     "DiogoRibeiro7/portugal-public-debt-interest",
     "DiogoRibeiro7/portugal-public-pension-financing",
     "DiogoRibeiro7/portugal-refining-resilience",
@@ -437,7 +521,6 @@
     "DiogoRibeiro7/scholar_network",
     "DiogoRibeiro7/school-stratification-externalities",
     "DiogoRibeiro7/seir-abm",
-    "DiogoRibeiro7/semisup-methods",
     "DiogoRibeiro7/SEMKit",
     "DiogoRibeiro7/sensor-intelligence-platform",
     "DiogoRibeiro7/sensor_dashboard",
