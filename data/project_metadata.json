@@ -69,12 +69,12 @@
         "publishable-mathematical-research",
         "professional-technical-portfolio"
       ],
-      "planning_horizon": "week",
-      "wip": false,
+      "planning_horizon": "now",
+      "wip": true,
       "milestone": {
         "id": "M01",
         "title": "Complete the Portugal 2018 response-rate sensitivity analysis",
-        "status": "ready",
+        "status": "wip",
         "acceptance_done": 1,
         "acceptance_total": 3
       },
