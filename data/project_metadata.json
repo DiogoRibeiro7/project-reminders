@@ -9,15 +9,9 @@
         "statistical-methodology",
         "publishable-mathematical-research"
       ],
-      "planning_horizon": "now",
-      "wip": true,
-      "milestone": {
-        "id": "M01",
-        "title": "Lock the core inference API and regression contracts",
-        "status": "wip",
-        "acceptance_done": 2,
-        "acceptance_total": 4
-      },
+      "planning_horizon": "later",
+      "wip": false,
+      "milestone": null,
       "dependency_count": 0,
       "outcome_count": 1
     },
@@ -29,36 +23,36 @@
         "statistical-methodology",
         "scientific-software"
       ],
-      "planning_horizon": "now",
-      "wip": true,
+      "planning_horizon": "week",
+      "wip": false,
       "milestone": {
-        "id": "M01",
-        "title": "Complete broader recovery-grid evidence for the Gaussian-Pareto bridge",
-        "status": "wip",
-        "acceptance_done": 2,
-        "acceptance_total": 4
+        "id": "M02",
+        "title": "Prepare the final Extremes submission package",
+        "status": "ready",
+        "acceptance_done": 0,
+        "acceptance_total": 3
       },
       "dependency_count": 0,
       "outcome_count": 1
     },
-    "DiogoRibeiro7/longcluster-robust": {
+    "DiogoRibeiro7/momentineq": {
       "schema_version": 1,
-      "project_type": "research",
+      "project_type": "package",
       "strategic_themes": [
-        "mathematical-research",
+        "scientific-software",
         "statistical-methodology",
-        "scientific-software"
+        "publishable-mathematical-research"
       ],
-      "planning_horizon": "now",
-      "wip": true,
+      "planning_horizon": "later",
+      "wip": false,
       "milestone": {
         "id": "M01",
-        "title": "Extend trajectory representation uncertainty beyond the two-method baseline",
-        "status": "wip",
-        "acceptance_done": 2,
-        "acceptance_total": 4
+        "title": "Clear the momentineq 0.1.0 release gate",
+        "status": "blocked",
+        "acceptance_done": 0,
+        "acceptance_total": 3
       },
-      "dependency_count": 0,
+      "dependency_count": 1,
       "outcome_count": 1
     },
     "DiogoRibeiro7/portugal-pisa-analysis": {
@@ -69,15 +63,9 @@
         "publishable-mathematical-research",
         "professional-technical-portfolio"
       ],
-      "planning_horizon": "now",
-      "wip": true,
-      "milestone": {
-        "id": "M01",
-        "title": "Complete the Portugal 2018 response-rate sensitivity analysis",
-        "status": "wip",
-        "acceptance_done": 1,
-        "acceptance_total": 3
-      },
+      "planning_horizon": "later",
+      "wip": false,
+      "milestone": null,
       "dependency_count": 0,
       "outcome_count": 1
     },
@@ -91,6 +79,26 @@
       "planning_horizon": "later",
       "wip": false,
       "milestone": null,
+      "dependency_count": 0,
+      "outcome_count": 1
+    },
+    "DiogoRibeiro7/PSOD": {
+      "schema_version": 1,
+      "project_type": "package",
+      "strategic_themes": [
+        "scientific-software",
+        "statistical-methodology",
+        "professional-technical-portfolio"
+      ],
+      "planning_horizon": "now",
+      "wip": true,
+      "milestone": {
+        "id": "M01",
+        "title": "Complete the behavior-preserving PSOD module split",
+        "status": "wip",
+        "acceptance_done": 1,
+        "acceptance_total": 4
+      },
       "dependency_count": 0,
       "outcome_count": 1
     },
@@ -312,7 +320,6 @@
     "DiogoRibeiro7/iKNN",
     "DiogoRibeiro7/il_supply_side_policy_tests",
     "DiogoRibeiro7/imbd_movies_data_analysis",
-    "DiogoRibeiro7/Importance-Sampling",
     "DiogoRibeiro7/impsamp",
     "DiogoRibeiro7/imputation-showcase",
     "DiogoRibeiro7/industrialstats",
@@ -348,6 +355,7 @@
     "DiogoRibeiro7/llm-rewrite-lineage-identifiability",
     "DiogoRibeiro7/llm-training-blueprint",
     "DiogoRibeiro7/LogStream",
+    "DiogoRibeiro7/longcluster-robust",
     "DiogoRibeiro7/longitudinal_clustering",
     "DiogoRibeiro7/loss-functions-gof",
     "DiogoRibeiro7/machine-failure-detection",
@@ -375,7 +383,6 @@
     "DiogoRibeiro7/model-selection-lab",
     "DiogoRibeiro7/modelguard-rs",
     "DiogoRibeiro7/modern-neural-networks-agent-repo",
-    "DiogoRibeiro7/momentineq",
     "DiogoRibeiro7/mongo-db-labs",
     "DiogoRibeiro7/mortality-counterfactual-lab",
     "DiogoRibeiro7/mpa-risk-pipeline",
@@ -470,7 +477,6 @@
     "DiogoRibeiro7/ProjJAX",
     "DiogoRibeiro7/prompt-craft-for-ml",
     "DiogoRibeiro7/prompts_general",
-    "DiogoRibeiro7/PSOD",
     "DiogoRibeiro7/pt-gdp-components",
     "DiogoRibeiro7/pt-salary-gamma-distribution",
     "DiogoRibeiro7/pt_gdp_regime_repo",
