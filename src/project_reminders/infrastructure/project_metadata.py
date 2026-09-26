@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any, cast
 
@@ -19,6 +18,7 @@ from project_reminders.domain.metadata import (
     ProjectMetadata,
     ProjectType,
 )
+from project_reminders.infrastructure._json_io import read_json
 
 JsonObject = dict[str, Any]
 
@@ -166,10 +166,4 @@ def project_metadata_from_record(raw: object) -> ProjectMetadata:
 def load_project_metadata(path: Path) -> ProjectMetadata:
     """Load and validate one `.project.json` file from disk."""
 
-    try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(
-            f"invalid JSON at line {exc.lineno}, column {exc.colno}: {exc.msg}"
-        ) from exc
-    return project_metadata_from_record(raw)
+    return project_metadata_from_record(read_json(path))

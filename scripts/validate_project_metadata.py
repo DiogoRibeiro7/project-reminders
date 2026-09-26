@@ -6,6 +6,8 @@ import argparse
 from collections.abc import Sequence
 from pathlib import Path
 
+from dataexcept import DataExceptError
+
 from project_reminders.infrastructure.project_metadata import load_project_metadata
 
 
@@ -23,7 +25,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     path = _parser().parse_args(argv).path
     try:
         metadata = load_project_metadata(path)
-    except (OSError, TypeError, ValueError) as exc:
+    except (DataExceptError, TypeError, ValueError) as exc:
         print(f"invalid project metadata: {exc}")
         return 2
 

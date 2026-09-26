@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
+
+from dataexcept import FileReadError
 
 from project_reminders.domain.metadata import (
     MilestoneSnapshot,
@@ -14,6 +15,7 @@ from project_reminders.domain.metadata import (
     ProjectMetadataSnapshot,
     ProjectType,
 )
+from project_reminders.infrastructure._json_io import read_json, write_json_atomically
 
 JsonObject = dict[str, Any]
 
@@ -113,9 +115,12 @@ def _snapshot_from_record(raw: object) -> ProjectMetadataSnapshot:
 def load_metadata_inventory(path: Path) -> MetadataInventory:
     """Load the derived metadata inventory, returning an empty inventory if absent."""
 
-    if not path.exists():
-        return MetadataInventory(migrated={}, missing=frozenset())
-    raw = json.loads(path.read_text(encoding="utf-8"))
+    try:
+        raw = read_json(path)
+    except FileReadError as exc:
+        if isinstance(exc.original, FileNotFoundError):
+            return MetadataInventory(migrated={}, missing=frozenset())
+        raise
     if not isinstance(raw, dict):
         raise TypeError("metadata inventory root must be an object")
     record = cast(JsonObject, raw)
@@ -151,7 +156,4 @@ def write_metadata_inventory(
         },
         "missing": sorted(missing, key=str.casefold),
     }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    temporary.replace(path)
+    write_json_atomically(path, payload)
