@@ -10,6 +10,11 @@ The repository keeps three layers separate:
 
 GitHub is evidence, not the source of truth. The portfolio stays in `data/projects.json`.
 
+Local JSON reads and writes use DataExcept errors: `FileReadError` and `FileWriteError`
+identify filesystem failures, while `DataLoadingError` identifies invalid JSON or UTF-8.
+Each retains the original exception as its cause. Missing portfolio and metadata inventory
+files still load as empty; schema validation still reports `TypeError` or `ValueError`.
+
 ## Lifecycle
 
 ```text
@@ -90,7 +95,7 @@ Open `http://127.0.0.1:8000`. The server is local-only by default.
 
 ## Development
 
-Python 3.13+.
+Python 3.13 or 3.14.
 
 ```bash
 poetry install

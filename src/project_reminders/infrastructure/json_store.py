@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any, cast
+
+from dataexcept import FileReadError
 
 from project_reminders.domain.enums import (
     CIState,
@@ -22,6 +23,7 @@ from project_reminders.domain.models import (
     Project,
     PullRequestSnapshot,
 )
+from project_reminders.infrastructure._json_io import read_json, write_json_atomically
 
 JsonObject = dict[str, Any]
 
@@ -196,9 +198,12 @@ class JsonPortfolioRepository:
         self.path = path
 
     def load(self) -> Portfolio:
-        if not self.path.exists():
-            return Portfolio()
-        raw = json.loads(self.path.read_text(encoding="utf-8"))
+        try:
+            raw = read_json(self.path)
+        except FileReadError as exc:
+            if isinstance(exc.original, FileNotFoundError):
+                return Portfolio()
+            raise
         if not isinstance(raw, dict):
             raise TypeError("portfolio root must be an object")
         record = cast(JsonObject, raw)
@@ -212,7 +217,6 @@ class JsonPortfolioRepository:
         )
 
     def save(self, portfolio: Portfolio) -> None:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
         payload: JsonObject = {
             "version": portfolio.version,
             "generated_at": portfolio.generated_at.isoformat() if portfolio.generated_at else None,
@@ -221,6 +225,4 @@ class JsonPortfolioRepository:
                 for project in sorted(portfolio.projects, key=lambda item: item.name.casefold())
             ],
         }
-        temporary = self.path.with_suffix(self.path.suffix + ".tmp")
-        temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-        temporary.replace(self.path)
+        write_json_atomically(self.path, payload)
