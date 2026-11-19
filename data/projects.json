@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-11-18T20:38:36.447327+00:00",
+  "generated_at": "2026-11-19T07:32:29.404985+00:00",
   "projects": [
     {
       "id": "1030ec9e7ecd",
@@ -3698,15 +3698,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/ChangePointLab/actions/runs/43894017149",
-        "ci_updated_at": "2026-11-16T15:14:14+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/ChangePointLab/actions/runs/44458018893",
+        "ci_updated_at": "2026-11-19T04:24:27+00:00",
         "latest_activity_at": "2026-11-16T15:13:17+00:00",
         "latest_release": "v0.1.16",
         "latest_release_at": "2026-08-21T09:05:00+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/ChangePointLab/releases/tag/v0.1.16",
         "latest_tag": "v0.1.16",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/ChangePointLab/tree/v0.1.16",
-        "observed_at": "2026-11-18T20:37:44.548357+00:00"
+        "observed_at": "2026-11-19T07:31:49.989513+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -3846,16 +3846,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/chronos/actions/runs/19818188275",
-        "ci_updated_at": "2026-11-13T10:14:52+00:00",
+        "ci_state": "none",
+        "ci_url": null,
+        "ci_updated_at": null,
         "latest_activity_at": "2025-12-01T09:44:21+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-11-18T20:37:44.763882+00:00"
+        "observed_at": "2026-11-19T07:31:50.145070+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.711995+00:00",
@@ -5805,7 +5805,7 @@
             "number": 91,
             "title": "chore(deps-dev): Bump the \"python-tooling\" group with 2 updates across multiple ecosystems",
             "draft": false,
-            "updated_at": "2026-11-12T04:23:37+00:00",
+            "updated_at": "2026-11-19T04:23:36+00:00",
             "url": "https://github.com/DiogoRibeiro7/DataExcept/pull/91"
           },
           {
@@ -5845,15 +5845,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/DataExcept/actions/runs/43902109530",
-        "ci_updated_at": "2026-11-16T15:58:27+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/DataExcept/actions/runs/44458009386",
+        "ci_updated_at": "2026-11-19T04:24:23+00:00",
         "latest_activity_at": "2026-11-01T04:27:47+00:00",
         "latest_release": "v1.7.0",
         "latest_release_at": "2026-09-17T21:18:52+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/DataExcept/releases/tag/v1.7.0",
         "latest_tag": "v1.7.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/DataExcept/tree/v1.7.0",
-        "observed_at": "2026-11-18T20:37:49.249395+00:00"
+        "observed_at": "2026-11-19T07:31:53.627716+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:17.871428+00:00",
@@ -16934,15 +16934,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/OversampleQA/actions/runs/44146824899",
-        "ci_updated_at": "2026-11-17T18:21:53+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/OversampleQA/actions/runs/44479860412",
+        "ci_updated_at": "2026-11-19T07:29:03+00:00",
         "latest_activity_at": "2026-10-08T12:03:31+00:00",
         "latest_release": "v0.8.0",
         "latest_release_at": "2026-08-31T22:01:09+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/OversampleQA/releases/tag/v0.8.0",
         "latest_tag": "v0.8.0",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/OversampleQA/tree/v0.8.0",
-        "observed_at": "2026-11-18T20:38:12.503400+00:00"
+        "observed_at": "2026-11-19T07:32:11.425176+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.328330+00:00",
@@ -17182,15 +17182,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/peak_detection/actions/runs/44226128203",
-        "ci_updated_at": "2026-11-18T02:50:16+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/peak_detection/actions/runs/44444583168",
+        "ci_updated_at": "2026-11-19T02:28:37+00:00",
         "latest_activity_at": "2026-03-13T22:00:31+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-11-18T20:38:12.340189+00:00"
+        "observed_at": "2026-11-19T07:32:11.374016+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.379422+00:00",
@@ -18249,16 +18249,16 @@
       },
       "operational": {
         "open_pull_requests": [],
-        "ci_state": "pending",
+        "ci_state": "cancelled",
         "ci_url": "https://github.com/DiogoRibeiro7/portugal-econ-dashboard/actions/runs/44223205484",
-        "ci_updated_at": "2026-11-18T02:25:59+00:00",
+        "ci_updated_at": "2026-11-19T02:26:03+00:00",
         "latest_activity_at": "2026-11-01T12:48:48+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-11-18T20:38:15.090441+00:00"
+        "observed_at": "2026-11-19T07:32:13.247471+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.537346+00:00",
@@ -19910,13 +19910,13 @@
         "ci_state": "none",
         "ci_url": null,
         "ci_updated_at": null,
-        "latest_activity_at": "2026-11-17T21:00:50+00:00",
+        "latest_activity_at": "2026-11-18T20:38:37+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-11-18T20:38:19.901251+00:00"
+        "observed_at": "2026-11-19T07:32:16.754928+00:00"
       },
       "current_pr": null,
       "created_at": null,
@@ -20422,18 +20422,18 @@
       "operational": {
         "open_pull_requests": [
           {
+            "number": 38,
+            "title": "build(deps): bump mkdocstrings-python from 2.0.8 to 2.0.11",
+            "draft": false,
+            "updated_at": "2026-11-19T00:44:40+00:00",
+            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/38"
+          },
+          {
             "number": 37,
             "title": "build(deps): bump mkdocs-material from 9.7.7 to 9.8.1",
             "draft": false,
             "updated_at": "2026-11-12T00:43:50+00:00",
             "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/37"
-          },
-          {
-            "number": 36,
-            "title": "build(deps): bump mkdocstrings-python from 2.0.8 to 2.0.10",
-            "draft": false,
-            "updated_at": "2026-10-29T00:44:02+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/36"
           },
           {
             "number": 34,
@@ -20458,15 +20458,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/43129242897",
-        "ci_updated_at": "2026-11-12T00:43:43+00:00",
-        "latest_activity_at": "2026-11-12T00:43:49+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/44431170263",
+        "ci_updated_at": "2026-11-19T00:44:27+00:00",
+        "latest_activity_at": "2026-11-19T00:44:26+00:00",
         "latest_release": "v0.1.0a2",
         "latest_release_at": "2026-09-15T22:21:31+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/pygeostats/releases/tag/v0.1.0a2",
         "latest_tag": "v0.1.0a2",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/pygeostats/tree/v0.1.0a2",
-        "observed_at": "2026-11-18T20:38:19.727896+00:00"
+        "observed_at": "2026-11-19T07:32:16.918120+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-12T15:34:12.010452+00:00",
@@ -20498,18 +20498,18 @@
       "operational": {
         "open_pull_requests": [
           {
+            "number": 38,
+            "title": "build(deps): bump mkdocstrings-python from 2.0.8 to 2.0.11",
+            "draft": false,
+            "updated_at": "2026-11-19T00:44:40+00:00",
+            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/38"
+          },
+          {
             "number": 37,
             "title": "build(deps): bump mkdocs-material from 9.7.7 to 9.8.1",
             "draft": false,
             "updated_at": "2026-11-12T00:43:50+00:00",
             "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/37"
-          },
-          {
-            "number": 36,
-            "title": "build(deps): bump mkdocstrings-python from 2.0.8 to 2.0.10",
-            "draft": false,
-            "updated_at": "2026-10-29T00:44:02+00:00",
-            "url": "https://github.com/DiogoRibeiro7/pygeostats/pull/36"
           },
           {
             "number": 34,
@@ -20534,15 +20534,15 @@
           }
         ],
         "ci_state": "passing",
-        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/43129242897",
-        "ci_updated_at": "2026-11-12T00:43:43+00:00",
-        "latest_activity_at": "2026-11-12T00:43:49+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/pygeostats/actions/runs/44431170263",
+        "ci_updated_at": "2026-11-19T00:44:27+00:00",
+        "latest_activity_at": "2026-11-19T00:44:26+00:00",
         "latest_release": "v0.1.0a2",
         "latest_release_at": "2026-09-15T22:21:31+00:00",
         "latest_release_url": "https://github.com/DiogoRibeiro7/pygeostats/releases/tag/v0.1.0a2",
         "latest_tag": "v0.1.0a2",
         "latest_tag_url": "https://github.com/DiogoRibeiro7/pyspatialstats/tree/v0.1.0a2",
-        "observed_at": "2026-11-18T20:38:20.758955+00:00"
+        "observed_at": "2026-11-19T07:32:17.356450+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:19.911998+00:00",
@@ -24222,15 +24222,15 @@
       "operational": {
         "open_pull_requests": [],
         "ci_state": "failing",
-        "ci_url": "https://github.com/DiogoRibeiro7/sp500-under20-dashboard/actions/runs/44206139604",
-        "ci_updated_at": "2026-11-18T00:14:11+00:00",
+        "ci_url": "https://github.com/DiogoRibeiro7/sp500-under20-dashboard/actions/runs/44423051501",
+        "ci_updated_at": "2026-11-18T23:42:45+00:00",
         "latest_activity_at": "2026-11-05T23:02:58+00:00",
         "latest_release": null,
         "latest_release_at": null,
         "latest_release_url": null,
         "latest_tag": null,
         "latest_tag_url": null,
-        "observed_at": "2026-11-18T20:38:27.807413+00:00"
+        "observed_at": "2026-11-19T07:32:22.800540+00:00"
       },
       "current_pr": null,
       "created_at": "2026-09-09T10:08:20.622235+00:00",
